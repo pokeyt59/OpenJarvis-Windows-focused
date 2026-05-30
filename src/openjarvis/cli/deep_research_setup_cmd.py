@@ -1,8 +1,13 @@
 """``jarvis deep-research-setup`` — auto-detect local sources, ingest, and chat.
 
-Walks the user through connecting local data sources (Apple Notes, iMessage,
-Obsidian), ingesting them into a shared KnowledgeStore, and launching an
-interactive Deep Research chat session with Qwen3.5 via Ollama.
+Walks the user through connecting local data sources (Obsidian and any
+token-based connectors with stored credentials), ingesting them into a shared
+KnowledgeStore, and launching an interactive Deep Research chat session with
+Qwen3.5 via Ollama.
+
+The macOS-only sources (Apple Notes / iMessage) were removed when this fork
+went Windows-only. SendBlue (iMessage / SMS) replaces them on the *channel*
+side; there's no current Windows equivalent on the *data-source* side.
 """
 
 from __future__ import annotations
@@ -25,16 +30,6 @@ from openjarvis.core.config import DEFAULT_CONFIG_DIR
 # Constants
 # ---------------------------------------------------------------------------
 
-_DEFAULT_NOTES_DB = (
-    Path.home()
-    / "Library"
-    / "Group Containers"
-    / "group.com.apple.notes"
-    / "NoteStore.sqlite"
-)
-
-_DEFAULT_IMESSAGE_DB = Path.home() / "Library" / "Messages" / "chat.db"
-
 _OLLAMA_MODEL = "qwen3.5:4b"
 
 # ---------------------------------------------------------------------------
@@ -44,8 +39,6 @@ _OLLAMA_MODEL = "qwen3.5:4b"
 
 def detect_local_sources(
     *,
-    notes_db_path: Optional[Path] = None,
-    imessage_db_path: Optional[Path] = None,
     obsidian_vault_path: Optional[Path] = None,
 ) -> List[Dict[str, Any]]:
     """Return a list of available local sources with their config.
@@ -54,26 +47,6 @@ def detect_local_sources(
     ``config`` (kwargs for the connector constructor).
     """
     sources: List[Dict[str, Any]] = []
-
-    notes_path = notes_db_path or _DEFAULT_NOTES_DB
-    if notes_path.exists():
-        sources.append(
-            {
-                "connector_id": "apple_notes",
-                "display_name": "Apple Notes",
-                "config": {"db_path": str(notes_path)},
-            }
-        )
-
-    imessage_path = imessage_db_path or _DEFAULT_IMESSAGE_DB
-    if imessage_path.exists():
-        sources.append(
-            {
-                "connector_id": "imessage",
-                "display_name": "iMessage",
-                "config": {"db_path": str(imessage_path)},
-            }
-        )
 
     if obsidian_vault_path and obsidian_vault_path.is_dir():
         sources.append(
@@ -207,15 +180,7 @@ def _prompt_connect_sources(console: Console) -> List[Dict[str, Any]]:
 
 def _instantiate_connector(connector_id: str, config: Dict[str, Any]) -> Any:
     """Lazily import and instantiate a connector by ID."""
-    if connector_id == "apple_notes":
-        from openjarvis.connectors.apple_notes import AppleNotesConnector
-
-        return AppleNotesConnector(db_path=config.get("db_path", ""))
-    elif connector_id == "imessage":
-        from openjarvis.connectors.imessage import IMessageConnector
-
-        return IMessageConnector(db_path=config.get("db_path", ""))
-    elif connector_id == "obsidian":
+    if connector_id == "obsidian":
         from openjarvis.connectors.obsidian import ObsidianConnector
 
         return ObsidianConnector(vault_path=config.get("vault_path", ""))
@@ -400,8 +365,8 @@ def deep_research_setup(obsidian_vault: Optional[str], skip_chat: bool) -> None:
     if not all_sources:
         console.print(
             "[yellow]No data sources detected or connected.[/yellow]\n"
-            "On macOS, ensure Full Disk Access is granted in "
-            "System Settings > Privacy & Security."
+            "Set up at least one token-based source (Gmail, Slack, Notion, "
+            "etc.) or point at an Obsidian vault to continue."
         )
         sys.exit(1)
 

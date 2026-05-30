@@ -1513,54 +1513,9 @@ def create_agent_manager_router(
             routing_mode=req.routing_mode,
         )
 
-        # Start iMessage daemon if binding iMessage
-        if req.channel_type == "imessage":
-            identifier = (req.config or {}).get("identifier", "")
-            if identifier:
-                try:
-                    from openjarvis.channels.imessage_daemon import (
-                        is_running,
-                        run_daemon,
-                    )
-
-                    if not is_running():
-                        import threading
-
-                        engine = getattr(request.app.state, "engine", None)
-                        if engine:
-                            from openjarvis.server.agent_manager_routes import (
-                                _build_deep_research_tools,
-                            )
-
-                            tools = _build_deep_research_tools(engine=engine, model="")
-                            if tools:
-                                from openjarvis.agents.deep_research import (
-                                    DeepResearchAgent,
-                                )
-
-                                agent_inst = DeepResearchAgent(
-                                    engine=engine,
-                                    model=getattr(engine, "_model", ""),
-                                    tools=tools,
-                                    interactive=True,
-                                    confirm_callback=lambda _prompt: True,
-                                )
-
-                                def handler(text: str) -> str:
-                                    result = agent_inst.run(text)
-                                    return result.content or "No results."
-
-                                t = threading.Thread(
-                                    target=run_daemon,
-                                    kwargs={
-                                        "chat_identifier": identifier,
-                                        "handler": handler,
-                                    },
-                                    daemon=True,
-                                )
-                                t.start()
-                except Exception as exc:
-                    logger.warning("Failed to start iMessage daemon: %s", exc)
+        # Native macOS iMessage daemon binding was removed when this fork went
+        # Windows-only. To reach an agent over iMessage on Windows, use the
+        # SendBlue channel (`req.channel_type == "sendblue"`) below.
 
         # Initialize SendBlue channel if binding sendblue
         if req.channel_type == "sendblue":
@@ -1578,6 +1533,10 @@ def create_agent_manager_router(
                         api_key_id=api_key_id,
                         api_secret_key=api_secret_key,
                         from_number=from_number,
+                        read_receipts=bool(config.get("read_receipts", True)),
+                        typing_indicator=bool(
+                            config.get("typing_indicator", True)
+                        ),
                     )
                     sb_channel.connect()
                     # Store on app state so webhook route can use it
@@ -1700,13 +1659,7 @@ def create_agent_manager_router(
             binding = manager._get_binding(binding_id)
             if binding:
                 ch_type = binding.get("channel_type")
-                if ch_type == "imessage":
-                    from openjarvis.channels.imessage_daemon import (
-                        stop_daemon,
-                    )
-
-                    stop_daemon()
-                elif ch_type == "slack":
+                if ch_type == "slack":
                     from openjarvis.channels.slack_daemon import (
                         stop_daemon as stop_slack_daemon,
                     )
@@ -2016,6 +1969,40 @@ def create_agent_manager_router(
 
     # ── SendBlue auto-setup helpers ─────────────────────────
 
+    # Single source of truth for SendBlue's host + inbound path.
+    from openjarvis.channels.sendblue import API_BASE as _SB_API_BASE
+    from openjarvis.channels.sendblue import WEBHOOK_PATH as _SB_WEBHOOK_PATH
+
+    # Old, broken suffix the frontend used to build before BUG #1 was fixed.
+    # If we see it in SendBlue's registered list, surface it so the user can
+    # delete it from the SendBlue dashboard.
+    _SB_STALE_WEBHOOK_SUFFIX = "/v1/channels/sendblue/webhook"
+
+    def _sb_extract_receive_urls(data: Any) -> List[str]:
+        """Best-effort extraction of receive webhook URLs from SendBlue's
+        /api/account/webhooks response. The exact shape isn't pinned in the
+        public docs; handle every reasonable variant rather than crash."""
+        if data is None:
+            return []
+        if isinstance(data, list):
+            return [str(x) for x in data if isinstance(x, str)]
+        if isinstance(data, dict):
+            wh = data.get("webhooks")
+            if isinstance(wh, list):
+                return [str(x) for x in wh if isinstance(x, str)]
+            if isinstance(wh, dict):
+                recv = wh.get("receive")
+                if isinstance(recv, list):
+                    return [str(x) for x in recv if isinstance(x, str)]
+                if isinstance(recv, str):
+                    return [recv]
+            recv = data.get("receive")
+            if isinstance(recv, list):
+                return [str(x) for x in recv if isinstance(x, str)]
+            if isinstance(recv, str):
+                return [recv]
+        return []
+
     sendblue_router = APIRouter(prefix="/v1/channels/sendblue", tags=["sendblue"])
 
     @sendblue_router.post("/verify")
@@ -2034,7 +2021,7 @@ def create_agent_manager_router(
 
         try:
             resp = httpx.get(
-                "https://api.sendblue.co/api/lines",
+                f"{_SB_API_BASE}/api/lines",
                 headers={
                     "sb-api-key-id": api_key_id,
                     "sb-api-secret-key": api_secret_key,
@@ -2083,7 +2070,22 @@ def create_agent_manager_router(
 
     @sendblue_router.post("/register-webhook")
     async def sendblue_register_webhook(request: Request):
-        """Auto-register the /webhooks/sendblue endpoint with SendBlue."""
+        """Register the /webhooks/sendblue endpoint with SendBlue.
+
+        Behaviour (post-BUG #1/#3):
+
+        1. Validate the URL ends with ``WEBHOOK_PATH`` (`/webhooks/sendblue`)
+           — the only path the server actually handles.
+        2. GET ``/api/account/webhooks`` to see what's already registered.
+           If the URL is already there, return success without re-POSTing.
+        3. Otherwise POST the documented body
+           ``{"webhooks": [url], "type": "receive"}`` (not the old
+           ``{"receive": url}`` shape, which BUG #3 flagged as undocumented).
+        4. GET again and confirm the URL is in the receive list before
+           reporting success — never trust SendBlue's 2xx alone.
+        5. Surface any stale ``/v1/channels/sendblue/webhook`` entries so
+           the user can clean them up in the SendBlue dashboard.
+        """
         body = await request.json()
         api_key_id = body.get("api_key_id", "")
         api_secret_key = body.get("api_secret_key", "")
@@ -2094,26 +2096,102 @@ def create_agent_manager_router(
                 detail="webhook_url is required",
             )
 
+        # Defensive: warn if the caller built the wrong suffix. Don't auto-fix
+        # silently — the frontend is the source of this string, and we want
+        # the regression to be loud rather than papered over.
+        if not webhook_url.rstrip("/").endswith(_SB_WEBHOOK_PATH):
+            logger.warning(
+                "SendBlue register-webhook called with URL %r that does not "
+                "end in %s — this will 404 on inbound delivery",
+                webhook_url,
+                _SB_WEBHOOK_PATH,
+            )
+
         import httpx
 
-        try:
-            resp = httpx.post(
-                "https://api.sendblue.co/api/account/webhooks",
-                headers={
-                    "sb-api-key-id": api_key_id,
-                    "sb-api-secret-key": api_secret_key,
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "receive": webhook_url,
-                },
+        headers = {
+            "sb-api-key-id": api_key_id,
+            "sb-api-secret-key": api_secret_key,
+            "Content-Type": "application/json",
+        }
+
+        def _list_webhooks() -> Tuple[int, Any]:
+            r = httpx.get(
+                f"{_SB_API_BASE}/api/account/webhooks",
+                headers=headers,
                 timeout=15.0,
             )
+            try:
+                return r.status_code, r.json()
+            except Exception:
+                return r.status_code, r.text[:500]
+
+        try:
+            # 1. List existing receive webhooks.
+            list_status, list_body = _list_webhooks()
+            existing = _sb_extract_receive_urls(list_body)
+            stale = [u for u in existing if _SB_STALE_WEBHOOK_SUFFIX in u]
+            already_registered = webhook_url in existing
+
+            post_status: Optional[int] = None
+            post_response: Any = None
+
+            # 2. POST only if not already registered.
+            if not already_registered:
+                post_resp = httpx.post(
+                    f"{_SB_API_BASE}/api/account/webhooks",
+                    headers=headers,
+                    json={
+                        "webhooks": [webhook_url],
+                        "type": "receive",
+                    },
+                    timeout=15.0,
+                )
+                post_status = post_resp.status_code
+                try:
+                    post_response = post_resp.json()
+                except Exception:
+                    post_response = post_resp.text[:200]
+
+                if post_status >= 300:
+                    return {
+                        "registered": False,
+                        "verified": False,
+                        "status": post_status,
+                        "response": post_response,
+                        "stale_webhooks": stale,
+                        "detail": (
+                            "SendBlue rejected the webhook registration. "
+                            "Check credentials and that the URL is publicly "
+                            "reachable over HTTPS."
+                        ),
+                    }
+
+            # 3. Verify by listing again and confirming presence.
+            verify_status, verify_body = _list_webhooks()
+            verified_urls = _sb_extract_receive_urls(verify_body)
+            verified = webhook_url in verified_urls
+            stale = [u for u in verified_urls if _SB_STALE_WEBHOOK_SUFFIX in u]
+
             return {
-                "registered": resp.status_code < 300,
-                "status": resp.status_code,
-                "response": resp.json() if resp.status_code < 300 else resp.text[:200],
+                "registered": True,
+                "verified": verified,
+                "status": post_status if post_status is not None else list_status,
+                "response": post_response,
+                "verify_status": verify_status,
+                "current_receive_webhooks": verified_urls,
+                "stale_webhooks": stale,
+                "detail": (
+                    None
+                    if verified
+                    else (
+                        "Webhook was POSTed but is not present in SendBlue's "
+                        "registered list; cannot confirm inbound will route."
+                    )
+                ),
             }
+        except HTTPException:
+            raise
         except Exception as exc:
             raise HTTPException(
                 status_code=502,
@@ -2149,7 +2227,7 @@ def create_agent_manager_router(
                 payload["from_number"] = from_number
 
             resp = httpx.post(
-                "https://api.sendblue.co/api/send-message",
+                f"{_SB_API_BASE}/api/send-message",
                 headers={
                     "sb-api-key-id": api_key_id,
                     "sb-api-secret-key": api_secret_key,

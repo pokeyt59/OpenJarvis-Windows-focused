@@ -7,6 +7,7 @@ All API calls are in module-level functions for easy mocking in tests.
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, Iterator, Optional
@@ -40,8 +41,12 @@ class OuraConnector(BaseConnector):
     """Sync sleep, readiness, and activity data from Oura Ring."""
 
     connector_id = "oura"
+    # ``auth_type = "oauth"`` is what /connect uses to route the pasted
+    # token through ``handle_callback``. There's no real OAuth dance —
+    # Oura PATs are pre-issued — but reusing the path gives us the
+    # validation + persistence flow without bespoke routing logic.
+    auth_type = "oauth"
     display_name = "Oura Ring"
-    auth_type = "token"
 
     def __init__(self, *, token_path: str = _DEFAULT_TOKEN_PATH) -> None:
         self._token_path = Path(token_path)
@@ -58,6 +63,38 @@ class OuraConnector(BaseConnector):
     def disconnect(self) -> None:
         if self._token_path.exists():
             self._token_path.unlink()
+
+    def handle_callback(self, code: str) -> None:
+        """Validate the pasted Oura PAT and persist with 0o600 perms.
+
+        Probes ``/v2/usercollection/personal_info`` — the cheapest
+        authenticated endpoint — to catch invalid / revoked tokens
+        before saving. A failure raises and ``/connect`` returns HTTP
+        400 with the message echoed back, leaving any existing token
+        intact.
+        """
+        token = (code or "").strip()
+        if not token:
+            raise ValueError("Empty Oura token")
+
+        resp = httpx.get(
+            "https://api.ouraring.com/v2/usercollection/personal_info",
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=15.0,
+        )
+        if resp.status_code == 401:
+            raise ValueError("Oura rejected the token (invalid or revoked)")
+        resp.raise_for_status()
+
+        self._token_path.parent.mkdir(parents=True, exist_ok=True)
+        self._token_path.write_text(
+            json.dumps({"token": token}), encoding="utf-8"
+        )
+        try:
+            os.chmod(self._token_path, 0o600)
+        except OSError:
+            # Windows: chmod is a no-op; file inherits parent ACL.
+            pass
 
     def sync(
         self, *, since: Optional[datetime] = None, cursor: Optional[str] = None

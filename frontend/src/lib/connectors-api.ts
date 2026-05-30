@@ -24,7 +24,14 @@ export async function connectSource(id: string, req: ConnectRequest): Promise<Co
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req),
   });
-  if (!res.ok) throw new Error(`Failed to connect ${id}: ${res.status}`);
+  if (!res.ok) {
+    // Surface the backend's actual reason (the /connect route returns
+    // `detail` with the connector's own message — e.g. "rejected the API key,
+    // new keys take ~10 min to activate" or "location not recognized") instead
+    // of a bare status code.
+    const err = await res.json().catch(() => ({ detail: '' }));
+    throw new Error(err.detail || `Failed to connect ${id}: ${res.status}`);
+  }
   return res.json();
 }
 

@@ -19,7 +19,10 @@ def test_news_rss_registered():
     assert ConnectorRegistry.contains("news_rss")
     cls = ConnectorRegistry.get("news_rss")
     assert cls.connector_id == "news_rss"
-    assert cls.auth_type == "local"
+    # "oauth" so /connect routes the pasted feed URL through
+    # handle_callback. There's no actual auth — RSS is public — but
+    # this gives us the validation + persistence path for free.
+    assert cls.auth_type == "oauth"
 
 
 _SAMPLE_RSS = """\

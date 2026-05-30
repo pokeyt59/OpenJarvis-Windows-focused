@@ -316,28 +316,34 @@ def create_connectors_router():
 
                     instance._connected = Path(req.path).is_dir()
 
-            elif auth_type == "oauth":
+            elif auth_type in ("oauth", "token", "local"):
+                # Three auth styles all routed through ``handle_callback``:
+                #   - "oauth"  → genuine OAuth (gdrive, spotify, strava) or
+                #               paste-a-token (notion, slack, granola)
+                #   - "token"  → pre-issued PAT or API key (github, oura,
+                #               weather) — uses handle_callback purely
+                #               for validation + persistence
+                #   - "local"  → no auth at all (news_rss) — handle_callback
+                #               just parses + persists the user input
+                #
+                # Connectors that expose ``_token`` get a direct write
+                # (used by Slack to skip re-validation when re-pasting
+                # the same token). Everything else goes through
+                # ``handle_callback``, which validates the credential
+                # against the provider and only then persists — so a
+                # bad paste raises and we return HTTP 400 with the
+                # message echoed back, leaving any existing credential
+                # intact.
                 if req.code:
                     instance.handle_callback(req.code)
                 elif req.token:
-                    # A credential pasted into the ``token`` field. Connectors
-                    # that accept a pre-existing access token expose ``_token``
-                    # and set it directly (their real OAuth code-exchange runs
-                    # via /oauth/start → /oauth/callback). Connectors that
-                    # persist a manually-supplied credential — the Slack user
-                    # token and the Granola API key — validate inside
-                    # handle_callback, so route through it to guarantee the
-                    # credential is verified before anything touches disk. A
-                    # failed validation raises and is turned into HTTP 400
-                    # below, leaving any existing credential intact.
                     if hasattr(instance, "_token"):
                         instance._token = req.token
                     else:
                         instance.handle_callback(req.token)
 
             else:
-                # Generic: try to store token or credentials if the instance
-                # exposes the relevant attributes.
+                # Unknown auth type — best-effort generic.
                 if req.token and hasattr(instance, "_token"):
                     instance._token = req.token
                 if req.email and hasattr(instance, "_email"):
@@ -387,13 +393,29 @@ def create_connectors_router():
     async def oauth_start(connector_id: str, request: Request):
         """Redirect to the OAuth provider's consent page.
 
-        The callback will come back to /v1/connectors/{id}/oauth/callback.
+        Security
+        --------
+        - Issues an HMAC-signed ``state`` token bound to *connector_id*.
+          The callback verifies it to defeat CSRF "account confusion"
+          attacks where a malicious page tricks the user's browser into
+          completing an auth code from the attacker's session.
+        - Generates a PKCE code_verifier/challenge pair and sends the
+          challenge to the provider. The verifier is stashed in
+          process memory keyed by state; it never travels over the
+          network. On callback we retrieve it and include it in the
+          token exchange — so an attacker who only sees the redirect
+          URL (containing the auth code) still can't get tokens.
+
+        The callback returns to /v1/connectors/{id}/oauth/callback.
         """
         from urllib.parse import urlencode
 
         from openjarvis.connectors.oauth import (
+            generate_pkce_pair,
+            generate_state,
             get_client_credentials,
             get_provider_for_connector,
+            remember_pkce_verifier,
         )
 
         _ensure_connectors_registered()
@@ -417,11 +439,18 @@ def create_connectors_router():
         base_url = str(request.base_url).rstrip("/")
         callback_url = f"{base_url}/v1/connectors/{connector_id}/oauth/callback"
 
+        state = generate_state(connector_id)
+        code_verifier, code_challenge = generate_pkce_pair()
+        remember_pkce_verifier(state, code_verifier)
+
         params = {
             "client_id": client_id,
             "redirect_uri": callback_url,
             "response_type": "code",
             "scope": " ".join(provider.scopes),
+            "state": state,
+            "code_challenge": code_challenge,
+            "code_challenge_method": "S256",
             **provider.extra_auth_params,
         }
         auth_url = f"{provider.auth_endpoint}?{urlencode(params)}"
@@ -434,45 +463,97 @@ def create_connectors_router():
     async def oauth_callback(
         connector_id: str,
         code: str = "",
+        state: str = "",
         error: str = "",
         request: Request = None,
     ):
-        """Handle OAuth callback from the provider."""
+        """Handle OAuth callback from the provider.
+
+        Security
+        --------
+        - Refuses to proceed if ``state`` is missing, malformed, expired,
+          or doesn't match an HMAC-signed value issued by /oauth/start
+          for this same connector. This blocks CSRF.
+        - Retrieves the matching PKCE verifier (one-shot lookup) and
+          includes it in the token exchange. The provider re-hashes it
+          and refuses the exchange unless it matches the challenge sent
+          at /oauth/start.
+        - HTML-escapes every value interpolated into the response body
+          so a malicious ``error`` query param or exception message
+          can't inject script tags.
+        """
+        import html
+
         from fastapi.responses import HTMLResponse
 
         from openjarvis.connectors.oauth import (
             _CONNECTORS_DIR,
             _exchange_token,
+            consume_pkce_verifier,
             get_client_credentials,
             get_provider_for_connector,
             save_tokens,
+            verify_state,
         )
 
         _ensure_connectors_registered()
 
-        if error:
-            _style = "font-family:system-ui;text-align:center;padding:60px"
+        _style = "font-family:system-ui;text-align:center;padding:60px"
+
+        def _error_page(title: str, detail: str, status: int) -> HTMLResponse:
+            """Render an OAuth error page with all interpolated values escaped."""
             return HTMLResponse(
                 content=(
                     f"<html><body style='{_style}'>"
-                    f"<h2 style='color:#ef4444'>Authorization Failed</h2>"
-                    f"<p>{error}</p>"
+                    f"<h2 style='color:#ef4444'>{html.escape(title)}</h2>"
+                    f"<p>{html.escape(detail)}</p>"
                     "<script>setTimeout(()=>window.close(),3000)</script>"
                     "</body></html>"
                 ),
-                status_code=400,
+                status_code=status,
             )
 
+        if error:
+            return _error_page("Authorization Failed", error, 400)
+
         if not code:
-            raise HTTPException(400, "Missing authorization code")
+            return _error_page("Authorization Failed", "Missing authorization code", 400)
+
+        if not verify_state(state, connector_id):
+            # Don't leak which check failed (signature vs TTL vs binding) —
+            # all three should look identical from the outside.
+            return _error_page(
+                "Authorization Failed",
+                "State token missing, expired, or invalid. Please start the connection again.",
+                400,
+            )
+
+        # One-shot consume of the PKCE verifier matching this state.
+        # Absence here means /oauth/start was never called (replay
+        # attempt) or the verifier already aged out.
+        code_verifier = consume_pkce_verifier(state)
+        if code_verifier is None:
+            return _error_page(
+                "Authorization Failed",
+                "PKCE verifier missing. Please start the connection again.",
+                400,
+            )
 
         provider = get_provider_for_connector(connector_id)
         if not provider:
-            raise HTTPException(400, f"No OAuth provider for '{connector_id}'")
+            return _error_page(
+                "Authorization Failed",
+                f"No OAuth provider for connector '{connector_id}'.",
+                400,
+            )
 
         creds = get_client_credentials(provider)
         if not creds:
-            raise HTTPException(400, "No client credentials configured")
+            return _error_page(
+                "Authorization Failed",
+                "No client credentials configured.",
+                400,
+            )
 
         client_id, client_secret = creds
         base_url = str(request.base_url).rstrip("/")
@@ -480,19 +561,15 @@ def create_connectors_router():
 
         try:
             tokens = _exchange_token(
-                provider, code, client_id, client_secret, redirect_uri
+                provider,
+                code,
+                client_id,
+                client_secret,
+                redirect_uri,
+                code_verifier=code_verifier,
             )
         except Exception as exc:
-            _style = "font-family:system-ui;text-align:center;padding:60px"
-            return HTMLResponse(
-                content=(
-                    f"<html><body style='{_style}'>"
-                    f"<h2 style='color:#ef4444'>Token Exchange Failed</h2>"
-                    f"<p>{exc}</p>"
-                    "</body></html>"
-                ),
-                status_code=500,
-            )
+            return _error_page("Token Exchange Failed", str(exc), 500)
 
         payload = {
             "access_token": tokens.get("access_token", ""),
@@ -509,7 +586,6 @@ def create_connectors_router():
         # Clear cached instance so it picks up new credentials
         _instances.pop(connector_id, None)
 
-        _style = "font-family:system-ui;text-align:center;padding:60px"
         return HTMLResponse(
             content=(
                 f"<html><body style='{_style}'>"

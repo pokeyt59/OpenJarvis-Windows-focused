@@ -44,26 +44,6 @@ except ImportError:
     pass
 
 try:
-    import openjarvis.connectors.imessage  # noqa: F401
-except ImportError:
-    pass
-
-try:
-    import openjarvis.connectors.apple_notes  # noqa: F401
-except ImportError:
-    pass
-
-try:
-    import openjarvis.connectors.apple_music  # noqa: F401
-except ImportError:
-    pass
-
-try:
-    import openjarvis.connectors.apple_contacts  # noqa: F401
-except ImportError:
-    pass
-
-try:
     import openjarvis.connectors.slack_connector  # noqa: F401
 except ImportError:
     pass
@@ -90,11 +70,6 @@ except ImportError:
 
 try:
     import openjarvis.connectors.oura  # noqa: F401
-except ImportError:
-    pass
-
-try:
-    import openjarvis.connectors.apple_health  # noqa: F401
 except ImportError:
     pass
 
@@ -130,5 +105,50 @@ except ImportError:
 
 try:
     import openjarvis.connectors.news_rss  # noqa: F401
+except ImportError:
+    pass
+
+# ── Windows-native additions ─────────────────────────────────────────────
+# Microsoft Graph trio share ms_graph_auth; each is independent so import
+# failures are isolated.
+try:
+    import openjarvis.connectors.onenote  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import openjarvis.connectors.onedrive  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import openjarvis.connectors.mstodo  # noqa: F401
+except ImportError:
+    pass
+
+# Local-file connectors: no external deps so import shouldn't fail, but
+# wrap defensively to match the rest of the file.
+try:
+    import openjarvis.connectors.local_folder  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import openjarvis.connectors.edge  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import openjarvis.connectors.discord  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import openjarvis.connectors.phone_link  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import openjarvis.connectors.ide_workspaces  # noqa: F401
 except ImportError:
     pass

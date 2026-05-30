@@ -3,8 +3,8 @@
  *
  * Thin wrapper around posthog-js that:
  *   - Pulls its identity (anon_id, host, project key) from the backend
- *     via GET /v1/analytics/identity, so all backend / install.sh /
- *     frontend events tie to the same person.
+ *     via GET /v1/analytics/identity, so all backend and frontend events
+ *     tie to the same person.
  *   - Initializes posthog-js with autocapture, session replay, and
  *     pageviews disabled — we send only events we explicitly call out.
  *   - Registers the app version as a super-property so every event

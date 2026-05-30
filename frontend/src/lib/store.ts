@@ -15,6 +15,7 @@ import type {
   TokenUsage,
 } from '../types';
 import type { ManagedAgent } from './api';
+import { track } from './analytics';
 
 export interface CachedConnector {
   connector_id: string;
@@ -76,6 +77,15 @@ interface Settings {
   temperature: number;
   maxTokens: number;
   speechEnabled: boolean;
+  /**
+   * When true, every expanded data-source card in DataSourcesPage shows a
+   * green-on-black debug overlay with the connector_id from the backend,
+   * its char codes, the runtime SOURCE_CATALOG length, and whether
+   * metaFor() found a match. Off by default; toggle in Settings →
+   * Developer. Originally added to diagnose a stale-`.exe`-asset-cache
+   * bug where Windows-native catalog entries silently failed to render.
+   */
+  debugOverlay: boolean;
 }
 
 function loadSettings(): Settings {
@@ -88,6 +98,7 @@ function loadSettings(): Settings {
     temperature: 0.7,
     maxTokens: 4096,
     speechEnabled: false,
+    debugOverlay: false,
   };
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
@@ -288,9 +299,7 @@ export const useAppStore = create<AppState>((set, get) => {
         if (existing && existing.messages.length >= overlay.messages.length) return;
         // Track first use of overlay for this conversation
         if (!existing) {
-          import('../lib/analytics').then(({ track }) => {
-            track('feature_used', { feature_name: 'overlay' });
-          });
+          track('feature_used', { feature_name: 'overlay' });
         }
         store.conversations[overlay.id] = {
           id: overlay.id,

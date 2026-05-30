@@ -23,7 +23,11 @@ def test_github_notifications_registered():
     assert ConnectorRegistry.contains("github_notifications")
     cls = ConnectorRegistry.get("github_notifications")
     assert cls.connector_id == "github_notifications"
-    assert cls.auth_type == "token"
+    # auth_type is "oauth" so /connect routes through handle_callback
+    # for validation + persistence. There's no real OAuth dance —
+    # GitHub PATs are pre-issued — but using "oauth" gives us the
+    # existing token-persistence path for free.
+    assert cls.auth_type == "oauth"
 
 
 _NOTIFICATIONS_RESPONSE = [

@@ -349,10 +349,30 @@ def create_webhook_router(
         # Get the SendBlue channel — may be passed at init or set later
         sb = sendblue_channel or getattr(request.app.state, "sendblue_channel", None)
 
-        # Verify webhook secret if configured
+        # Verify webhook secret if configured.
+        #
+        # TODO(BUG #4): The exact secret-delivery scheme is unverified.
+        # SendBlue's public docs say a per-webhook or globalSecret "is included
+        # in the request headers" but do not pin the header name, and the
+        # codebase has been asserting `x-sendblue-secret` as a plaintext echo.
+        # If SendBlue actually uses HMAC (signing the body with the secret),
+        # this string comparison silently 403s every inbound delivery — the
+        # same failure mode as BUG #1. Confirm against a real signed delivery
+        # and switch to hmac.compare_digest over the signed body if so. A
+        # skipped regression test documents the assumption in
+        # tests/server/test_sendblue_webhook.py.
         if sb and sb.webhook_secret:
             header_secret = request.headers.get("x-sendblue-secret", "")
             if header_secret != sb.webhook_secret:
+                # Log header NAMES only (never values) so an operator can
+                # diagnose "why is every message rejected?" without leaking
+                # the secret to logs.
+                logger.warning(
+                    "SendBlue webhook rejected (403): x-sendblue-secret "
+                    "did not match configured webhook_secret. Headers seen: "
+                    "%s. If the real signing header differs, see BUG #4.",
+                    sorted(request.headers.keys()),
+                )
                 return Response("Invalid secret", status_code=403)
         elif sb:
             logger.warning(
@@ -366,6 +386,12 @@ def create_webhook_router(
 
         from_number = payload.get("from_number", "")
         content = payload.get("content", "")
+        # SendBlue's `service` field distinguishes iMessage/RCS (where native
+        # read receipts + typing indicators work) from SMS (where they don't).
+        # We compare case-insensitively because SendBlue has shipped both
+        # "iMessage" and "IMESSAGE" in different payloads historically.
+        service = (payload.get("service") or "").upper()
+        is_sms = service == "SMS"
 
         if not from_number or not content:
             return Response("OK", status_code=200)
@@ -399,8 +425,23 @@ def create_webhook_router(
                 q["pending"] += 1
                 position = q["pending"]
 
-            # Immediate acknowledgment
-            if reply_channel:
+            # Native iMessage signals (Read receipt + typing bubble) replace
+            # the old "Message received!" text ack on iMessage. SMS keeps the
+            # text ack because read receipts / typing don't apply there.
+            #
+            # Both signals are best-effort: any failure is logged at debug
+            # inside the channel methods and must never block the real reply.
+            read_ok = False
+            if reply_channel and not is_sms:
+                if getattr(reply_channel, "read_receipts_enabled", True):
+                    read_ok = reply_channel.mark_read(from_number)
+                if getattr(reply_channel, "typing_indicator_enabled", True):
+                    reply_channel.send_typing(from_number)
+
+            # Fall back to a text ack if we couldn't deliver a native read
+            # receipt (SMS sender, feature not enabled on the account, or
+            # toggles off). Otherwise the Read receipt is the ack.
+            if reply_channel and not read_ok:
                 if position > 1:
                     reply_channel.send(
                         from_number,
@@ -413,16 +454,30 @@ def create_webhook_router(
                         "Message received! Working on it now...",
                     )
 
-            # Periodic "still working" reminders every 60s
             done_event = threading.Event()
 
+            # Keep-alive loop. For iMessage with typing enabled, re-emit the
+            # typing bubble every ~8s (it fades after a few seconds). For
+            # SMS / disabled typing, keep the original 60s text reminder so
+            # the user isn't left wondering whether anything is happening.
+            use_typing_loop = bool(
+                reply_channel
+                and not is_sms
+                and getattr(reply_channel, "typing_indicator_enabled", True)
+            )
+
             def _send_reminders() -> None:
-                while not done_event.wait(60):
-                    if reply_channel:
-                        reply_channel.send(
-                            from_number,
-                            "Still working! Will reply ASAP",
-                        )
+                if use_typing_loop:
+                    while not done_event.wait(8):
+                        if reply_channel:
+                            reply_channel.send_typing(from_number)
+                else:
+                    while not done_event.wait(60):
+                        if reply_channel:
+                            reply_channel.send(
+                                from_number,
+                                "Still working! Will reply ASAP",
+                            )
 
             reminder = threading.Thread(target=_send_reminders, daemon=True)
             reminder.start()

@@ -42,6 +42,9 @@ Thumbs.db
 # ...but keep checked-in example/templates (never contain real secrets)
 !.env.example
 !**/.env.example
+# Tauri / minisign / rsign private keys — never commit
+*.key
+*.pem
 
 # Project
 *.sqlite

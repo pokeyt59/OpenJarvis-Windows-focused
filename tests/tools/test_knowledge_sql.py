@@ -13,9 +13,9 @@ from openjarvis.core.registry import ToolRegistry
 @pytest.fixture()
 def store(tmp_path: Path) -> KnowledgeStore:
     ks = KnowledgeStore(str(tmp_path / "test.db"))
-    ks.store("Hello from Alice", source="imessage", author="Alice", doc_type="message")
+    ks.store("Hello from Alice", source="slack", author="Alice", doc_type="message")
     ks.store(
-        "Hello from Alice again", source="imessage", author="Alice", doc_type="message"
+        "Hello from Alice again", source="slack", author="Alice", doc_type="message"
     )
     ks.store("Meeting notes Q1", source="granola", author="Bob", doc_type="document")
     ks.store("Email about Spain trip", source="gmail", author="Carol", doc_type="email")

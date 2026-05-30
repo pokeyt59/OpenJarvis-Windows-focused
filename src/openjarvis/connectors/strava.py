@@ -108,21 +108,73 @@ class StravaConnector(BaseConnector):
         return f"{provider.auth_endpoint}?{urlencode(params)}"
 
     def handle_callback(self, code: str) -> None:
-        """Exchange authorization code for tokens and save."""
+        """Wire up Strava from either pasted credentials or an OAuth code.
+
+        Two paths (mirrors the Spotify connector):
+
+        1. **Catalog form path**: user pastes ``client_id:client_secret``
+           — we save credentials and kick off the browser-based dance
+           in a background thread via :func:`run_connector_oauth`,
+           which generates state + PKCE for the request.
+
+        2. **OAuth callback path**: a raw authorization code arrives.
+           We exchange it directly.
+
+        Detection: if ``code`` contains a colon, it's path 1.
+        """
         from openjarvis.connectors.oauth import (
             _CONNECTORS_DIR,
             _exchange_token,
             get_client_credentials,
             get_provider_for_connector,
+            run_connector_oauth,
+            save_client_credentials,
             save_tokens,
         )
 
         provider = get_provider_for_connector("strava")
-        creds = get_client_credentials(provider) if provider else None
-        if not provider or not creds:
-            raise RuntimeError("Strava client credentials not configured")
+        if not provider:
+            raise RuntimeError("Strava OAuth provider not configured")
+
+        code = (code or "").strip()
+        if not code:
+            raise ValueError("Empty Strava connect input")
+
+        # Path 1: pasted credentials
+        if ":" in code:
+            client_id, client_secret = code.split(":", 1)
+            client_id = client_id.strip()
+            client_secret = client_secret.strip()
+            if not client_id or not client_secret:
+                raise ValueError("Strava client_id and client_secret must both be non-empty")
+
+            save_client_credentials(provider, client_id, client_secret)
+
+            # Kick off OAuth in background; thread captures state+PKCE
+            # round-trip via run_connector_oauth.
+            import threading
+
+            def _run() -> None:
+                try:
+                    run_connector_oauth("strava", client_id, client_secret)
+                except Exception:  # noqa: BLE001
+                    pass
+
+            threading.Thread(target=_run, daemon=True).start()
+            return
+
+        # Path 2: raw OAuth authorization code
+        creds = get_client_credentials(provider)
+        if not creds:
+            raise RuntimeError(
+                "Strava client credentials not configured. Paste them in "
+                "the form first (as 'client_id:client_secret')."
+            )
         client_id, client_secret = creds
-        redirect_uri = f"http://{provider.callback_host}:{provider.callback_port}{provider.callback_path}"
+        redirect_uri = (
+            f"http://{provider.callback_host}:{provider.callback_port}"
+            f"{provider.callback_path}"
+        )
         tokens = _exchange_token(provider, code, client_id, client_secret, redirect_uri)
         payload = {
             "access_token": tokens.get("access_token", ""),

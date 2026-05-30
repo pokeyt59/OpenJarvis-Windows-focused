@@ -17,7 +17,7 @@ def store(tmp_path: Path) -> KnowledgeStore:
     ks.store("Met with Sequoia about Series A", source="granola", doc_type="document")
     ks.store("Fundraising discussion with a16z", source="granola", doc_type="document")
     ks.store("Weekly standup notes", source="granola", doc_type="document")
-    ks.store("Trip to Spain with family", source="imessage", doc_type="message")
+    ks.store("Trip to Spain with family", source="slack", doc_type="message")
     return ks
 
 
@@ -46,7 +46,7 @@ def test_scan_respects_source_filter(store: KnowledgeStore) -> None:
 
     engine = _fake_engine()
     tool = ScanChunksTool(store=store, engine=engine, model="test")
-    result = tool.execute(question="What trips?", source="imessage")
+    result = tool.execute(question="What trips?", source="slack")
     assert result.success
     call_args = engine.generate.call_args
     messages = call_args[0][0] if call_args[0] else call_args[1].get("messages", [])

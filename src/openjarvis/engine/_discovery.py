@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, List, Tuple
 
 from openjarvis.core.config import JarvisConfig
@@ -100,21 +101,42 @@ def _maybe_register_mining_sidecar_engine() -> None:
     EngineRegistry.register_value("vllm-pearl-mining", _cls)
 
 
+def _probe_engine(
+    key: str, config: JarvisConfig
+) -> Tuple[str, InferenceEngine] | None:
+    """Instantiate + health-check one engine; return ``(key, engine)`` if
+    healthy, else ``None``. The unit of work for concurrent discovery."""
+    try:
+        engine = _make_engine(key, config)
+        if engine.health():
+            return (key, engine)
+    except Exception as exc:
+        logger.debug("Engine %r failed during discovery: %s", key, exc)
+    return None
+
+
 def discover_engines(config: JarvisConfig) -> List[Tuple[str, InferenceEngine]]:
     """Probe registered engines and return ``[(key, instance)]`` for healthy ones.
+
+    Probes run **concurrently**. Each engine's ``health()`` is a network
+    round-trip to a (usually-dead) localhost port that blocks ~2-4s on the
+    connection timeout; run sequentially across the ~14 registered engines this
+    summed to ~37s of pure waiting at every server boot. A thread pool collapses
+    that to the slowest single probe (~4s) without changing which engines or
+    models are discovered. Keep this concurrent — reverting to a sequential loop
+    reintroduces the multi-second boot stall (see _boot_profile findings).
 
     Results are sorted with the config default engine first.
     """
     _maybe_register_mining_sidecar_engine()
+
+    keys = list(EngineRegistry.keys())
     healthy: List[Tuple[str, InferenceEngine]] = []
-    for key in EngineRegistry.keys():
-        try:
-            engine = _make_engine(key, config)
-            if engine.health():
-                healthy.append((key, engine))
-        except Exception as exc:
-            logger.debug("Engine %r failed during discovery: %s", key, exc)
-            continue
+    if keys:
+        with ThreadPoolExecutor(max_workers=min(len(keys), 16)) as pool:
+            for result in pool.map(lambda k: _probe_engine(k, config), keys):
+                if result is not None:
+                    healthy.append(result)
 
     default_key = config.engine.default
 
@@ -125,17 +147,34 @@ def discover_engines(config: JarvisConfig) -> List[Tuple[str, InferenceEngine]]:
     return healthy
 
 
+def _list_models_one(
+    item: Tuple[str, InferenceEngine],
+) -> Tuple[str, List[str]]:
+    """Call ``list_models()`` on one engine; return ``(key, models)`` (empty on
+    error). The unit of work for concurrent model discovery."""
+    key, engine = item
+    try:
+        return (key, engine.list_models())
+    except Exception as exc:
+        logger.debug("Failed to list models for engine %r: %s", key, exc)
+        return (key, [])
+
+
 def discover_models(
     engines: List[Tuple[str, InferenceEngine]],
 ) -> Dict[str, List[str]]:
-    """Call ``list_models()`` on each engine and return a dict."""
+    """Call ``list_models()`` on each engine and return a dict.
+
+    Probes run concurrently (same rationale as ``discover_engines``): each
+    ``list_models()`` is a network call, so a thread pool keeps wall-clock at
+    the slowest single engine rather than the sum across all healthy engines.
+    """
     result: Dict[str, List[str]] = {}
-    for key, engine in engines:
-        try:
-            result[key] = engine.list_models()
-        except Exception as exc:
-            logger.debug("Failed to list models for engine %r: %s", key, exc)
-            result[key] = []
+    if not engines:
+        return result
+    with ThreadPoolExecutor(max_workers=min(len(engines), 16)) as pool:
+        for key, models in pool.map(_list_models_one, engines):
+            result[key] = models
     return result
 
 

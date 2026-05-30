@@ -19,8 +19,9 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useAppStore, type ThemeMode } from '../lib/store';
-import { checkHealth, fetchSpeechHealth, getMemoryStats } from '../lib/api';
+import { checkHealth, fetchSpeechHealth, getMemoryStats, isTauri } from '../lib/api';
 import { isAutoUpdateDisabled, setAutoUpdateDisabled } from '../components/Desktop/UpdateChecker';
+import { ApiServerCard } from '../components/settings/ApiServerCard';
 
 function OllamaModelList() {
   const [models, setModels] = useState<Array<{ name: string; size: number }>>([]);
@@ -247,6 +248,9 @@ export function SettingsPage() {
         </header>
 
         <div className="flex flex-col gap-4">
+          {/* API server (desktop only — the Tauri shell owns the Python child) */}
+          {isTauri() && <ApiServerCard />}
+
           {/* Appearance */}
           <Section title="Appearance">
             <SettingRow label="Theme" description="Choose how OpenJarvis looks">
@@ -603,6 +607,30 @@ export function SettingsPage() {
                 {updateCheckState === 'available' && 'Update available — see banner above'}
                 {updateCheckState === 'latest' && 'Already up to date'}
                 {updateCheckState === 'idle' && 'Check now'}
+              </button>
+            </SettingRow>
+          </Section>
+
+          {/* Developer */}
+          <Section title="Developer">
+            <SettingRow
+              label="Data-source debug overlay"
+              description="Show a green-on-black diagnostic block inside each expanded data-source card. Useful when setup instructions appear blank — surfaces the connector_id, catalog size, and lookup result at runtime."
+            >
+              <button
+                onClick={() => { updateSettings({ debugOverlay: !settings.debugOverlay }); showSaved(); }}
+                className="relative w-11 h-6 rounded-full transition-colors cursor-pointer"
+                style={{
+                  background: settings.debugOverlay ? 'var(--color-accent)' : 'var(--color-bg-tertiary)',
+                }}
+              >
+                <span
+                  className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform bg-white"
+                  style={{
+                    transform: settings.debugOverlay ? 'translateX(20px)' : 'translateX(0)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                  }}
+                />
               </button>
             </SettingRow>
           </Section>

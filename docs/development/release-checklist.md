@@ -1,5 +1,15 @@
 # Release Checklist
 
+!!! warning "Upstream document — not yet rewritten for the Windows fork"
+    The steps below describe the upstream OpenJarvis release process, which
+    centers on the `curl ... | bash` one-line installer that this Windows-focused
+    fork has removed. Most of the manual smoke tests and the `jarvis-uninstall`
+    flow no longer apply.
+
+    A Windows-specific release checklist (Tauri `.exe` bundle, NSIS installer
+    smoke test, `winget` validation) is TODO. Track in
+    [#TODO](https://github.com/pokeyt59/OpenJarvis-Windows-focused/issues).
+
 Before tagging a release, run through this checklist on real machines (not just CI containers).
 
 ## Manual smoke tests (~30 min total)

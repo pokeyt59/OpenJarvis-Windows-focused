@@ -18,7 +18,7 @@ from openjarvis.tools._stubs import BaseTool, ToolSpec
 # ---------------------------------------------------------------------------
 
 _SECTION_ORDER: List[tuple] = [
-    ("HEALTH", {"oura", "apple_health", "strava"}),
+    ("HEALTH", {"oura", "strava"}),
     (
         "MESSAGES",
         {
@@ -26,7 +26,6 @@ _SECTION_ORDER: List[tuple] = [
             "gmail_imap",
             "google_tasks",
             "slack",
-            "imessage",
             "whatsapp",
             "outlook",
             "notion",
@@ -35,7 +34,7 @@ _SECTION_ORDER: List[tuple] = [
     ),
     ("CALENDAR", {"gcalendar"}),
     ("WORLD", {"weather", "hackernews", "news_rss"}),
-    ("MUSIC", {"spotify", "apple_music"}),
+    ("MUSIC", {"spotify"}),
 ]
 
 _CONNECTOR_TO_SECTION: Dict[str, str] = {}
@@ -147,11 +146,6 @@ def _format_oura(doc: Document) -> str:
     return f"[oura] {doc.title}"
 
 
-def _format_apple_health(doc: Document) -> str:
-    """Format an Apple Health document."""
-    return f"[apple_health] {doc.title}"
-
-
 def _format_strava(doc: Document) -> str:
     """Format a Strava activity document."""
     return f"[strava] {doc.title}"
@@ -207,18 +201,6 @@ def _format_slack(doc: Document) -> str:
     content_preview = snippet if doc.content else ""
     prefix = f"[slack] #{channel}" if channel else "[slack]"
     line = f"{prefix} {author} ({ago})"
-    if content_preview:
-        line += f": {content_preview}"
-    return line
-
-
-def _format_imessage(doc: Document) -> str:
-    """Format an iMessage document."""
-    sender = doc.author or "Unknown"
-    ago = _time_ago(doc.timestamp)
-    snippet = doc.content[:150].replace("\n", " ").strip()
-    content_preview = snippet if doc.content else ""
-    line = f"[imessage] {sender} ({ago})"
     if content_preview:
         line += f": {content_preview}"
     return line
@@ -285,12 +267,6 @@ def _format_spotify(doc: Document) -> str:
     return doc.title
 
 
-def _format_apple_music(doc: Document) -> str:
-    """Format an Apple Music track — returns 'Track — Artist'."""
-    # doc.title is already "Track — Artist" from the connector
-    return doc.title
-
-
 def _format_weather(doc: Document) -> str:
     """Format a weather document."""
     data = _parse_content_json(doc)
@@ -336,13 +312,11 @@ def _format_news_rss(doc: Document) -> str:
 # Map connector IDs to their formatting functions
 _FORMATTERS: Dict[str, Any] = {
     "oura": _format_oura,
-    "apple_health": _format_apple_health,
     "strava": _format_strava,
     "gmail": _format_gmail,
     "gmail_imap": _format_gmail_imap,
     "google_tasks": _format_google_tasks,
     "slack": _format_slack,
-    "imessage": _format_imessage,
     "whatsapp": _format_whatsapp,
     "outlook": _format_outlook,
     "notion": _format_notion,
@@ -352,7 +326,6 @@ _FORMATTERS: Dict[str, Any] = {
     "hackernews": _format_hackernews,
     "news_rss": _format_news_rss,
     "spotify": _format_spotify,
-    "apple_music": _format_apple_music,
 }
 
 
@@ -387,11 +360,12 @@ def _format_music_section(
 
 
 def _filter_unanswered_threads(docs: List[Document]) -> List[Document]:
-    """Keep only iMessage threads where the last message is NOT from the user.
+    """Keep only chat threads where the last message is NOT from the user.
 
     Groups by chat title, finds the most-recent message per chat, and returns
     only that message if ``author != "me"``.  Threads the user has already
-    replied to are silently dropped.
+    replied to are silently dropped. Used for chat-style connectors (Slack,
+    WhatsApp, etc.).
     """
     from collections import defaultdict
 
@@ -455,7 +429,7 @@ class DigestCollectTool(BaseTool):
                         "type": "boolean",
                         "description": (
                             "When true, only return items the user has not yet acted on: "
-                            "unread emails, unanswered iMessage threads, pending calendar invites."
+                            "unread emails, unanswered chat threads, pending calendar invites."
                         ),
                     },
                     "seen_ids": {
@@ -512,9 +486,6 @@ class DigestCollectTool(BaseTool):
                         docs.append(d)
                     if len(docs) >= max_per_source:
                         break
-
-                if unacted_only and source == "imessage":
-                    docs = _filter_unanswered_threads(docs)
 
                 if unacted_only and source == "gcalendar":
                     docs = _filter_pending_invites(docs)

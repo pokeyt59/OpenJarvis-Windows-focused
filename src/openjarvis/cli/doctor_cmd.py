@@ -364,8 +364,8 @@ def doctor(as_json: bool) -> None:
     elif bg.rust_extension == "failed":
         console.print(f"  [red]✗[/red] Rust extension: failed — {bg.rust_error[:80]}")
         console.print(
-            "    retry: ~/.openjarvis/.scripts/install-rust.sh && "
-            "~/.openjarvis/.scripts/build-extension.sh"
+            "    retry: uv run maturin develop "
+            "--manifest-path rust/crates/openjarvis-python/Cargo.toml"
         )
         bg_failed = True
     else:
@@ -380,7 +380,7 @@ def doctor(as_json: bool) -> None:
             console.print(f"  [green]✓[/green] {model_id}: ready")
         elif state == "failed":
             console.print(f"  [red]✗[/red] {model_id}: failed")
-            console.print(f"    retry: ~/.openjarvis/.scripts/pull-model.sh {model_id}")
+            console.print(f"    retry: ollama pull {model_id}")
             bg_failed = True
         else:
             console.print(f"  [yellow]…[/yellow] {model_id}: downloading")

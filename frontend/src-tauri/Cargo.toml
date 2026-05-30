@@ -27,6 +27,12 @@ tokio = { version = "1", features = ["full"] }
 objc = "0.2"
 dispatch = "0.2"
 
+[target.'cfg(target_os = "windows")'.dependencies]
+# Native Windows location (WinRT Geolocator) for the weather connector's
+# "use my location" button. `windows` is already in the tree via tauri/wry;
+# we just enable the Geolocation + COM features.
+windows = { version = "0.61", features = ["Devices_Geolocation", "Foundation", "Win32_System_Com"] }
+
 [features]
 default = ["custom-protocol"]
 custom-protocol = ["tauri/custom-protocol"]

@@ -483,7 +483,7 @@ sections = ["health", "messages", "calendar", "world"]
 sources = ["oura"]
 
 [digest.messages]
-sources = ["gmail", "google_tasks", "imessage"]
+sources = ["gmail", "google_tasks", "slack"]
 
 [digest.calendar]
 sources = ["gcalendar"]

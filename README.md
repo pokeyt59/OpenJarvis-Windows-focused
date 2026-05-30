@@ -31,76 +31,87 @@ OpenJarvis is that stack. It is a framework for local-first personal AI, built a
 
 ## Installation
 
-**macOS / Linux:**
+This is the **Windows-focused fork** of OpenJarvis. The upstream macOS / Linux / WSL2 installer is not supported here — use the original [open-jarvis/OpenJarvis](https://github.com/open-jarvis/OpenJarvis) for those platforms.
 
-```bash
-curl -fsSL https://open-jarvis.github.io/OpenJarvis/install.sh | bash
+### Prerequisites
+
+Open **PowerShell as Administrator** and install the toolchain:
+
+```powershell
+powershell -ExecutionPolicy Bypass -c "irm https://astral.sh/uv/install.ps1 | iex"
+winget install --id Rustlang.Rustup -e
+winget install --id OpenJS.NodeJS.LTS -e
 ```
 
-The installer handles everything for you — including [uv](https://docs.astral.sh/uv/), the Python venv, Ollama, and a small starter model. You don't need to install anything first.
+You also need **Visual Studio Build Tools 2022** with the "Desktop development with C++" workload — install from [visualstudio.microsoft.com](https://visualstudio.microsoft.com/downloads/) (free).
 
-**Windows:** the installer is a `bash` script and won't run in PowerShell or `cmd`. Pick one of:
+Close and reopen PowerShell so the new `PATH` entries take effect.
 
-- **WSL2 (recommended for the CLI / Python SDK)** — one-time setup in an admin PowerShell, then run the same `curl … | bash` inside Ubuntu:
-  ```powershell
-  wsl --install -d Ubuntu-24.04
-  ```
-  Open the Ubuntu shell that gets installed, then follow [WSL2 install instructions](https://open-jarvis.github.io/OpenJarvis/getting-started/wsl2/).
-- **Desktop app** — download the [Windows installer (`.exe`)](https://github.com/open-jarvis/OpenJarvis/releases/download/desktop-v1.0.2/OpenJarvis_1.0.1_x64-setup.exe) from the latest [desktop release](https://github.com/open-jarvis/OpenJarvis/releases/tag/desktop-v1.0.2) (macOS `.dmg` and Linux `.deb`/`.rpm`/`.AppImage` are there too) for the GUI experience, no terminal required. **Prerequisite:** the desktop app expects [uv](https://docs.astral.sh/uv/) to be installed already — if it isn't, install it first in PowerShell, then launch the app:
-  ```powershell
-  powershell -ExecutionPolicy Bypass -c "irm https://astral.sh/uv/install.ps1 | iex"
-  ```
+### Backend
 
-About 3 minutes on a typical broadband connection. Then:
-
-```bash
-jarvis
+```powershell
+git clone https://github.com/pokeyt59/OpenJarvis-Windows-focused.git
+cd OpenJarvis-Windows-focused
+uv sync --extra server
+uv run maturin develop --manifest-path rust/crates/openjarvis-python/Cargo.toml
 ```
 
-The Rust extension and bigger models continue downloading in the background while you chat. Run `jarvis doctor` to see status.
+### Inference engine
 
-**Platforms:** macOS (Intel + Apple Silicon), Linux, WSL2 on Windows. Native Windows is not supported — use WSL2 or the desktop binary.
+```powershell
+winget install --id Ollama.Ollama -e
+ollama serve            # in one PowerShell window
+ollama pull qwen3:0.6b  # in another
+```
 
-**Manual install / contributors:** see [docs/getting-started/install.md](docs/getting-started/install.md).
+### Start it
+
+```powershell
+uv run jarvis serve --port 8000
+```
+
+For the desktop window, download the latest `.exe` from [Releases](https://github.com/pokeyt59/OpenJarvis-Windows-focused/releases). It connects to `localhost:8000` automatically.
+
+**Manual install / contributors:** see [docs/getting-started/installation.md](docs/getting-started/installation.md).
 
 ## Quick Start
 
-```bash
-curl -fsSL https://open-jarvis.github.io/OpenJarvis/install.sh | bash
-jarvis
+```powershell
+uv run jarvis ask "What is the capital of France?"
+uv run jarvis chat
 ```
 
-`jarvis init --preset <name>` switches to a starter config. Available presets: `morning-digest-mac`, `morning-digest-linux`, `morning-digest-minimal`, `deep-research`, `code-assistant`, `scheduled-monitor`, `chat-simple`.
+`jarvis init --preset <name>` switches to a starter config. Available presets: `morning-digest-minimal`, `deep-research`, `code-assistant`, `scheduled-monitor`, `chat-simple`.
 
 ## Starter Configs
 
 Install any preset with one command:
 
-```bash
-uv run jarvis init --preset morning-digest-mac   # or any preset below
+```powershell
+uv run jarvis init --preset morning-digest-minimal
 ```
 
-> Prefix every `jarvis ...` invocation with `uv run`, or activate the venv first (`source .venv/bin/activate`) so plain `jarvis ...` works for the rest of your shell session.
+> Prefix every `jarvis ...` invocation with `uv run`, or activate the venv first (`.venv\Scripts\activate`) so plain `jarvis ...` works for the rest of your shell session.
 
 | Preset | Use Case | What it does |
 |--------|----------|-------------|
-| `morning-digest-mac` | Daily Briefing (Mac) | Spoken briefing from email, calendar, health, news with Jarvis voice |
-| `morning-digest-linux` | Daily Briefing (Linux) | Same, with vLLM support for GPU servers |
-| `morning-digest-minimal` | Daily Briefing (minimal) | Just Gmail + Calendar, runs on any machine |
+| `morning-digest-minimal` | Daily Briefing | Gmail + Calendar summary, runs on any Windows machine |
 | `deep-research` | Research Assistant | Multi-hop research across indexed docs with citations |
 | `code-assistant` | Code Companion | Agent with code execution, file I/O, and shell access |
 | `scheduled-monitor` | Persistent Monitor | Stateful agent that runs on a schedule with memory |
 | `chat-simple` | Simple Chat | Lightweight conversation, no tools needed |
 
-```bash
-# Example: Morning Digest on Mac
-uv run jarvis init --preset morning-digest-mac
+The upstream `morning-digest-mac` and `morning-digest-linux` presets rely on `say` / `espeak` and aren't included in this fork.
+
+```powershell
+# Example: Daily Briefing
+uv run jarvis init --preset morning-digest-minimal
 uv run jarvis connect gdrive          # one OAuth flow covers Gmail, Calendar, Tasks
-uv run jarvis digest --fresh          # generate and play your first briefing
+uv run jarvis digest --fresh          # generate your first briefing
 
 # Example: Deep Research
 uv run jarvis init --preset deep-research
-uv run jarvis memory index ./docs/    # requires the Rust extension — see Setup above
+uv run jarvis memory index .\docs\    # requires the Rust extension — see Setup above
 uv run jarvis ask "Summarize all emails about Project X"
 ```
 

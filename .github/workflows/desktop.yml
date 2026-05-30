@@ -26,21 +26,10 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-22.04
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v6
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.1-dev \
-            libgtk-3-dev \
-            libappindicator3-dev \
-            librsvg2-dev \
-            patchelf \
-            libxdo-dev
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -64,11 +53,12 @@ jobs:
           workspaces: 'frontend/src-tauri -> target'
 
       - name: Create frontend dist stub
+        shell: bash
         run: mkdir -p frontend/dist && echo '<html><body></body></html>' > frontend/dist/index.html
 
       # `cargo test` builds the crate (same coverage as the old `cargo check`)
-      # and runs the unit tests, including the #331 uv-sync error-formatting
-      # helpers. Static command, no untrusted input — no injection surface.
+      # and runs the unit tests. Static command, no untrusted input — no
+      # injection surface.
       - name: Cargo test
         working-directory: frontend/src-tauri
         run: cargo test
@@ -76,6 +66,9 @@ jobs:
   # Remove stale artifacts from the desktop-edge rolling pre-release so that
   # only the current build's files are available for download. (The stable
   # `desktop-latest` channel the installed app polls is never cleaned here.)
+  #
+  # This single cleanup job stays on Ubuntu because it's the cheapest runner
+  # for a pure `gh api` call — no platform-specific code runs here.
   clean-release:
     needs: [validate]
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -99,38 +92,13 @@ jobs:
     needs: [validate, clean-release]
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: ubuntu-22.04
-            args: ''
-          - platform: macos-14
-            args: '--target universal-apple-darwin'
-          - platform: windows-latest
-            args: ''
-
-    runs-on: ${{ matrix.platform }}
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Install system dependencies (Linux)
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.1-dev \
-            libgtk-3-dev \
-            libappindicator3-dev \
-            librsvg2-dev \
-            patchelf \
-            libxdo-dev
-
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-14' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
@@ -150,12 +118,7 @@ jobs:
         shell: bash
         run: |
           cd frontend/src-tauri/scripts && chmod +x download-ollama.sh
-          if [[ "${{ matrix.platform }}" == "macos-14" ]]; then
-            ./download-ollama.sh aarch64-apple-darwin
-            ./download-ollama.sh x86_64-apple-darwin
-          else
-            ./download-ollama.sh
-          fi
+          ./download-ollama.sh
 
       - name: Determine release info
         id: release-info
@@ -203,33 +166,6 @@ jobs:
           TAURI_VERSION="${VERSION/.dev/-dev.}"
           echo "tauri_version=${TAURI_VERSION}" >> "$GITHUB_OUTPUT"
 
-      - name: Configure Apple signing
-        if: runner.os == 'macOS'
-        env:
-          CERT: ${{ secrets.APPLE_CERTIFICATE }}
-          CERT_PASS: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          SIGN_ID: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          A_ID: ${{ secrets.APPLE_ID }}
-          A_PASS: ${{ secrets.APPLE_PASSWORD }}
-          A_TEAM: ${{ secrets.APPLE_TEAM_ID }}
-        shell: bash
-        run: |
-          if [ -n "$CERT" ]; then
-            echo "APPLE_CERTIFICATE=$CERT" >> "$GITHUB_ENV"
-            echo "APPLE_CERTIFICATE_PASSWORD=$CERT_PASS" >> "$GITHUB_ENV"
-            echo "APPLE_SIGNING_IDENTITY=$SIGN_ID" >> "$GITHUB_ENV"
-            echo "APPLE_ID=$A_ID" >> "$GITHUB_ENV"
-            echo "APPLE_PASSWORD=$A_PASS" >> "$GITHUB_ENV"
-            echo "APPLE_TEAM_ID=$A_TEAM" >> "$GITHUB_ENV"
-            echo "Apple signing configured"
-          else
-            if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-              echo "::error::Apple signing secrets are required for release builds"
-              exit 1
-            fi
-            echo "No Apple certificate configured, skipping code signing"
-          fi
-
       - name: Build and release
         timeout-minutes: 120
         uses: tauri-apps/tauri-action@v0
@@ -247,7 +183,6 @@ jobs:
           releaseDraft: false
           prerelease: ${{ steps.release-info.outputs.prerelease }}
           includeUpdaterJson: true
-          args: ${{ matrix.args }}
 
   # When a stable `desktop-v*` release is published, repoint the
   # `desktop-latest` auto-update channel (the endpoint the installed app

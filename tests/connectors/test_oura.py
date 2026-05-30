@@ -20,7 +20,10 @@ def test_oura_registered():
     cls = ConnectorRegistry.get("oura")
     assert cls.connector_id == "oura"
     assert cls.display_name == "Oura Ring"
-    assert cls.auth_type == "token"
+    # "oauth" so /connect routes through handle_callback for
+    # validation. Oura uses PATs, not real OAuth — same pattern as
+    # github_notifications.
+    assert cls.auth_type == "oauth"
 
 
 _SLEEP_RESPONSE = {

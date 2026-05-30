@@ -291,6 +291,43 @@ function StepByStepPanel({
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Native folder picker for fields with ``browseFolder: true``. Same
+   * pattern as InlineConnectForm in DataSourcesPage — uses the Tauri
+   * dialog plugin when available, falls back to webkitdirectory on
+   * the web. Falling back to ``import.meta`` check is overkill here;
+   * the Tauri detection lives in lib/api.ts as :func:`isTauri`.
+   */
+  const handleBrowse = async (name: string) => {
+    const { isTauri } = await import('../../lib/api');
+    if (isTauri()) {
+      try {
+        const { open } = await import('@tauri-apps/plugin-dialog');
+        const selected = await open({
+          directory: true,
+          multiple: false,
+          title: 'Select folder',
+        });
+        if (selected) updateInput(name, selected as string);
+        return;
+      } catch {
+        // Fall through to web picker
+      }
+    }
+    const el = document.createElement('input');
+    el.type = 'file';
+    el.setAttribute('webkitdirectory', '');
+    el.onchange = () => {
+      const files = el.files;
+      if (files && files.length > 0) {
+        const rel = (files[0] as any).webkitRelativePath || '';
+        const folder = rel.split('/')[0];
+        if (folder) updateInput(name, folder);
+      }
+    };
+    el.click();
+  };
+
   const handleSubmit = () => {
     const req: ConnectRequest = {};
     for (const field of fields) {
@@ -377,26 +414,60 @@ function StepByStepPanel({
           padding: 12,
           marginBottom: 10,
         }}>
-          {fields.map((field) => (
-            <input
-              key={field.name}
-              value={inputs[field.name] || ''}
-              onChange={(e) => updateInput(field.name, e.target.value)}
-              placeholder={field.placeholder}
-              type={field.type || 'text'}
-              style={{
-                width: '100%',
-                padding: '8px 10px',
-                background: 'var(--color-bg-secondary)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 4,
-                color: 'var(--color-text)',
-                fontSize: 13,
-                marginBottom: 8,
-                boxSizing: 'border-box',
-              }}
-            />
-          ))}
+          {fields.map((field) => {
+            const inputStyle: React.CSSProperties = {
+              padding: '8px 10px',
+              background: 'var(--color-bg-secondary)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 4,
+              color: 'var(--color-text)',
+              fontSize: 13,
+              boxSizing: 'border-box',
+            };
+            if (field.browseFolder) {
+              return (
+                <div
+                  key={field.name}
+                  style={{ display: 'flex', gap: 6, marginBottom: 8 }}
+                >
+                  <input
+                    value={inputs[field.name] || ''}
+                    onChange={(e) => updateInput(field.name, e.target.value)}
+                    placeholder={field.placeholder}
+                    type={field.type || 'text'}
+                    style={{ ...inputStyle, flex: 1 }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleBrowse(field.name)}
+                    style={{
+                      padding: '8px 14px',
+                      background: 'var(--color-bg-secondary)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-secondary)',
+                      borderRadius: 4,
+                      fontSize: 13,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                    title="Pick a folder using the system file dialog"
+                  >
+                    Browse…
+                  </button>
+                </div>
+              );
+            }
+            return (
+              <input
+                key={field.name}
+                value={inputs[field.name] || ''}
+                onChange={(e) => updateInput(field.name, e.target.value)}
+                placeholder={field.placeholder}
+                type={field.type || 'text'}
+                style={{ ...inputStyle, width: '100%', marginBottom: 8 }}
+              />
+            );
+          })}
         </div>
       )}
 

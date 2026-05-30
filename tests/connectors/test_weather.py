@@ -19,7 +19,10 @@ def test_weather_registered():
     cls = ConnectorRegistry.get("weather")
     assert cls.connector_id == "weather"
     assert cls.display_name == "Weather"
-    assert cls.auth_type == "token"
+    # "oauth" so /connect routes the composite "location:api_key"
+    # payload through handle_callback. OpenWeatherMap uses API keys,
+    # not real OAuth.
+    assert cls.auth_type == "oauth"
 
 
 _CURRENT_RESPONSE = {
@@ -94,3 +97,49 @@ def test_sync_yields_two_documents(connector):
 def test_disconnect(connector):
     connector.disconnect()
     assert connector.is_connected() is False
+
+
+@pytest.mark.parametrize(
+    "location,expected",
+    [
+        # City strings → q lookup
+        ("San Francisco,CA", {"q": "San Francisco,CA"}),
+        ("London,GB", {"q": "London,GB"}),
+        ("Portland,OR,US", {"q": "Portland,OR,US"}),
+        # Coordinates (from the "My location" button) → lat/lon lookup
+        ("37.7749,-122.4194", {"lat": "37.7749", "lon": "-122.4194"}),
+        (" 51.5074 , -0.1278 ", {"lat": "51.5074", "lon": "-0.1278"}),
+        # Out-of-range / non-numeric "two parts" fall back to a city lookup
+        ("91.0,0.0", {"q": "91.0,0.0"}),
+        ("not,coords", {"q": "not,coords"}),
+    ],
+)
+def test_owm_query_params(location, expected):
+    from openjarvis.connectors.weather import _owm_query_params
+
+    assert _owm_query_params(location) == expected
+
+
+def test_sync_uses_coords_when_location_is_latlon(tmp_path):
+    """A 'lat,lon' location queries OpenWeatherMap by coordinates, not city."""
+    from openjarvis.connectors.weather import WeatherConnector
+
+    config_path = tmp_path / "weather.json"
+    config_path.write_text(
+        '{"api_key": "fake-key", "location": "37.7749,-122.4194"}',
+        encoding="utf-8",
+    )
+    c = WeatherConnector(token_path=str(config_path))
+
+    with patch(
+        "openjarvis.connectors.weather._weather_api_get",
+        side_effect=[_CURRENT_RESPONSE, _FORECAST_RESPONSE],
+    ) as mock_get:
+        docs = list(c.sync())
+
+    assert len(docs) == 2
+    # The current-weather call must use lat/lon params, never q.
+    first_params = mock_get.call_args_list[0].kwargs["params"]
+    assert first_params.get("lat") == "37.7749"
+    assert first_params.get("lon") == "-122.4194"
+    assert "q" not in first_params

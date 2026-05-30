@@ -2,7 +2,15 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { VitePWA } from 'vite-plugin-pwa';
+
+// VitePWA intentionally NOT used. This is a Tauri desktop app — assets are
+// already bundled locally and installed via the .exe, so a service-worker
+// precache adds zero value. Worse, it caused a real upgrade-pain bug: when
+// users updated to a new .exe with a new catalog, the SW from the previous
+// install (still alive in WebView2 storage) kept intercepting requests and
+// serving the OLD bundled chunks — connector setup instructions appeared
+// blank because the cached catalog predated those entries. Removing the
+// plugin avoids that whole class of cache-vs-binary skew on every update.
 
 export default defineConfig({
   resolve: {
@@ -13,25 +21,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      manifest: {
-        name: 'OpenJarvis',
-        short_name: 'Jarvis',
-        description: 'On-device AI assistant',
-        theme_color: '#161618',
-        background_color: '#161618',
-        display: 'standalone',
-        icons: [
-          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-        ],
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        navigateFallbackDenylist: [/^\/v1\//, /^\/health/, /^\/dashboard/, /^\/api\//],
-      },
-    }),
   ],
   build: {
     outDir: '../src/openjarvis/server/static',
@@ -39,11 +28,29 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       output: {
+        // Granular chunks so the initial download stays small and heavy
+        // libraries (katex, rehype-highlight, recharts) only load when a
+        // page that needs them is visited. See App.tsx — pages are
+        // React.lazy()'d so each route gets its own chunk on top of these.
         manualChunks: {
-          react: ['react', 'react-dom'],
-          markdown: ['react-markdown', 'rehype-highlight', 'remark-gfm'],
-          charts: ['recharts'],
-          router: ['react-router'],
+          'react-vendor':       ['react', 'react-dom', 'react-router'],
+          'markdown':           ['react-markdown', 'remark-gfm'],
+          'markdown-math':      ['katex', 'remark-math', 'rehype-katex'],
+          'markdown-highlight': ['rehype-highlight'],
+          'charts':             ['recharts'],
+          'motion':             ['motion'],
+          'analytics':          ['posthog-js'],
+          'ui-base':            ['@base-ui/react', 'lucide-react'],
+          'tauri':              [
+            '@tauri-apps/api',
+            '@tauri-apps/plugin-autostart',
+            '@tauri-apps/plugin-dialog',
+            '@tauri-apps/plugin-global-shortcut',
+            '@tauri-apps/plugin-notification',
+            '@tauri-apps/plugin-process',
+            '@tauri-apps/plugin-shell',
+            '@tauri-apps/plugin-updater',
+          ],
         },
       },
     },

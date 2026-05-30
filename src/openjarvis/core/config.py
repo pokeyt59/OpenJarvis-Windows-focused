@@ -925,12 +925,38 @@ class BrowserConfig:
 
 
 @dataclass(slots=True)
+class WebSearchConfig:
+    """Web search tool backend selection + per-backend config.
+
+    The ``backend`` field is an ordered fallback chain — comma-separated
+    list of backends to try in sequence. Each entry is tried; on failure
+    the next entry runs. ``"auto"`` resolves to the legacy behaviour
+    (``"tavily,duckduckgo"``) so existing installs keep working.
+
+    Recognised entries:
+      - ``tavily``      — Tavily API (needs TAVILY_API_KEY env var)
+      - ``duckduckgo``  — DDG via the ``ddgs`` package (no key)
+      - ``searxng``     — local SearXNG instance at ``searxng_url``;
+                          opt-in by running the SearXNG installer
+
+    Configured via TOML at ``[tools.web_search]`` and overridable per-run
+    by env vars ``OPENJARVIS_WEB_SEARCH_BACKEND`` and
+    ``OPENJARVIS_SEARXNG_URL`` (env wins). The env-var override exists
+    so dev work and recipe tests don't need a config-file round-trip.
+    """
+
+    backend: str = "auto"
+    searxng_url: str = "http://127.0.0.1:8888"
+
+
+@dataclass(slots=True)
 class ToolsConfig:
     """Tools primitive settings — wraps storage and MCP configuration."""
 
     storage: StorageConfig = field(default_factory=StorageConfig)
     mcp: MCPConfig = field(default_factory=MCPConfig)
     browser: BrowserConfig = field(default_factory=BrowserConfig)
+    web_search: WebSearchConfig = field(default_factory=WebSearchConfig)
     enabled: str = ""  # comma-separated default tools
 
 
@@ -1511,7 +1537,7 @@ class DigestConfig:
         default_factory=lambda: DigestSectionConfig(sources=["gcalendar"])
     )
     health: DigestSectionConfig = field(
-        default_factory=lambda: DigestSectionConfig(sources=["oura", "apple_health"])
+        default_factory=lambda: DigestSectionConfig(sources=["oura"])
     )
     world: DigestSectionConfig = field(
         default_factory=lambda: DigestSectionConfig(sources=[])
@@ -2151,6 +2177,7 @@ __all__ = [
     "TracesConfig",
     "VLLMEngineConfig",
     "WebChatChannelConfig",
+    "WebSearchConfig",
     "WebhookChannelConfig",
     "WhatsAppBaileysChannelConfig",
     "WhatsAppChannelConfig",

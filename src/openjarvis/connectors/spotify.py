@@ -86,21 +86,86 @@ class SpotifyConnector(BaseConnector):
         return f"{provider.auth_endpoint}?{urlencode(params)}"
 
     def handle_callback(self, code: str) -> None:
-        """Exchange authorization code for tokens and save."""
+        """Wire up Spotify from either pasted credentials or an OAuth code.
+
+        Two paths:
+
+        1. **Catalog form path**: user pastes ``client_id:client_secret``
+           into the StepByStepPanel. We detect the colon, save those
+           credentials via :func:`save_client_credentials`, then launch
+           the full browser-based OAuth dance in a background thread
+           (via :func:`run_connector_oauth`, which generates a fresh
+           state + PKCE pair).
+
+        2. **OAuth callback path**: an OAuth authorization code arrives
+           on its own. We exchange it directly. Used by the FastAPI
+           ``/oauth/callback`` route after a hardened state+PKCE flow.
+
+        The two paths look identical from the connect endpoint's point
+        of view — we just inspect ``code`` to decide which.
+        """
         from openjarvis.connectors.oauth import (
             _CONNECTORS_DIR,
             _exchange_token,
             get_client_credentials,
             get_provider_for_connector,
+            run_connector_oauth,
+            save_client_credentials,
             save_tokens,
         )
 
         provider = get_provider_for_connector("spotify")
-        creds = get_client_credentials(provider) if provider else None
-        if not provider or not creds:
-            raise RuntimeError("Spotify client credentials not configured")
+        if not provider:
+            raise RuntimeError("Spotify OAuth provider not configured")
+
+        code = (code or "").strip()
+        if not code:
+            raise ValueError("Empty Spotify connect input")
+
+        # Path 1: pasted credentials. Spotify client IDs and secrets
+        # are 32-char hex strings; auth codes are different shape but
+        # the unambiguous signal is the colon — OAuth codes never
+        # contain one.
+        if ":" in code:
+            client_id, client_secret = code.split(":", 1)
+            client_id = client_id.strip()
+            client_secret = client_secret.strip()
+            if not client_id or not client_secret:
+                raise ValueError("Spotify client_id and client_secret must both be non-empty")
+
+            save_client_credentials(provider, client_id, client_secret)
+
+            # Kick off the browser-based OAuth dance in a background
+            # thread so /connect can return immediately. The thread
+            # spins up a local callback server on
+            # ``provider.callback_port`` (8888 for Spotify), opens the
+            # browser, captures the code + state, verifies state +
+            # PKCE, then writes the tokens to disk.
+            import threading
+
+            def _run() -> None:
+                try:
+                    run_connector_oauth("spotify", client_id, client_secret)
+                except Exception:  # noqa: BLE001
+                    # Errors surface to the user via the eventual sync
+                    # failure — there's no return channel here.
+                    pass
+
+            threading.Thread(target=_run, daemon=True).start()
+            return
+
+        # Path 2: raw OAuth authorization code. Exchange it directly.
+        creds = get_client_credentials(provider)
+        if not creds:
+            raise RuntimeError(
+                "Spotify client credentials not configured. Paste them in "
+                "the form first (as 'client_id:client_secret')."
+            )
         client_id, client_secret = creds
-        redirect_uri = f"http://{provider.callback_host}:{provider.callback_port}{provider.callback_path}"
+        redirect_uri = (
+            f"http://{provider.callback_host}:{provider.callback_port}"
+            f"{provider.callback_path}"
+        )
         tokens = _exchange_token(provider, code, client_id, client_secret, redirect_uri)
         payload = {
             "access_token": tokens.get("access_token", ""),

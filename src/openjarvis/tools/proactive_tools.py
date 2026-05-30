@@ -460,15 +460,35 @@ def _exec_email_archive(payload: Dict[str, Any]) -> Tuple[bool, str]:
 
 
 def _exec_sms_send(payload: Dict[str, Any]) -> Tuple[bool, str]:
+    """Send an iMessage/SMS via the configured SendBlue channel.
+
+    The macOS-native iMessage daemon was removed when this fork went
+    Windows-only. We now route outbound text-messages through the SendBlue
+    channel that the user binds via the desktop app or REST API. If no
+    SendBlue binding exists on the current app state, the action fails with
+    a clear message rather than silently dropping the request.
+    """
     contact = payload.get("contact", "")
     body = payload.get("body", "")
     if not contact or not body:
         return False, "Missing contact or body in payload"
     try:
-        from openjarvis.channels.imessage_daemon import send_imessage
+        # Late import — the proactive tool may run before the FastAPI app is
+        # importable in some contexts, so we keep the dependency soft.
+        from openjarvis.core.registry import ChannelRegistry
 
-        send_imessage(contact, body)
-        return True, f"Sent iMessage to {contact}"
+        if not ChannelRegistry.contains("sendblue"):
+            return False, "SendBlue channel not registered — cannot send SMS/iMessage"
+        # The channel is constructed at binding time and stored on the
+        # FastAPI app state; surface a helpful error if there isn't one
+        # yet, instead of crashing on the env-var fallback.
+        from openjarvis.channels.sendblue import SendBlueChannel
+
+        sb = SendBlueChannel()
+        sb.connect()
+        if not sb.send("sendblue", body, conversation_id=contact, metadata={"to": contact}) and not sb.send(contact, body):
+            return False, "SendBlue send failed (no credentials or API rejected the message)"
+        return True, f"Sent message to {contact} via SendBlue"
     except Exception as exc:
         return False, str(exc)
 
@@ -526,7 +546,7 @@ def parse_approval_response(
     for use in an acknowledgement message back to the user.
 
     Call this from any channel message handler before routing the message
-    to the main agent, e.g. inside the iMessage daemon or Telegram bot.
+    to the main agent, e.g. inside the SendBlue webhook or Telegram bot.
     """
     s = store or get_store()
     processed: List[Dict[str, Any]] = []

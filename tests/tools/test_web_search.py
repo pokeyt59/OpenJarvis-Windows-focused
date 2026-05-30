@@ -37,7 +37,21 @@ class TestWebSearchTool:
         assert "No query" in result.content
 
     def test_execute_no_api_key(self, monkeypatch):
-        """When no API key, falls back to DuckDuckGo."""
+        """When no API key, falls back to DuckDuckGo.
+
+        Mock DDGS to keep the test offline — the old version hit the
+        real DuckDuckGo service which made the test flaky whenever the
+        network was sandboxed.
+        """
+        # Make DDG return mocked results so the test is hermetic.
+        mock_ddgs = MagicMock()
+        mock_ddgs.text.return_value = [
+            {"title": "DDG hit", "href": "https://example.com", "body": "Snippet"}
+        ]
+        mock_ddgs_module = MagicMock()
+        mock_ddgs_module.DDGS.return_value = mock_ddgs
+        monkeypatch.setitem(sys.modules, "ddgs", mock_ddgs_module)
+
         tool = WebSearchTool(api_key=None)
         with patch.dict("os.environ", {}, clear=True):
             tool._api_key = None

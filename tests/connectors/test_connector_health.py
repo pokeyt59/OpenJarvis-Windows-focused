@@ -8,11 +8,10 @@ from __future__ import annotations
 
 import pytest
 
-# All connectors that should be testable without credentials
-_LOCAL_CONNECTORS = [
-    ("apple_notes", "openjarvis.connectors.apple_notes", "AppleNotesConnector"),
-    ("imessage", "openjarvis.connectors.imessage", "IMessageConnector"),
-]
+# All connectors that should be testable without credentials.
+# (The macOS-only apple_notes / imessage entries were removed when this fork
+# went Windows-only.)
+_LOCAL_CONNECTORS: list = []
 
 _TOKEN_CONNECTORS = [
     ("gmail_imap", "openjarvis.connectors.gmail_imap", "GmailIMAPConnector"),

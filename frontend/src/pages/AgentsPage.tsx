@@ -31,6 +31,7 @@ import {
   sendblueRegisterWebhook,
   sendblueTest,
   sendblueHealth,
+  SENDBLUE_WEBHOOK_PATH,
 } from '../lib/api';
 import type { AgentTask, ChannelBinding, AgentTemplate, AgentMessage, ManagedAgent, LearningLogEntry, AgentTrace, ToolInfo } from '../lib/api';
 import { useAgentEvents } from '../lib/useAgentEvents';
@@ -2111,10 +2112,19 @@ function ChannelsTab({ agentId }: { agentId: string }) {
 
   const iconMap: Record<string, string> = {
     gmail: '\u2709\uFE0F', gmail_imap: '\u2709\uFE0F', slack: '#',
-    imessage: '\uD83D\uDCAC', gdrive: '\uD83D\uDCC1', notion: '\uD83D\uDCC4',
+    gdrive: '\uD83D\uDCC1', notion: '\uD83D\uDCC4',
     obsidian: '\uD83D\uDCC1', granola: '\uD83C\uDF99\uFE0F', gcalendar: '\uD83D\uDCC5',
-    gcontacts: '\uD83D\uDCC7', outlook: '\u2709\uFE0F', apple_notes: '\uD83C\uDF4E',
+    gcontacts: '\uD83D\uDCC7', outlook: '\u2709\uFE0F',
     dropbox: '\uD83D\uDCE6', whatsapp: '\uD83D\uDCF1',
+    // Windows-native additions
+    onenote: '\uD83D\uDCD3', onedrive: '\u2601\uFE0F', mstodo: '\u2705',
+    local_folder: '\uD83D\uDCC1', edge: '\uD83C\uDF10',
+    discord: '\uD83D\uDCAC',
+    phone_link: '\uD83D\uDCF2', ide_workspaces: '\uD83D\uDCBB',
+    // External services
+    github_notifications: '\uD83D\uDD14', google_tasks: '\u2705',
+    news_rss: '\uD83D\uDCF0', oura: '\uD83D\uDC8D',
+    spotify: '\uD83C\uDFB5', strava: '\uD83D\uDEB4', weather: '\uD83C\uDF24\uFE0F',
   };
 
   return (
@@ -2487,7 +2497,7 @@ function SendBlueWebhookStep({
     if (!webhookUrl.trim()) return;
     setWebhookStatus('registering');
     try {
-      const url = webhookUrl.trim().replace(/\/+$/, '') + '/v1/channels/sendblue/webhook';
+      const url = webhookUrl.trim().replace(/\/+$/, '') + SENDBLUE_WEBHOOK_PATH;
       await sendblueRegisterWebhook(apiKey, apiSecret, url);
       setWebhookStatus('done');
     } catch {
@@ -2681,7 +2691,7 @@ function SendBlueWizard({
       });
       // 2. Try to auto-register webhook (best effort)
       try {
-        const webhookUrl = `${window.location.origin}/webhooks/sendblue`;
+        const webhookUrl = `${window.location.origin}${SENDBLUE_WEBHOOK_PATH}`;
         await sendblueRegisterWebhook(apiKey, apiSecret, webhookUrl);
       } catch {
         // Non-fatal — user may need to set up ngrok manually
@@ -2835,7 +2845,7 @@ function SendBlueWizard({
           </div>
           <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
             Go to your{' '}
-            <a href="https://dashboard.sendblue.co/api-credentials" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>
+            <a href="https://dashboard.sendblue.com/api-credentials" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>
               SendBlue API Credentials page
             </a>{' '}
             and copy the API Key and API Secret.

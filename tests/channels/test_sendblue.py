@@ -256,6 +256,77 @@ class TestWebhookHandler:
 
 
 # ---------------------------------------------------------------------------
+# mark_read / send_typing (BUG #1 -> FEATURE: native iMessage signals)
+# ---------------------------------------------------------------------------
+
+
+class TestMarkRead:
+    def test_success_returns_true_and_targets_mark_read_endpoint(self):
+        ch = _make_channel()
+        with patch("httpx.post", return_value=_mock_httpx_post(200)) as mock:
+            assert ch.mark_read("+19998887777") is True
+        url = mock.call_args.args[0]
+        assert url.endswith("/api/mark-read")
+        # Host is the centralized API_BASE; do not hardcode .com here either.
+        from openjarvis.channels.sendblue import API_BASE
+
+        assert url.startswith(API_BASE)
+
+    def test_includes_required_headers_and_from_number(self):
+        ch = _make_channel(from_number="+15559876543")
+        with patch("httpx.post", return_value=_mock_httpx_post(200)) as mock:
+            ch.mark_read("+19998887777")
+        kwargs = mock.call_args.kwargs
+        assert kwargs["headers"]["sb-api-key-id"] == "test_key"
+        assert kwargs["headers"]["sb-api-secret-key"] == "test_secret"
+        # `from_number` is documented as REQUIRED for mark-read.
+        assert kwargs["json"]["number"] == "+19998887777"
+        assert kwargs["json"]["from_number"] == "+15559876543"
+
+    def test_non_2xx_returns_false_non_fatal(self):
+        ch = _make_channel()
+        with patch("httpx.post", return_value=_mock_httpx_post(404)):
+            assert ch.mark_read("+19998887777") is False
+
+    def test_exception_returns_false_non_fatal(self):
+        ch = _make_channel()
+        with patch("httpx.post", side_effect=Exception("boom")):
+            assert ch.mark_read("+19998887777") is False
+
+    def test_no_credentials_returns_false(self):
+        ch = SendBlueChannel()
+        assert ch.mark_read("+19998887777") is False
+
+
+class TestSendTyping:
+    def test_success_returns_true_and_targets_typing_endpoint(self):
+        ch = _make_channel()
+        with patch("httpx.post", return_value=_mock_httpx_post(200)) as mock:
+            assert ch.send_typing("+19998887777") is True
+        url = mock.call_args.args[0]
+        assert url.endswith("/api/send-typing-indicator")
+
+    def test_includes_headers_and_payload(self):
+        ch = _make_channel(from_number="+15559876543")
+        with patch("httpx.post", return_value=_mock_httpx_post(200)) as mock:
+            ch.send_typing("+19998887777")
+        kwargs = mock.call_args.kwargs
+        assert kwargs["headers"]["sb-api-key-id"] == "test_key"
+        assert kwargs["json"]["number"] == "+19998887777"
+        assert kwargs["json"]["from_number"] == "+15559876543"
+
+    def test_non_2xx_returns_false_non_fatal(self):
+        ch = _make_channel()
+        with patch("httpx.post", return_value=_mock_httpx_post(403)):
+            assert ch.send_typing("+19998887777") is False
+
+    def test_exception_returns_false_non_fatal(self):
+        ch = _make_channel()
+        with patch("httpx.post", side_effect=Exception("boom")):
+            assert ch.send_typing("+19998887777") is False
+
+
+# ---------------------------------------------------------------------------
 # Properties
 # ---------------------------------------------------------------------------
 
@@ -264,3 +335,13 @@ class TestProperties:
     def test_from_number(self):
         ch = _make_channel(from_number="+15559876543")
         assert ch.from_number == "+15559876543"
+
+    def test_signal_toggles_default_on(self):
+        ch = _make_channel()
+        assert ch.read_receipts_enabled is True
+        assert ch.typing_indicator_enabled is True
+
+    def test_signal_toggles_off(self):
+        ch = _make_channel(read_receipts=False, typing_indicator=False)
+        assert ch.read_receipts_enabled is False
+        assert ch.typing_indicator_enabled is False

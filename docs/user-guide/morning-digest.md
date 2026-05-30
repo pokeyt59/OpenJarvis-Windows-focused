@@ -45,7 +45,7 @@ sections = ["health", "messages", "calendar", "world"]
 sources = ["oura"]
 
 [digest.messages]
-sources = ["gmail", "google_tasks", "slack", "imessage"]
+sources = ["gmail", "google_tasks", "slack"]
 
 [digest.calendar]
 sources = ["gcalendar"]
@@ -92,7 +92,7 @@ cat > ~/.openjarvis/connectors/news_rss.json << 'EOF'
 EOF
 ```
 
-Hacker News, iMessage, and Apple Music work automatically on macOS with no setup.
+Hacker News works automatically with no setup — it pulls the public top-stories feed.
 
 ### 5. Set your TTS API key
 
@@ -140,11 +140,11 @@ The `sections` list controls what the digest covers, in order of priority:
 
 | Section | Sources | What it provides |
 |---------|---------|-----------------|
-| `health` | `oura`, `apple_health`, `strava` | Sleep, readiness, activity, workouts |
-| `messages` | `gmail`, `google_tasks`, `slack`, `notion`, `imessage`, `github_notifications` | Email triage, tasks, texts, Slack, PRs |
+| `health` | `oura`, `strava` | Sleep, readiness, activity, workouts |
+| `messages` | `gmail`, `google_tasks`, `slack`, `notion`, `github_notifications` | Email triage, tasks, Slack, PRs |
 | `calendar` | `gcalendar` | Today's events and schedule |
 | `world` | `weather`, `hackernews`, `news_rss` | Weather forecast, tech news, RSS feeds |
-| `music` | `spotify`, `apple_music` | Recently played tracks (opt-in) |
+| `music` | `spotify` | Recently played tracks (opt-in) |
 
 ### TTS Voices
 

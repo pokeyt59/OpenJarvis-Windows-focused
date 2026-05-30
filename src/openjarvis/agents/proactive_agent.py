@@ -207,42 +207,10 @@ def _build_notification_channel(channel_spec: str) -> Optional[Any]:
 
     channel_type, _, channel_id = channel_spec.partition(":")
 
-    # iMessage: wrap send_imessage() in a minimal BaseChannel-compatible shim
-    if channel_type == "imessage":
-        from openjarvis.channels._stubs import (
-            BaseChannel,
-            ChannelStatus,
-        )
-
-        class _IMessageShim(BaseChannel):
-            channel_id = "imessage"
-
-            def __init__(self, handle: str) -> None:
-                self._handle = handle
-
-            def connect(self) -> None:
-                pass
-
-            def disconnect(self) -> None:
-                pass
-
-            def send(
-                self, channel: str, content: str, *, conversation_id: str = ""
-            ) -> bool:
-                from openjarvis.channels.imessage_daemon import send_imessage
-
-                return send_imessage(self._handle, content)
-
-            def status(self) -> ChannelStatus:
-                return ChannelStatus.CONNECTED
-
-            def list_channels(self) -> List[str]:
-                return [self._handle]
-
-            def on_message(self, handler: Any) -> None:
-                pass
-
-        return _IMessageShim(channel_id)
+    # The macOS-native iMessage shim was removed when this fork went
+    # Windows-only. To reach the user via iMessage / SMS, configure the
+    # SendBlue channel (`channel_spec = "sendblue:<phone>"`); it is looked
+    # up through ChannelRegistry below like any other channel type.
 
     # All other channel types: look up in ChannelRegistry
     try:
@@ -370,7 +338,7 @@ class ProactiveAgent(ToolUsingAgent):
         store.expire_stale()
 
         # --- Step 1: Collect data — only items user hasn't acted on ---
-        sources = ["gmail", "imessage", "gcalendar", "slack", "google_tasks"]
+        sources = ["gmail", "gcalendar", "slack", "google_tasks"]
         seen_ids = self._get_already_seen_ids(store)
         collect_call = ToolCall(
             id="proactive-collect-1",

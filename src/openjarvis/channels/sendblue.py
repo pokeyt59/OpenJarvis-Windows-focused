@@ -23,7 +23,19 @@ from openjarvis.core.registry import ChannelRegistry
 
 logger = logging.getLogger(__name__)
 
-_API_BASE = "https://api.sendblue.co"
+# Single source of truth for SendBlue host + inbound webhook path.
+# These are imported by openjarvis.server.{webhook_routes,agent_manager_routes}
+# and any other module that constructs a SendBlue URL. Do not duplicate the
+# literal "https://api.sendblue.co" or "/webhooks/sendblue" elsewhere.
+#
+# NOTE: This account is on `api.sendblue.co` (verified in the SendBlue
+# dashboard playground). Do not switch to `.com` without confirming the host
+# actually changed for this account.
+API_BASE = "https://api.sendblue.co"
+WEBHOOK_PATH = "/webhooks/sendblue"
+
+# Back-compat alias for any external imports of the old private name.
+_API_BASE = API_BASE
 
 
 @ChannelRegistry.register("sendblue")
@@ -55,6 +67,8 @@ class SendBlueChannel(BaseChannel):
         api_secret_key: str = "",
         from_number: str = "",
         webhook_secret: str = "",
+        read_receipts: bool = True,
+        typing_indicator: bool = True,
         bus: Optional[EventBus] = None,
     ) -> None:
         self._api_key_id = api_key_id or os.environ.get("SENDBLUE_API_KEY_ID", "")
@@ -63,6 +77,12 @@ class SendBlueChannel(BaseChannel):
         )
         self._from_number = from_number or os.environ.get("SENDBLUE_FROM_NUMBER", "")
         self._webhook_secret = webhook_secret
+        # Native iMessage signal toggles. Set from the binding config dict
+        # (`read_receipts` / `typing_indicator`, default True). The inbound
+        # handler reads these off the channel instance and skips the
+        # corresponding SendBlue API calls when False.
+        self._read_receipts = bool(read_receipts)
+        self._typing_indicator = bool(typing_indicator)
         self._bus = bus
         self._handlers: List[ChannelHandler] = []
         self._status = ChannelStatus.DISCONNECTED
@@ -115,7 +135,7 @@ class SendBlueChannel(BaseChannel):
                 payload["from_number"] = self._from_number
 
             resp = httpx.post(
-                f"{_API_BASE}/api/send-message",
+                f"{API_BASE}/api/send-message",
                 headers={
                     "sb-api-key-id": self._api_key_id,
                     "sb-api-secret-key": self._api_secret_key,
@@ -135,6 +155,81 @@ class SendBlueChannel(BaseChannel):
             return False
         except Exception:
             logger.debug("SendBlue send failed", exc_info=True)
+            return False
+
+    # -- native iMessage signals (read receipt + typing) -----------------------
+
+    def mark_read(self, number: str) -> bool:
+        """Send a read receipt for the conversation with ``number``.
+
+        iMessage / RCS only; non-2xx on SMS. SendBlue may require explicit
+        account activation for read receipts. Best-effort: returns False on
+        any failure without raising.
+        """
+        if not self._api_key_id or not self._api_secret_key:
+            return False
+        try:
+            import httpx
+
+            payload: Dict[str, Any] = {"number": number}
+            if self._from_number:
+                # `from_number` is documented as required for mark-read.
+                payload["from_number"] = self._from_number
+            resp = httpx.post(
+                f"{API_BASE}/api/mark-read",
+                headers={
+                    "sb-api-key-id": self._api_key_id,
+                    "sb-api-secret-key": self._api_secret_key,
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+                timeout=15.0,
+            )
+            if resp.status_code >= 300:
+                logger.debug(
+                    "SendBlue mark-read returned %d: %s",
+                    resp.status_code,
+                    resp.text[:200],
+                )
+            return resp.status_code < 300
+        except Exception:
+            logger.debug("SendBlue mark-read failed", exc_info=True)
+            return False
+
+    def send_typing(self, number: str) -> bool:
+        """Show the "…" typing indicator to ``number``.
+
+        iMessage only; requires an existing conversation (always true on
+        inbound). The bubble fades after a few seconds, so callers that want
+        to keep it alive must re-emit on a short interval. Best-effort.
+        """
+        if not self._api_key_id or not self._api_secret_key:
+            return False
+        try:
+            import httpx
+
+            payload: Dict[str, Any] = {"number": number}
+            if self._from_number:
+                payload["from_number"] = self._from_number
+            resp = httpx.post(
+                f"{API_BASE}/api/send-typing-indicator",
+                headers={
+                    "sb-api-key-id": self._api_key_id,
+                    "sb-api-secret-key": self._api_secret_key,
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+                timeout=15.0,
+            )
+            if resp.status_code >= 300:
+                logger.debug(
+                    "SendBlue typing-indicator returned %d: %s",
+                    resp.status_code,
+                    resp.text[:200],
+                )
+            return resp.status_code < 300
+        except Exception:
+            logger.debug("SendBlue typing-indicator failed", exc_info=True)
             return False
 
     def handle_webhook(self, payload: Dict[str, Any]) -> None:
@@ -209,6 +304,14 @@ class SendBlueChannel(BaseChannel):
     def webhook_secret(self) -> str:
         return self._webhook_secret
 
+    @property
+    def read_receipts_enabled(self) -> bool:
+        return self._read_receipts
+
+    @property
+    def typing_indicator_enabled(self) -> bool:
+        return self._typing_indicator
+
     # -- internal helpers -------------------------------------------------------
 
     def _publish_sent(self, channel: str, content: str, conversation_id: str) -> None:
@@ -225,4 +328,4 @@ class SendBlueChannel(BaseChannel):
             )
 
 
-__all__ = ["SendBlueChannel"]
+__all__ = ["SendBlueChannel", "API_BASE", "WEBHOOK_PATH"]

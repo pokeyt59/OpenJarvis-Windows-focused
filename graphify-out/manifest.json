@@ -1,0 +1,3432 @@
+{
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sdk.py": {
+    "mtime": 1779776022.9798553,
+    "ast_hash": "683d0a1b2cf6632dfbfe4a104fc3ef31",
+    "semantic_hash": "683d0a1b2cf6632dfbfe4a104fc3ef31"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\_rust_bridge.py": {
+    "mtime": 1779776022.9713466,
+    "ast_hash": "b8cfa0a4be57337a96647000eedddba8",
+    "semantic_hash": "b8cfa0a4be57337a96647000eedddba8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\__init__.py": {
+    "mtime": 1779776022.96535,
+    "ast_hash": "8f24680308788b15bfeae8ef0c6fa15d",
+    "semantic_hash": "8f24680308788b15bfeae8ef0c6fa15d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\a2a\\client.py": {
+    "mtime": 1779776022.996387,
+    "ast_hash": "ef06fdc31a495a4afa959c0cca8927ad",
+    "semantic_hash": "ef06fdc31a495a4afa959c0cca8927ad"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\a2a\\protocol.py": {
+    "mtime": 1779776023.0023997,
+    "ast_hash": "313919ee5b85d910cfdb4ff7f89b9112",
+    "semantic_hash": "313919ee5b85d910cfdb4ff7f89b9112"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\a2a\\server.py": {
+    "mtime": 1779776023.0089521,
+    "ast_hash": "9e114e73e3d5f2080fa1975e109fe102",
+    "semantic_hash": "9e114e73e3d5f2080fa1975e109fe102"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\a2a\\tool.py": {
+    "mtime": 1779776023.0149643,
+    "ast_hash": "7b2fbf881a0672eb6e754bd22927a6b2",
+    "semantic_hash": "7b2fbf881a0672eb6e754bd22927a6b2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\a2a\\__init__.py": {
+    "mtime": 1779776022.9908688,
+    "ast_hash": "638635de28af2e4809b70941419fd1c0",
+    "semantic_hash": "638635de28af2e4809b70941419fd1c0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\channel_agent.py": {
+    "mtime": 1779776023.0401292,
+    "ast_hash": "c34620e3b9f1bd6411a1d83f7700e63b",
+    "semantic_hash": "c34620e3b9f1bd6411a1d83f7700e63b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\claude_code.py": {
+    "mtime": 1779776023.045632,
+    "ast_hash": "f622b3a1ff8e629c01f5806fc6aaf500",
+    "semantic_hash": "f622b3a1ff8e629c01f5806fc6aaf500"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\deep_research.py": {
+    "mtime": 1779776023.051745,
+    "ast_hash": "4f2eccdbb2a66425da1da2bb8f116ccd",
+    "semantic_hash": "4f2eccdbb2a66425da1da2bb8f116ccd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\digest_store.py": {
+    "mtime": 1779776023.0592544,
+    "ast_hash": "d2624b43456506cacb1e61e7670ce7a8",
+    "semantic_hash": "d2624b43456506cacb1e61e7670ce7a8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\errors.py": {
+    "mtime": 1779776023.0659115,
+    "ast_hash": "4e2adae899d53b3bf65f016588ea3072",
+    "semantic_hash": "4e2adae899d53b3bf65f016588ea3072"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\executor.py": {
+    "mtime": 1779776023.0714183,
+    "ast_hash": "febe6451893f0c00e8e75c8481058bf0",
+    "semantic_hash": "febe6451893f0c00e8e75c8481058bf0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\loop_guard.py": {
+    "mtime": 1779776023.0789251,
+    "ast_hash": "f6cb2f8b96c58013ac8e421b8e94bdcf",
+    "semantic_hash": "f6cb2f8b96c58013ac8e421b8e94bdcf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\manager.py": {
+    "mtime": 1779776023.0859358,
+    "ast_hash": "034e4b99aae004eae2dbe314de796c34",
+    "semantic_hash": "034e4b99aae004eae2dbe314de796c34"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\monitor_operative.py": {
+    "mtime": 1779776023.0919392,
+    "ast_hash": "21073e3de55f645bcf40f8df98b8d0ed",
+    "semantic_hash": "21073e3de55f645bcf40f8df98b8d0ed"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\morning_digest.py": {
+    "mtime": 1779834969.8160734,
+    "ast_hash": "d1915d26be24ff9a78a55da163a1b637",
+    "semantic_hash": "d1915d26be24ff9a78a55da163a1b637"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\native_openhands.py": {
+    "mtime": 1779776023.1044638,
+    "ast_hash": "c7375200a6894295694be45806988dac",
+    "semantic_hash": "c7375200a6894295694be45806988dac"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\native_react.py": {
+    "mtime": 1779776023.1109738,
+    "ast_hash": "90945ddffe330c46e3d0fa2ef7317678",
+    "semantic_hash": "90945ddffe330c46e3d0fa2ef7317678"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\openhands.py": {
+    "mtime": 1779776023.1179,
+    "ast_hash": "9c04fe661d4f8125570e73b3a52d7e9d",
+    "semantic_hash": "9c04fe661d4f8125570e73b3a52d7e9d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\operative.py": {
+    "mtime": 1779776023.1233985,
+    "ast_hash": "72667cc1390f1815aee9b4a5347937f2",
+    "semantic_hash": "72667cc1390f1815aee9b4a5347937f2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\orchestrator.py": {
+    "mtime": 1779776023.1304018,
+    "ast_hash": "d45b5773bccefdaf9b94f2f7634ed0bd",
+    "semantic_hash": "d45b5773bccefdaf9b94f2f7634ed0bd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\proactive_agent.py": {
+    "mtime": 1779834956.6685627,
+    "ast_hash": "c5256330c8bae9905418adcaa5317d36",
+    "semantic_hash": "c5256330c8bae9905418adcaa5317d36"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\prompt_loader.py": {
+    "mtime": 1779776023.143267,
+    "ast_hash": "c5261d17bcfa7c078226fa1c29197e14",
+    "semantic_hash": "c5261d17bcfa7c078226fa1c29197e14"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\research_loop.py": {
+    "mtime": 1779776023.1507814,
+    "ast_hash": "ac6ac3551aa5c42a356288eb4ff24d40",
+    "semantic_hash": "ac6ac3551aa5c42a356288eb4ff24d40"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\rlm.py": {
+    "mtime": 1779776023.1578012,
+    "ast_hash": "b4df0dcd198741c43680e62fb09ea6d9",
+    "semantic_hash": "b4df0dcd198741c43680e62fb09ea6d9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\rlm_repl.py": {
+    "mtime": 1779776023.1639266,
+    "ast_hash": "23a8aeed5519ef4713834e079a43cac6",
+    "semantic_hash": "23a8aeed5519ef4713834e079a43cac6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\scheduler.py": {
+    "mtime": 1779776023.1699274,
+    "ast_hash": "055cf8ecf805e49dd09f4eca83261fce",
+    "semantic_hash": "055cf8ecf805e49dd09f4eca83261fce"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\simple.py": {
+    "mtime": 1779776023.17544,
+    "ast_hash": "7f8e316e0d12ffd95f36440bef23599f",
+    "semantic_hash": "7f8e316e0d12ffd95f36440bef23599f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\_stubs.py": {
+    "mtime": 1779776023.0336142,
+    "ast_hash": "1a0028603f7958064394718f07272cf3",
+    "semantic_hash": "1a0028603f7958064394718f07272cf3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\__init__.py": {
+    "mtime": 1779776023.0251057,
+    "ast_hash": "48f2cdf0521beb33c002bd88ef09cc72",
+    "semantic_hash": "48f2cdf0521beb33c002bd88ef09cc72"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\claude_code_runner\\package.json": {
+    "mtime": 1779776023.1894503,
+    "ast_hash": "6d5cc0be4aad4a600a171402712ab70f",
+    "semantic_hash": "6d5cc0be4aad4a600a171402712ab70f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\claude_code_runner\\src\\index.ts": {
+    "mtime": 1779776023.198956,
+    "ast_hash": "9379a76aa51b2646ea330f44a37598ae",
+    "semantic_hash": "9379a76aa51b2646ea330f44a37598ae"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\advisors.py": {
+    "mtime": 1779776023.238688,
+    "ast_hash": "a0f6ca9d116c824d4723e966afa954c0",
+    "semantic_hash": "a0f6ca9d116c824d4723e966afa954c0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\archon.py": {
+    "mtime": 1779776023.245194,
+    "ast_hash": "e0d5e4ff0c374e28849ec5f48198df5a",
+    "semantic_hash": "e0d5e4ff0c374e28849ec5f48198df5a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\conductor.py": {
+    "mtime": 1779776023.252001,
+    "ast_hash": "8b5fc51eff6067e690182aa01854c1d8",
+    "semantic_hash": "8b5fc51eff6067e690182aa01854c1d8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\minions.py": {
+    "mtime": 1779776023.263525,
+    "ast_hash": "6e5d6ca6b93a6da89d9d823e2c3f412d",
+    "semantic_hash": "6e5d6ca6b93a6da89d9d823e2c3f412d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\mini_swe_agent.py": {
+    "mtime": 1779776023.2580163,
+    "ast_hash": "515261f5ec033eed9eb092d6a00f456b",
+    "semantic_hash": "515261f5ec033eed9eb092d6a00f456b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\runner.py": {
+    "mtime": 1779776023.269528,
+    "ast_hash": "e2373ea1564e360ab8046511cc3b5309",
+    "semantic_hash": "e2373ea1564e360ab8046511cc3b5309"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\skillorchestra.py": {
+    "mtime": 1779776023.2775888,
+    "ast_hash": "82a13affb778a04cfbe601471c6f0b46",
+    "semantic_hash": "82a13affb778a04cfbe601471c6f0b46"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\toolorchestra.py": {
+    "mtime": 1779776023.2841003,
+    "ast_hash": "7eb2be74f0252ad018f319148f931e2a",
+    "semantic_hash": "7eb2be74f0252ad018f319148f931e2a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\_base.py": {
+    "mtime": 1779776023.2201107,
+    "ast_hash": "5c528cdeeb0ab0b87d4319ba7c6b8c87",
+    "semantic_hash": "5c528cdeeb0ab0b87d4319ba7c6b8c87"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\_prices.py": {
+    "mtime": 1779776023.2256172,
+    "ast_hash": "7156f142e553a1ad52d343d1e9ecd742",
+    "semantic_hash": "7156f142e553a1ad52d343d1e9ecd742"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\_prompts.py": {
+    "mtime": 1779776023.2316167,
+    "ast_hash": "0f220e6555bc1daeb354a2fd7c6fc872",
+    "semantic_hash": "0f220e6555bc1daeb354a2fd7c6fc872"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\__init__.py": {
+    "mtime": 1779776023.2131069,
+    "ast_hash": "af9077e6cefc18c62056a555857eff0f",
+    "semantic_hash": "af9077e6cefc18c62056a555857eff0f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\scripts\\new_experiment.sh": {
+    "mtime": 1779776023.337757,
+    "ast_hash": "f21271fbb475fee113887961c0f7d179",
+    "semantic_hash": "f21271fbb475fee113887961c0f7d179"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\templates\\__init__.py": {
+    "mtime": 1779776023.3482647,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\aggregator.py": {
+    "mtime": 1779776023.38155,
+    "ast_hash": "b7e7bb334ed654ac74c7854122512e6d",
+    "semantic_hash": "b7e7bb334ed654ac74c7854122512e6d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\bridge.py": {
+    "mtime": 1779776023.3871775,
+    "ast_hash": "f1faad9413a416abf6cade0c723e3239",
+    "semantic_hash": "f1faad9413a416abf6cade0c723e3239"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\client.py": {
+    "mtime": 1779776023.3931792,
+    "ast_hash": "c1587e69d6238cd707f9cb253a51e315",
+    "semantic_hash": "c1587e69d6238cd707f9cb253a51e315"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\events.py": {
+    "mtime": 1779776023.400797,
+    "ast_hash": "ae09646c8f0f0f4d2bff7510e1821aef",
+    "semantic_hash": "ae09646c8f0f0f4d2bff7510e1821aef"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\identity.py": {
+    "mtime": 1779776023.4078357,
+    "ast_hash": "9329f3653d5a1ab1b9435cafcb0a7b0c",
+    "semantic_hash": "9329f3653d5a1ab1b9435cafcb0a7b0c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\redaction.py": {
+    "mtime": 1779776023.414547,
+    "ast_hash": "bd5ff8572f4b6513de06fcab993a0c7e",
+    "semantic_hash": "bd5ff8572f4b6513de06fcab993a0c7e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\analytics\\__init__.py": {
+    "mtime": 1779776023.3755498,
+    "ast_hash": "ececdd7ab2b8dc7a75267de89a3dc85b",
+    "semantic_hash": "ececdd7ab2b8dc7a75267de89a3dc85b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\bench\\energy.py": {
+    "mtime": 1779776023.4423442,
+    "ast_hash": "b0d2d955b73386557d30ba1d276e18ed",
+    "semantic_hash": "b0d2d955b73386557d30ba1d276e18ed"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\bench\\latency.py": {
+    "mtime": 1779776023.4488504,
+    "ast_hash": "6856f3cc5d8108cc98bfda4fe116efa2",
+    "semantic_hash": "6856f3cc5d8108cc98bfda4fe116efa2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\bench\\throughput.py": {
+    "mtime": 1779776023.4546244,
+    "ast_hash": "98e49244797b0fb9913295ef4e79494a",
+    "semantic_hash": "98e49244797b0fb9913295ef4e79494a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\bench\\_stats.py": {
+    "mtime": 1779776023.4300601,
+    "ast_hash": "3fbd4bc55784d96be7b7f77c10ad34e3",
+    "semantic_hash": "3fbd4bc55784d96be7b7f77c10ad34e3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\bench\\_stubs.py": {
+    "mtime": 1779776023.4360695,
+    "ast_hash": "d6f8bcdcaef9283e3a6ff0a75b3ff4f8",
+    "semantic_hash": "d6f8bcdcaef9283e3a6ff0a75b3ff4f8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\bench\\__init__.py": {
+    "mtime": 1779776023.4240606,
+    "ast_hash": "e09a773fbc0984852f491c7cbe84e7b8",
+    "semantic_hash": "e09a773fbc0984852f491c7cbe84e7b8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\bluebubbles.py": {
+    "mtime": 1779776023.476315,
+    "ast_hash": "edaf8f380490ade75734db152ccddfcb",
+    "semantic_hash": "edaf8f380490ade75734db152ccddfcb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\discord_channel.py": {
+    "mtime": 1779776023.4823148,
+    "ast_hash": "3e7046429f9401c381592621bd54d067",
+    "semantic_hash": "3e7046429f9401c381592621bd54d067"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\email_channel.py": {
+    "mtime": 1779776023.489333,
+    "ast_hash": "ba939b0895a1ea132428e7e19fc921e6",
+    "semantic_hash": "ba939b0895a1ea132428e7e19fc921e6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\feishu.py": {
+    "mtime": 1779776023.495365,
+    "ast_hash": "e6f4f2b20f73451c8a5fb49853ff4998",
+    "semantic_hash": "e6f4f2b20f73451c8a5fb49853ff4998"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\gmail.py": {
+    "mtime": 1779776023.501909,
+    "ast_hash": "1531475756bd5f4d3019a0501160a5c6",
+    "semantic_hash": "1531475756bd5f4d3019a0501160a5c6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\google_chat.py": {
+    "mtime": 1779776023.5079374,
+    "ast_hash": "014a44dd4790cd737dbe50ae4c093c3c",
+    "semantic_hash": "014a44dd4790cd737dbe50ae4c093c3c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\irc_channel.py": {
+    "mtime": 1779776023.5214436,
+    "ast_hash": "eeafb32a77ab7e2575ba12a4e4da71d1",
+    "semantic_hash": "eeafb32a77ab7e2575ba12a4e4da71d1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\line_channel.py": {
+    "mtime": 1779776023.527954,
+    "ast_hash": "e2cef807c1f62347f3a3d329e764cf29",
+    "semantic_hash": "e2cef807c1f62347f3a3d329e764cf29"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\mastodon_channel.py": {
+    "mtime": 1779776023.533456,
+    "ast_hash": "35008f4d50b827df197a4742cb9ce66d",
+    "semantic_hash": "35008f4d50b827df197a4742cb9ce66d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\matrix_channel.py": {
+    "mtime": 1779776023.5405374,
+    "ast_hash": "9e7a495ca0912fdbf46468f8f8067224",
+    "semantic_hash": "9e7a495ca0912fdbf46468f8f8067224"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\mattermost.py": {
+    "mtime": 1779776023.5470493,
+    "ast_hash": "0bd790b6ae571fa80a625a92fbc1a061",
+    "semantic_hash": "0bd790b6ae571fa80a625a92fbc1a061"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\messenger_channel.py": {
+    "mtime": 1779776023.5540805,
+    "ast_hash": "f76bc9d78fbcffe942b398645af659a8",
+    "semantic_hash": "f76bc9d78fbcffe942b398645af659a8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\nostr_channel.py": {
+    "mtime": 1779776023.5595827,
+    "ast_hash": "e3b977ef08dd2b6b9259c89754522423",
+    "semantic_hash": "e3b977ef08dd2b6b9259c89754522423"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\reddit_channel.py": {
+    "mtime": 1779776023.5682635,
+    "ast_hash": "a1a66bb23e2c26cc04b126d53412411c",
+    "semantic_hash": "a1a66bb23e2c26cc04b126d53412411c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\rocketchat_channel.py": {
+    "mtime": 1779776023.5737674,
+    "ast_hash": "26a437dbf7465d2327e14df4d16ff86b",
+    "semantic_hash": "26a437dbf7465d2327e14df4d16ff86b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\sendblue.py": {
+    "mtime": 1779800781.7991033,
+    "ast_hash": "ec63ab818b83f750b4da79417d404992",
+    "semantic_hash": "ec63ab818b83f750b4da79417d404992"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\signal_channel.py": {
+    "mtime": 1779776023.5867958,
+    "ast_hash": "ec3b8722b2c9e5ac3e21412b0999b4d9",
+    "semantic_hash": "ec3b8722b2c9e5ac3e21412b0999b4d9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\slack.py": {
+    "mtime": 1779776023.5917926,
+    "ast_hash": "f0191eef7e174a16f94fdb7c52b0e397",
+    "semantic_hash": "f0191eef7e174a16f94fdb7c52b0e397"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\slack_daemon.py": {
+    "mtime": 1779776023.5983062,
+    "ast_hash": "bdcb63edbd12c10d9509e9275d391a43",
+    "semantic_hash": "bdcb63edbd12c10d9509e9275d391a43"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\teams.py": {
+    "mtime": 1779776023.605826,
+    "ast_hash": "0e7b54f943271a86a086e21389eee8e0",
+    "semantic_hash": "0e7b54f943271a86a086e21389eee8e0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\telegram.py": {
+    "mtime": 1779776023.6115124,
+    "ast_hash": "87083f1b0606d105d0a039148e6aa170",
+    "semantic_hash": "87083f1b0606d105d0a039148e6aa170"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\twilio_sms.py": {
+    "mtime": 1779776023.6180313,
+    "ast_hash": "c25d89c1bdebbcedf0ff8f7e722f491d",
+    "semantic_hash": "c25d89c1bdebbcedf0ff8f7e722f491d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\twitch_channel.py": {
+    "mtime": 1779776023.6245413,
+    "ast_hash": "2487f448ff7e98e1476ae11bb3c4ea01",
+    "semantic_hash": "2487f448ff7e98e1476ae11bb3c4ea01"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\twitter_channel.py": {
+    "mtime": 1779776023.6305437,
+    "ast_hash": "8c9188d78a46b61626ddaff624078ae8",
+    "semantic_hash": "8c9188d78a46b61626ddaff624078ae8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\viber_channel.py": {
+    "mtime": 1779776023.6371064,
+    "ast_hash": "f7e531f1f2dd9f89c442c7fea75e0817",
+    "semantic_hash": "f7e531f1f2dd9f89c442c7fea75e0817"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\webchat.py": {
+    "mtime": 1779776023.6436129,
+    "ast_hash": "ae4772d9f81b361e5a551d5558773350",
+    "semantic_hash": "ae4772d9f81b361e5a551d5558773350"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\webhook.py": {
+    "mtime": 1779776023.6511216,
+    "ast_hash": "fbb8255aa53d10f49e3fe7bdefa0365e",
+    "semantic_hash": "fbb8255aa53d10f49e3fe7bdefa0365e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\whatsapp.py": {
+    "mtime": 1779776023.657138,
+    "ast_hash": "351177f9c49f6e8f73f965cf92e35ea2",
+    "semantic_hash": "351177f9c49f6e8f73f965cf92e35ea2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\whatsapp_baileys.py": {
+    "mtime": 1779776023.663134,
+    "ast_hash": "2a4467922ce825b5e7b7350099292308",
+    "semantic_hash": "2a4467922ce825b5e7b7350099292308"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\xmpp_channel.py": {
+    "mtime": 1779776023.66864,
+    "ast_hash": "263a6fb33c87d14f368aa0cb0d9864f0",
+    "semantic_hash": "263a6fb33c87d14f368aa0cb0d9864f0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\zulip_channel.py": {
+    "mtime": 1779776023.6751487,
+    "ast_hash": "8a798960e912c91e6df07bc85301f7b6",
+    "semantic_hash": "8a798960e912c91e6df07bc85301f7b6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\_stubs.py": {
+    "mtime": 1779776023.4708083,
+    "ast_hash": "85c243c081b03f76820adb794e53cbeb",
+    "semantic_hash": "85c243c081b03f76820adb794e53cbeb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\__init__.py": {
+    "mtime": 1779776023.4648082,
+    "ast_hash": "9d5827a24b6c656ab1edd39eb9a17dd1",
+    "semantic_hash": "9d5827a24b6c656ab1edd39eb9a17dd1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\whatsapp_baileys_bridge\\package.json": {
+    "mtime": 1779776023.6971824,
+    "ast_hash": "50527c7f33fa30da025c178e54d7c94e",
+    "semantic_hash": "50527c7f33fa30da025c178e54d7c94e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\whatsapp_baileys_bridge\\tsconfig.json": {
+    "mtime": 1779776023.7054834,
+    "ast_hash": "503f684f9e739a29c1f480b2ebb19cbb",
+    "semantic_hash": "503f684f9e739a29c1f480b2ebb19cbb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\channels\\whatsapp_baileys_bridge\\src\\bridge.ts": {
+    "mtime": 1779776023.7149928,
+    "ast_hash": "2878764c2a5ef44e28337128b8644cfa",
+    "semantic_hash": "2878764c2a5ef44e28337128b8644cfa"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\add_cmd.py": {
+    "mtime": 1779776023.7938886,
+    "ast_hash": "01ba418f181d8174abc6ae5495d58dc8",
+    "semantic_hash": "01ba418f181d8174abc6ae5495d58dc8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\agent_cmd.py": {
+    "mtime": 1779776023.7998896,
+    "ast_hash": "064c547f19993265af2e0df99ef2b33e",
+    "semantic_hash": "064c547f19993265af2e0df99ef2b33e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\ask.py": {
+    "mtime": 1779776023.8059015,
+    "ast_hash": "c4f21360c3b3441e4933f62fbef02b48",
+    "semantic_hash": "c4f21360c3b3441e4933f62fbef02b48"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\auth_cmd.py": {
+    "mtime": 1779776023.8125901,
+    "ast_hash": "0522eb7b24226a38ded428756302abc2",
+    "semantic_hash": "0522eb7b24226a38ded428756302abc2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\bench_cmd.py": {
+    "mtime": 1779776023.8181038,
+    "ast_hash": "83039b8b8266c9fd15f738f5a37bb523",
+    "semantic_hash": "83039b8b8266c9fd15f738f5a37bb523"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\channels_cmd.py": {
+    "mtime": 1779834743.3925686,
+    "ast_hash": "6a79f816d083dd45105193f75c99e7d3",
+    "semantic_hash": "6a79f816d083dd45105193f75c99e7d3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\channel_cmd.py": {
+    "mtime": 1779776023.8236053,
+    "ast_hash": "fec54a307ad49142d224aeedbb2d3edd",
+    "semantic_hash": "fec54a307ad49142d224aeedbb2d3edd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\chat_cmd.py": {
+    "mtime": 1779776023.8356516,
+    "ast_hash": "63aa1827594866b6529ec9565fa1819b",
+    "semantic_hash": "63aa1827594866b6529ec9565fa1819b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\compose_cmd.py": {
+    "mtime": 1779776023.8420465,
+    "ast_hash": "f58f83ee7ed022a0eeaf61e7dd8c282d",
+    "semantic_hash": "f58f83ee7ed022a0eeaf61e7dd8c282d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\config_cmd.py": {
+    "mtime": 1779776023.8485584,
+    "ast_hash": "90ba50919948440601d21e4a78836872",
+    "semantic_hash": "90ba50919948440601d21e4a78836872"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\connect_cmd.py": {
+    "mtime": 1779776023.8585749,
+    "ast_hash": "77631be81ac01623a30987c4c0e5de7b",
+    "semantic_hash": "77631be81ac01623a30987c4c0e5de7b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\daemon_cmd.py": {
+    "mtime": 1779776023.8638744,
+    "ast_hash": "f2dcd0b51f49bf13f74bcce0df779f2d",
+    "semantic_hash": "f2dcd0b51f49bf13f74bcce0df779f2d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\dashboard.py": {
+    "mtime": 1779776023.8698754,
+    "ast_hash": "628097dcc1a709f324f7db6438c20916",
+    "semantic_hash": "628097dcc1a709f324f7db6438c20916"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\deep_research_setup_cmd.py": {
+    "mtime": 1779834790.5681067,
+    "ast_hash": "3a770465190c73868029a5a517d8e736",
+    "semantic_hash": "3a770465190c73868029a5a517d8e736"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\digest_cmd.py": {
+    "mtime": 1779776023.8823824,
+    "ast_hash": "6db3bbaa13b74ab9b406dbd5aaff49bf",
+    "semantic_hash": "6db3bbaa13b74ab9b406dbd5aaff49bf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\doctor_cmd.py": {
+    "mtime": 1779900241.6033823,
+    "ast_hash": "ce3364f44bf2a637f6df56dba40209f9",
+    "semantic_hash": "ce3364f44bf2a637f6df56dba40209f9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\eval_cmd.py": {
+    "mtime": 1779776023.8939803,
+    "ast_hash": "b0235b64f4e92091746442cb3bb2b75d",
+    "semantic_hash": "b0235b64f4e92091746442cb3bb2b75d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\feedback_cmd.py": {
+    "mtime": 1779776023.901003,
+    "ast_hash": "311db342cd8e1c00de8a7a05e731e2a2",
+    "semantic_hash": "311db342cd8e1c00de8a7a05e731e2a2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\gateway_cmd.py": {
+    "mtime": 1779776023.9065993,
+    "ast_hash": "0df0019d98d0cb410d575947e3b25710",
+    "semantic_hash": "0df0019d98d0cb410d575947e3b25710"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\hints.py": {
+    "mtime": 1779776023.9132411,
+    "ast_hash": "ad4a37d9741a744676d139b565d3279a",
+    "semantic_hash": "ad4a37d9741a744676d139b565d3279a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\host_cmd.py": {
+    "mtime": 1779776023.9188547,
+    "ast_hash": "9d4b653efc8f55b6929ec13524fccae6",
+    "semantic_hash": "9d4b653efc8f55b6929ec13524fccae6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\init_cmd.py": {
+    "mtime": 1779834882.5211136,
+    "ast_hash": "4b2dd1d91b7e66ce61d0eb8d574d2faf",
+    "semantic_hash": "4b2dd1d91b7e66ce61d0eb8d574d2faf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\log_config.py": {
+    "mtime": 1779776023.9313653,
+    "ast_hash": "1004239d6807f2d66accf14468e13bd3",
+    "semantic_hash": "1004239d6807f2d66accf14468e13bd3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\memory_cmd.py": {
+    "mtime": 1779776023.938384,
+    "ast_hash": "79e4ef0d98b94e642e5fa73674dc427e",
+    "semantic_hash": "79e4ef0d98b94e642e5fa73674dc427e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\mine_cmd.py": {
+    "mtime": 1779776023.9438863,
+    "ast_hash": "b68ad310c9cd51fe71c02173d586788b",
+    "semantic_hash": "b68ad310c9cd51fe71c02173d586788b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\model.py": {
+    "mtime": 1779776023.9508958,
+    "ast_hash": "8174f6d7bdbb05dcc0e24d1a16888d4b",
+    "semantic_hash": "8174f6d7bdbb05dcc0e24d1a16888d4b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\operators_cmd.py": {
+    "mtime": 1779776023.9568422,
+    "ast_hash": "7388bb581f2b3d05db9a71077e802852",
+    "semantic_hash": "7388bb581f2b3d05db9a71077e802852"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\optimize_cmd.py": {
+    "mtime": 1779776023.9633465,
+    "ast_hash": "a4ebf085dbdf2f39d20a015f8a0b6114",
+    "semantic_hash": "a4ebf085dbdf2f39d20a015f8a0b6114"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\pearl_cmd.py": {
+    "mtime": 1779776023.96935,
+    "ast_hash": "435b388980396a19c289f9f1b49f4c6f",
+    "semantic_hash": "435b388980396a19c289f9f1b49f4c6f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\quickstart_cmd.py": {
+    "mtime": 1779776023.9758093,
+    "ast_hash": "b7f4c76787d22c21b1a83002c0a6e655",
+    "semantic_hash": "b7f4c76787d22c21b1a83002c0a6e655"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\registry_cmd.py": {
+    "mtime": 1779776023.981809,
+    "ast_hash": "4d78e28792fba7c1006ce4eca73d5a22",
+    "semantic_hash": "4d78e28792fba7c1006ce4eca73d5a22"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\scan_cmd.py": {
+    "mtime": 1779776023.988821,
+    "ast_hash": "b30c491dd6a97784a67b72b8c5fdbef1",
+    "semantic_hash": "b30c491dd6a97784a67b72b8c5fdbef1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\scheduler_cmd.py": {
+    "mtime": 1779776023.9953306,
+    "ast_hash": "27e8a47211d5e3376f443757534c187e",
+    "semantic_hash": "27e8a47211d5e3376f443757534c187e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\self_update_cmd.py": {
+    "mtime": 1779776024.001175,
+    "ast_hash": "74597ee7fcbff75752cf3e0e9de6687b",
+    "semantic_hash": "74597ee7fcbff75752cf3e0e9de6687b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\serve.py": {
+    "mtime": 1779776024.007192,
+    "ast_hash": "e75a74e29999bb8b65c758f649a708a9",
+    "semantic_hash": "e75a74e29999bb8b65c758f649a708a9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\skill_cmd.py": {
+    "mtime": 1779776024.0132036,
+    "ast_hash": "a780a22e165ca4893955c160ac9f3c64",
+    "semantic_hash": "a780a22e165ca4893955c160ac9f3c64"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\telemetry_cmd.py": {
+    "mtime": 1779776024.0202072,
+    "ast_hash": "d51d72bc6080b45ebef0a831d261d131",
+    "semantic_hash": "d51d72bc6080b45ebef0a831d261d131"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\tool_cmd.py": {
+    "mtime": 1779776024.0264611,
+    "ast_hash": "f439c55d9bde695e1b23c5e1550a7990",
+    "semantic_hash": "f439c55d9bde695e1b23c5e1550a7990"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\tunnel_cmd.py": {
+    "mtime": 1779776024.032461,
+    "ast_hash": "e59832b7992bec82d58c6f99a1b038f0",
+    "semantic_hash": "e59832b7992bec82d58c6f99a1b038f0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\vault_cmd.py": {
+    "mtime": 1779776024.038966,
+    "ast_hash": "86a152274bfa4b83178d7c51df0926ac",
+    "semantic_hash": "86a152274bfa4b83178d7c51df0926ac"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\workflow_cmd.py": {
+    "mtime": 1779776024.044477,
+    "ast_hash": "628dcfbdb9e552970a3db1cae93ac13c",
+    "semantic_hash": "628dcfbdb9e552970a3db1cae93ac13c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_banner.py": {
+    "mtime": 1779776023.736019,
+    "ast_hash": "666fe19134040750dbd2a9a4899c15ec",
+    "semantic_hash": "666fe19134040750dbd2a9a4899c15ec"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_bg_state.py": {
+    "mtime": 1779776023.7420218,
+    "ast_hash": "34e2221dc53192eb7b3d81672df01fd9",
+    "semantic_hash": "34e2221dc53192eb7b3d81672df01fd9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_bootstrap.py": {
+    "mtime": 1779776023.7478378,
+    "ast_hash": "b928bc489ce319755ad80c4c46f76f1b",
+    "semantic_hash": "b928bc489ce319755ad80c4c46f76f1b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_chat_banner.py": {
+    "mtime": 1779776023.7536988,
+    "ast_hash": "255e0378eede08ae7aca5f3b372759e8",
+    "semantic_hash": "255e0378eede08ae7aca5f3b372759e8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_chat_notifications.py": {
+    "mtime": 1779776023.7617,
+    "ast_hash": "56a7b7fd62b535f5e55f0ef60af43a8e",
+    "semantic_hash": "56a7b7fd62b535f5e55f0ef60af43a8e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_first_run.py": {
+    "mtime": 1779776023.7678263,
+    "ast_hash": "f650a014afa3c2ba2528381f190afdae",
+    "semantic_hash": "f650a014afa3c2ba2528381f190afdae"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_install_detect.py": {
+    "mtime": 1779776023.7753386,
+    "ast_hash": "34909e0791fcee7dff175bb9905f78cd",
+    "semantic_hash": "34909e0791fcee7dff175bb9905f78cd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_tool_names.py": {
+    "mtime": 1779776023.7808523,
+    "ast_hash": "5d17235e430ce52f1d99f216d7c690cd",
+    "semantic_hash": "5d17235e430ce52f1d99f216d7c690cd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\_version_check.py": {
+    "mtime": 1779776023.787871,
+    "ast_hash": "ef49b11eaf166789a4a0b5c9b70948a8",
+    "semantic_hash": "ef49b11eaf166789a4a0b5c9b70948a8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\__init__.py": {
+    "mtime": 1779776023.7244995,
+    "ast_hash": "5d797a447517d774a4124ba3c8f5dfa4",
+    "semantic_hash": "5d797a447517d774a4124ba3c8f5dfa4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\cli\\__main__.py": {
+    "mtime": 1779776023.7304986,
+    "ast_hash": "61a0909cb5c1c7bc5965a43cb50f2cd8",
+    "semantic_hash": "61a0909cb5c1c7bc5965a43cb50f2cd8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\attachment_store.py": {
+    "mtime": 1779776024.0944633,
+    "ast_hash": "4c199bfc2c44aa2e54b147d58195c711",
+    "semantic_hash": "4c199bfc2c44aa2e54b147d58195c711"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\chunker.py": {
+    "mtime": 1779776024.1009676,
+    "ast_hash": "c6ca655ec694045b1c1e7df2e9b5879d",
+    "semantic_hash": "c6ca655ec694045b1c1e7df2e9b5879d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\discord.py": {
+    "mtime": 1779843350.5693202,
+    "ast_hash": "c1b1863348f0f2a16b0556e668462b6b",
+    "semantic_hash": "c1b1863348f0f2a16b0556e668462b6b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\dropbox.py": {
+    "mtime": 1779776024.1069875,
+    "ast_hash": "136a5b3a73d26f3819c04855cb05ed44",
+    "semantic_hash": "136a5b3a73d26f3819c04855cb05ed44"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\edge.py": {
+    "mtime": 1779843218.5265868,
+    "ast_hash": "a79c9e2064ec1940619795d3148d0a86",
+    "semantic_hash": "a79c9e2064ec1940619795d3148d0a86"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\embeddings.py": {
+    "mtime": 1779776024.1192775,
+    "ast_hash": "296bc6c38c001f229292d5b2d2619597",
+    "semantic_hash": "296bc6c38c001f229292d5b2d2619597"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\embedding_store.py": {
+    "mtime": 1779776024.1132717,
+    "ast_hash": "256e1133511e29a0509b64946828b9dc",
+    "semantic_hash": "256e1133511e29a0509b64946828b9dc"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\gcalendar.py": {
+    "mtime": 1779776024.1257863,
+    "ast_hash": "96ccc6c65e5bf1895646ebe61b7c8d17",
+    "semantic_hash": "96ccc6c65e5bf1895646ebe61b7c8d17"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\gcontacts.py": {
+    "mtime": 1779776024.1317885,
+    "ast_hash": "dde37fda3767a664210e8ef5e30dfb38",
+    "semantic_hash": "dde37fda3767a664210e8ef5e30dfb38"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\gdrive.py": {
+    "mtime": 1779776024.1376,
+    "ast_hash": "de5d0f7cc8be20889ee6d6868ead5f0a",
+    "semantic_hash": "de5d0f7cc8be20889ee6d6868ead5f0a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\github_notifications.py": {
+    "mtime": 1779920929.19111,
+    "ast_hash": "e82bcf9e6b9cdf84c638eea92d8e1f31",
+    "semantic_hash": "e82bcf9e6b9cdf84c638eea92d8e1f31"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\gmail.py": {
+    "mtime": 1779776024.1501098,
+    "ast_hash": "051fd6d751a20b40f12d4ac4d8ba5093",
+    "semantic_hash": "051fd6d751a20b40f12d4ac4d8ba5093"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\gmail_imap.py": {
+    "mtime": 1779776024.1574595,
+    "ast_hash": "63eb54e9d6b190670f438dbd1bcc3d88",
+    "semantic_hash": "63eb54e9d6b190670f438dbd1bcc3d88"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\google_auth.py": {
+    "mtime": 1779776024.1637595,
+    "ast_hash": "6f2842accd64b13a0a50ac76fea08960",
+    "semantic_hash": "6f2842accd64b13a0a50ac76fea08960"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\google_tasks.py": {
+    "mtime": 1779776024.1697605,
+    "ast_hash": "345a7fb748a3cd8cc42cb38a9a9f8147",
+    "semantic_hash": "345a7fb748a3cd8cc42cb38a9a9f8147"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\granola.py": {
+    "mtime": 1779776024.176269,
+    "ast_hash": "0690a8a6f27ea4c9a03872aba37f712e",
+    "semantic_hash": "0690a8a6f27ea4c9a03872aba37f712e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\hackernews.py": {
+    "mtime": 1779776024.1832705,
+    "ast_hash": "58651108294f1f14f6ceda1a82b040b4",
+    "semantic_hash": "58651108294f1f14f6ceda1a82b040b4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\hybrid_search.py": {
+    "mtime": 1779776024.189914,
+    "ast_hash": "b86203b04721de6907a3c3a201f3dc9f",
+    "semantic_hash": "b86203b04721de6907a3c3a201f3dc9f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\ide_workspaces.py": {
+    "mtime": 1779851204.6643991,
+    "ast_hash": "29e86c5245196a1d116d01c954295e78",
+    "semantic_hash": "29e86c5245196a1d116d01c954295e78"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\local_folder.py": {
+    "mtime": 1779843133.923635,
+    "ast_hash": "ace6c41959f87a0399fa52ad9ae92661",
+    "semantic_hash": "ace6c41959f87a0399fa52ad9ae92661"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\mstodo.py": {
+    "mtime": 1779842406.1346767,
+    "ast_hash": "2ac93f95fbc42a3e9b7a3049e51a8e3c",
+    "semantic_hash": "2ac93f95fbc42a3e9b7a3049e51a8e3c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\ms_graph_auth.py": {
+    "mtime": 1779842166.4843943,
+    "ast_hash": "3969d047c9ff995cb3d9b927b91ce672",
+    "semantic_hash": "3969d047c9ff995cb3d9b927b91ce672"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\news_rss.py": {
+    "mtime": 1779920993.907621,
+    "ast_hash": "ec90ce0f1734afc4d8c1716525665a81",
+    "semantic_hash": "ec90ce0f1734afc4d8c1716525665a81"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\notion.py": {
+    "mtime": 1779776024.2092955,
+    "ast_hash": "cfdae060cc19650bb9951249e1196243",
+    "semantic_hash": "cfdae060cc19650bb9951249e1196243"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\oauth.py": {
+    "mtime": 1779921218.9820867,
+    "ast_hash": "05804ec51da1f076121ec4d6e46ab035",
+    "semantic_hash": "05804ec51da1f076121ec4d6e46ab035"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\obsidian.py": {
+    "mtime": 1779776024.2213972,
+    "ast_hash": "ca8253b0b3ee7b27f9d915592ef969a2",
+    "semantic_hash": "ca8253b0b3ee7b27f9d915592ef969a2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\onedrive.py": {
+    "mtime": 1779842321.0933192,
+    "ast_hash": "8a9abd0a2b860370537723a0c25817c3",
+    "semantic_hash": "8a9abd0a2b860370537723a0c25817c3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\onenote.py": {
+    "mtime": 1779842224.6953268,
+    "ast_hash": "3a2ec6b07791bfa83a933fb1832b76b5",
+    "semantic_hash": "3a2ec6b07791bfa83a933fb1832b76b5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\oura.py": {
+    "mtime": 1779920945.798229,
+    "ast_hash": "3530c387a9aec6e5c8a9af410bcb3e05",
+    "semantic_hash": "3530c387a9aec6e5c8a9af410bcb3e05"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\outlook.py": {
+    "mtime": 1779776024.2334073,
+    "ast_hash": "1dfa415a5257746a0e54bdebd4fb71a0",
+    "semantic_hash": "1dfa415a5257746a0e54bdebd4fb71a0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\phone_link.py": {
+    "mtime": 1779843535.190258,
+    "ast_hash": "d3e5eaa5bdbde53f0ffed5fe9bec881b",
+    "semantic_hash": "d3e5eaa5bdbde53f0ffed5fe9bec881b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\pipeline.py": {
+    "mtime": 1779776024.241058,
+    "ast_hash": "83507de0c9193e089c784450e43685ca",
+    "semantic_hash": "83507de0c9193e089c784450e43685ca"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\retriever.py": {
+    "mtime": 1779776024.2475698,
+    "ast_hash": "490c8650eba76417e6a792b3258cca6a",
+    "semantic_hash": "490c8650eba76417e6a792b3258cca6a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\scheduler.py": {
+    "mtime": 1779776024.2535844,
+    "ast_hash": "b43da5f446434b233358765324c6746d",
+    "semantic_hash": "b43da5f446434b233358765324c6746d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\slack_connector.py": {
+    "mtime": 1779776024.262108,
+    "ast_hash": "385681a8bd5113af4ad4b193a456d9b3",
+    "semantic_hash": "385681a8bd5113af4ad4b193a456d9b3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\spotify.py": {
+    "mtime": 1779921243.0206842,
+    "ast_hash": "1e65c8352ec691bc35c73c898d322146",
+    "semantic_hash": "1e65c8352ec691bc35c73c898d322146"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\store.py": {
+    "mtime": 1779776024.2745507,
+    "ast_hash": "4107dd2456bacfd63015116f4224cb90",
+    "semantic_hash": "4107dd2456bacfd63015116f4224cb90"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\strava.py": {
+    "mtime": 1779921265.1324852,
+    "ast_hash": "503da815d35eac5323d1d6a252db7975",
+    "semantic_hash": "503da815d35eac5323d1d6a252db7975"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\sync_engine.py": {
+    "mtime": 1779776024.2875626,
+    "ast_hash": "4ba120a451d5d1f3e3a995f53394c5ee",
+    "semantic_hash": "4ba120a451d5d1f3e3a995f53394c5ee"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\weather.py": {
+    "mtime": 1780081648.820433,
+    "ast_hash": "fae773c212d1b30de0db0f05fc884661",
+    "semantic_hash": "fae773c212d1b30de0db0f05fc884661"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\whatsapp.py": {
+    "mtime": 1779776024.2990687,
+    "ast_hash": "69436a1d91a4cdb3b75725d846feac23",
+    "semantic_hash": "69436a1d91a4cdb3b75725d846feac23"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\_stubs.py": {
+    "mtime": 1779776024.060998,
+    "ast_hash": "a15c3531fa77851094ea8c90256c0cc3",
+    "semantic_hash": "a15c3531fa77851094ea8c90256c0cc3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\connectors\\__init__.py": {
+    "mtime": 1779920168.4105814,
+    "ast_hash": "0ed572ec1d9de0f92a9f5252444497a7",
+    "semantic_hash": "0ed572ec1d9de0f92a9f5252444497a7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\core\\config.py": {
+    "mtime": 1779932108.9534814,
+    "ast_hash": "7144c3f123eb6990894c86c139f1bfd3",
+    "semantic_hash": "7144c3f123eb6990894c86c139f1bfd3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\core\\events.py": {
+    "mtime": 1779776024.3293748,
+    "ast_hash": "da65e7cbd369727df06b584603e4c634",
+    "semantic_hash": "da65e7cbd369727df06b584603e4c634"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\core\\registry.py": {
+    "mtime": 1779776024.3353827,
+    "ast_hash": "e14e28ae40d78e999c75798af7f7f27a",
+    "semantic_hash": "e14e28ae40d78e999c75798af7f7f27a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\core\\types.py": {
+    "mtime": 1779776024.3418972,
+    "ast_hash": "e3f6f31e50722425f7fd857b3e8163ae",
+    "semantic_hash": "e3f6f31e50722425f7fd857b3e8163ae"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\core\\__init__.py": {
+    "mtime": 1779776024.3095944,
+    "ast_hash": "968a21e5865aaa2e661d5f7b12c22ded",
+    "semantic_hash": "968a21e5865aaa2e661d5f7b12c22ded"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\daemon\\gateway.py": {
+    "mtime": 1779776024.3569307,
+    "ast_hash": "e41b8c3bacc25762b1a79c40a9e0b502",
+    "semantic_hash": "e41b8c3bacc25762b1a79c40a9e0b502"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\daemon\\service.py": {
+    "mtime": 1779776024.3632007,
+    "ast_hash": "b313401f3acbbf09a75fde992bac26b8",
+    "semantic_hash": "b313401f3acbbf09a75fde992bac26b8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\daemon\\session_expiry.py": {
+    "mtime": 1779776024.3692043,
+    "ast_hash": "8b0400e6621fbc4b9aaafc9b1430c2f4",
+    "semantic_hash": "8b0400e6621fbc4b9aaafc9b1430c2f4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\daemon\\__init__.py": {
+    "mtime": 1779776024.351912,
+    "ast_hash": "5de1980dee48c44fc3e850f3a8b673f6",
+    "semantic_hash": "5de1980dee48c44fc3e850f3a8b673f6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\apple_fm_shim.py": {
+    "mtime": 1779776024.409285,
+    "ast_hash": "4b9bb406e73a82db9fe7c05adb12df6b",
+    "semantic_hash": "4b9bb406e73a82db9fe7c05adb12df6b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\cloud.py": {
+    "mtime": 1779776024.417504,
+    "ast_hash": "bb2a000f8194e18a2eea5e5cba3a1ca5",
+    "semantic_hash": "bb2a000f8194e18a2eea5e5cba3a1ca5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\gemma_cpp.py": {
+    "mtime": 1779776024.424012,
+    "ast_hash": "2bf0c418c63161e7e08950249ef6950b",
+    "semantic_hash": "2bf0c418c63161e7e08950249ef6950b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\litellm.py": {
+    "mtime": 1779776024.4300115,
+    "ast_hash": "4720cca1be3c14bd1ee6e623468cf581",
+    "semantic_hash": "4720cca1be3c14bd1ee6e623468cf581"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\multi.py": {
+    "mtime": 1779776024.4370232,
+    "ast_hash": "6fd69ac3c142ad5de4fd45e24a67e97c",
+    "semantic_hash": "6fd69ac3c142ad5de4fd45e24a67e97c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\nexa_shim.py": {
+    "mtime": 1779776024.443527,
+    "ast_hash": "8c8979c580743b31ca410790ef9badf0",
+    "semantic_hash": "8c8979c580743b31ca410790ef9badf0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\ollama.py": {
+    "mtime": 1779776024.449031,
+    "ast_hash": "0480c2bb07bbcf070bfadce3cdfd2b7c",
+    "semantic_hash": "0480c2bb07bbcf070bfadce3cdfd2b7c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\openai_compat_engines.py": {
+    "mtime": 1779776024.456046,
+    "ast_hash": "e6e20d2039e98797e8b886cc10886c0c",
+    "semantic_hash": "e6e20d2039e98797e8b886cc10886c0c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\_base.py": {
+    "mtime": 1779776024.3837473,
+    "ast_hash": "357aa1f7c98867ddbe8d4f19ebedb126",
+    "semantic_hash": "357aa1f7c98867ddbe8d4f19ebedb126"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\_discovery.py": {
+    "mtime": 1780060219.4697049,
+    "ast_hash": "40524a52416de04e519c6dd67912229b",
+    "semantic_hash": "40524a52416de04e519c6dd67912229b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\_openai_compat.py": {
+    "mtime": 1779776024.3973672,
+    "ast_hash": "cd62356f0bbc750e9ad0cc68594c62f6",
+    "semantic_hash": "cd62356f0bbc750e9ad0cc68594c62f6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\_stubs.py": {
+    "mtime": 1779776024.4033904,
+    "ast_hash": "0f85dd756ac028def02dcc5ee26f68ec",
+    "semantic_hash": "0f85dd756ac028def02dcc5ee26f68ec"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\engine\\__init__.py": {
+    "mtime": 1779776024.3782432,
+    "ast_hash": "7300542c8d7c3f171924a06c06c6005e",
+    "semantic_hash": "7300542c8d7c3f171924a06c06c6005e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\cli.py": {
+    "mtime": 1779776024.4780598,
+    "ast_hash": "241a94c225cf68f41d2053ddf46602ab",
+    "semantic_hash": "241a94c225cf68f41d2053ddf46602ab"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\skill_benchmark.py": {
+    "mtime": 1779776024.4842207,
+    "ast_hash": "81975e84d6cb3e539b7b31be1cbe316c",
+    "semantic_hash": "81975e84d6cb3e539b7b31be1cbe316c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\__init__.py": {
+    "mtime": 1779776024.4655552,
+    "ast_hash": "28d95636b8ca6b3197b53922b509d6b6",
+    "semantic_hash": "28d95636b8ca6b3197b53922b509d6b6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\__main__.py": {
+    "mtime": 1779776024.4715545,
+    "ast_hash": "7e62aedec38ba0e38be866967533e479",
+    "semantic_hash": "7e62aedec38ba0e38be866967533e479"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\jarvis_agent.py": {
+    "mtime": 1779776024.5082636,
+    "ast_hash": "241468db9762f9124a17ee8082d151c3",
+    "semantic_hash": "241468db9762f9124a17ee8082d151c3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\jarvis_direct.py": {
+    "mtime": 1779776024.5148754,
+    "ast_hash": "761a9ca4779b5afe5d23ad625b623375",
+    "semantic_hash": "761a9ca4779b5afe5d23ad625b623375"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\tb_agent.py": {
+    "mtime": 1779776024.5218945,
+    "ast_hash": "e7a4dfceeea03b26aacc7e65230bd227",
+    "semantic_hash": "e7a4dfceeea03b26aacc7e65230bd227"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\terminalbench_native.py": {
+    "mtime": 1779776024.5294058,
+    "ast_hash": "628d6953155d9cfbcac3694d87d4fba0",
+    "semantic_hash": "628d6953155d9cfbcac3694d87d4fba0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\_commit_util.py": {
+    "mtime": 1779776024.501755,
+    "ast_hash": "ec244951f28e8be248adc5edf5308c74",
+    "semantic_hash": "ec244951f28e8be248adc5edf5308c74"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\__init__.py": {
+    "mtime": 1779776024.4952438,
+    "ast_hash": "a40f47bfa9eda671e651394fd5f464b3",
+    "semantic_hash": "a40f47bfa9eda671e651394fd5f464b3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\hermes_agent.py": {
+    "mtime": 1779776024.5589888,
+    "ast_hash": "28951e32cfd3304a1cd6be740d96421b",
+    "semantic_hash": "28951e32cfd3304a1cd6be740d96421b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\openclaw.py": {
+    "mtime": 1779776024.5644016,
+    "ast_hash": "9221a15e9db878644355648f04892d95",
+    "semantic_hash": "9221a15e9db878644355648f04892d95"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\_subprocess_runner.py": {
+    "mtime": 1779776024.551975,
+    "ast_hash": "66e4560a9b84d96f029b932c508162b4",
+    "semantic_hash": "66e4560a9b84d96f029b932c508162b4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\__init__.py": {
+    "mtime": 1779776024.5444684,
+    "ast_hash": "00f8098ca24f0ade0e8e545129c913e5",
+    "semantic_hash": "00f8098ca24f0ade0e8e545129c913e5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\_runners\\hermes_runner.py": {
+    "mtime": 1779776024.5819259,
+    "ast_hash": "22f4d4c0adebaf4cda469b426704c301",
+    "semantic_hash": "22f4d4c0adebaf4cda469b426704c301"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\_runners\\openclaw_runner.mjs": {
+    "mtime": 1779776024.5889559,
+    "ast_hash": "2c154b04253b11e807900636e5100a2d",
+    "semantic_hash": "2c154b04253b11e807900636e5100a2d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\backends\\external\\_runners\\__init__.py": {
+    "mtime": 1779776024.5759213,
+    "ast_hash": "e09131e8298318a922f585cb7e5dfb5a",
+    "semantic_hash": "e09131e8298318a922f585cb7e5dfb5a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\comparison\\make_configs.py": {
+    "mtime": 1779776024.6109946,
+    "ast_hash": "ed9888ad09f4a2ea87cd3e4199b31829",
+    "semantic_hash": "ed9888ad09f4a2ea87cd3e4199b31829"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\comparison\\table_gen.py": {
+    "mtime": 1779776024.6175127,
+    "ast_hash": "866e2e735698d8ba8118335103c2283b",
+    "semantic_hash": "866e2e735698d8ba8118335103c2283b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\comparison\\third_party.py": {
+    "mtime": 1779776024.623744,
+    "ast_hash": "b160aa6fd3f22768194410d0a62eb427",
+    "semantic_hash": "b160aa6fd3f22768194410d0a62eb427"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\comparison\\__init__.py": {
+    "mtime": 1779776024.6044822,
+    "ast_hash": "4c746b41ad500fbad7da356019bb7e07",
+    "semantic_hash": "4c746b41ad500fbad7da356019bb7e07"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\agentic_runner.py": {
+    "mtime": 1779776025.5822594,
+    "ast_hash": "acd00146286691b4f791e74c5a4637de",
+    "semantic_hash": "acd00146286691b4f791e74c5a4637de"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\backend.py": {
+    "mtime": 1779776025.5882702,
+    "ast_hash": "e7ed5a615f5988c06f3473ed03f8891b",
+    "semantic_hash": "e7ed5a615f5988c06f3473ed03f8891b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\config.py": {
+    "mtime": 1779776025.595778,
+    "ast_hash": "307b7ae71a3081221d5091acc6920b3d",
+    "semantic_hash": "307b7ae71a3081221d5091acc6920b3d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\dataset.py": {
+    "mtime": 1779776025.601818,
+    "ast_hash": "b3a701608e3d51f72610b1d4a6067c84",
+    "semantic_hash": "b3a701608e3d51f72610b1d4a6067c84"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\display.py": {
+    "mtime": 1779776025.6081314,
+    "ast_hash": "fe36df578260b0b2ea7995ccc3cdfc13",
+    "semantic_hash": "fe36df578260b0b2ea7995ccc3cdfc13"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\environment.py": {
+    "mtime": 1779776025.61465,
+    "ast_hash": "9731701ca79cf1caf13cb18aca3e3b99",
+    "semantic_hash": "9731701ca79cf1caf13cb18aca3e3b99"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\event_recorder.py": {
+    "mtime": 1779776025.621655,
+    "ast_hash": "9881bb7a93126cb4a050bf2b3c66a629",
+    "semantic_hash": "9881bb7a93126cb4a050bf2b3c66a629"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\export.py": {
+    "mtime": 1779776025.62717,
+    "ast_hash": "860021e67f47efe463b5fd85c92268a3",
+    "semantic_hash": "860021e67f47efe463b5fd85c92268a3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\pricing.py": {
+    "mtime": 1779776025.6336727,
+    "ast_hash": "da3addd35964b3d1eb0494d62d462e44",
+    "semantic_hash": "da3addd35964b3d1eb0494d62d462e44"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\runner.py": {
+    "mtime": 1779776025.639684,
+    "ast_hash": "3ea60204ab40eced343c8c63ae084188",
+    "semantic_hash": "3ea60204ab40eced343c8c63ae084188"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\scorer.py": {
+    "mtime": 1779776025.6461911,
+    "ast_hash": "9c2e4f184d3865a20e25bd03bd7d5be2",
+    "semantic_hash": "9c2e4f184d3865a20e25bd03bd7d5be2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\splits.py": {
+    "mtime": 1779776025.6523106,
+    "ast_hash": "bdfe8476f561a322b6b025ac2bad6057",
+    "semantic_hash": "bdfe8476f561a322b6b025ac2bad6057"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\trace.py": {
+    "mtime": 1779776025.658844,
+    "ast_hash": "2af6cf48c829f857027776368a9f98a7",
+    "semantic_hash": "2af6cf48c829f857027776368a9f98a7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\tracker.py": {
+    "mtime": 1779776025.6643493,
+    "ast_hash": "89412c17d6e1e7c382fcece2f5897685",
+    "semantic_hash": "89412c17d6e1e7c382fcece2f5897685"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\types.py": {
+    "mtime": 1779776025.6713493,
+    "ast_hash": "ba7a36043544b626faa50b0f5bf978ab",
+    "semantic_hash": "ba7a36043544b626faa50b0f5bf978ab"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\core\\__init__.py": {
+    "mtime": 1779776025.5762591,
+    "ast_hash": "6a1b90ee1dbcfa855c25f265f846fefb",
+    "semantic_hash": "6a1b90ee1dbcfa855c25f265f846fefb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\adp.py": {
+    "mtime": 1779776025.6888714,
+    "ast_hash": "a599b6d8366549a7330b95f6b3f9fcc3",
+    "semantic_hash": "a599b6d8366549a7330b95f6b3f9fcc3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\ama_bench.py": {
+    "mtime": 1779776025.694381,
+    "ast_hash": "5ba70674d44774d27074f0fcf94ddd0b",
+    "semantic_hash": "5ba70674d44774d27074f0fcf94ddd0b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\browser_assistant.py": {
+    "mtime": 1779776025.700889,
+    "ast_hash": "6a27d6481cb875bcba78347c01377072",
+    "semantic_hash": "6a27d6481cb875bcba78347c01377072"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\coding_assistant.py": {
+    "mtime": 1779776025.7073998,
+    "ast_hash": "2ebaf0d3948c4ff80df6843214e833bb",
+    "semantic_hash": "2ebaf0d3948c4ff80df6843214e833bb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\coding_task.py": {
+    "mtime": 1779776025.7133996,
+    "ast_hash": "43f5edacc9b96960be853b9640e3b5c7",
+    "semantic_hash": "43f5edacc9b96960be853b9640e3b5c7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\daily_digest.py": {
+    "mtime": 1779776025.7206633,
+    "ast_hash": "e981c8a03a167b8e4bc7c15985d57334",
+    "semantic_hash": "e981c8a03a167b8e4bc7c15985d57334"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\deepplanning.py": {
+    "mtime": 1779776025.7261689,
+    "ast_hash": "eb1d4127d5f55ca02a0f6871bca15f03",
+    "semantic_hash": "eb1d4127d5f55ca02a0f6871bca15f03"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\doc_qa.py": {
+    "mtime": 1779776025.7321694,
+    "ast_hash": "321d518992936734e898c99aac2ac136",
+    "semantic_hash": "321d518992936734e898c99aac2ac136"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\email_triage.py": {
+    "mtime": 1779776025.7396953,
+    "ast_hash": "534a030f975fce393d4578f85a2edd16",
+    "semantic_hash": "534a030f975fce393d4578f85a2edd16"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\frames.py": {
+    "mtime": 1779776025.7452035,
+    "ast_hash": "a0cf50ff44e0ce659b55010e541001d4",
+    "semantic_hash": "a0cf50ff44e0ce659b55010e541001d4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\gaia.py": {
+    "mtime": 1779776025.7517095,
+    "ast_hash": "82dc68d85e075084c1a9fd00cc9275bf",
+    "semantic_hash": "82dc68d85e075084c1a9fd00cc9275bf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\generalthoughts.py": {
+    "mtime": 1779776025.7587328,
+    "ast_hash": "0cd46d8ff43df066b18e86d76220376c",
+    "semantic_hash": "0cd46d8ff43df066b18e86d76220376c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\gpqa.py": {
+    "mtime": 1779776025.765157,
+    "ast_hash": "53771a53950214387236b9118bd17ac1",
+    "semantic_hash": "53771a53950214387236b9118bd17ac1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\hle.py": {
+    "mtime": 1779776025.7711575,
+    "ast_hash": "62bc2e86b9c93c44be16416632448906",
+    "semantic_hash": "62bc2e86b9c93c44be16416632448906"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\ipw_mixed.py": {
+    "mtime": 1779776025.7773907,
+    "ast_hash": "c37df488712a449d1901afb754c987aa",
+    "semantic_hash": "c37df488712a449d1901afb754c987aa"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\knowledge_base.py": {
+    "mtime": 1779776025.7840052,
+    "ast_hash": "530cc0d434094e2516783a671279af1e",
+    "semantic_hash": "530cc0d434094e2516783a671279af1e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\lifelong_agent.py": {
+    "mtime": 1779776025.7900274,
+    "ast_hash": "dd82922955a5014e551d26d71c2ecc9c",
+    "semantic_hash": "dd82922955a5014e551d26d71c2ecc9c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\livecodebench.py": {
+    "mtime": 1779776025.7961473,
+    "ast_hash": "0c32bb6afb192ac1fe61db22b2655602",
+    "semantic_hash": "0c32bb6afb192ac1fe61db22b2655602"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\liveresearch.py": {
+    "mtime": 1779776025.8011508,
+    "ast_hash": "cbb811daae40017b8cf425d126076aa4",
+    "semantic_hash": "cbb811daae40017b8cf425d126076aa4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\liveresearchbench.py": {
+    "mtime": 1779776025.8078735,
+    "ast_hash": "e821ed651af3b9c8e1fe48e26b685353",
+    "semantic_hash": "e821ed651af3b9c8e1fe48e26b685353"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\loghub.py": {
+    "mtime": 1779776025.8144238,
+    "ast_hash": "766032ac66069e576396d41cc2824631",
+    "semantic_hash": "766032ac66069e576396d41cc2824631"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\math500.py": {
+    "mtime": 1779776025.8204231,
+    "ast_hash": "60ec5461cc87af06df34ec283cc9e5f3",
+    "semantic_hash": "60ec5461cc87af06df34ec283cc9e5f3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\mmlu_pro.py": {
+    "mtime": 1779776025.8269424,
+    "ast_hash": "50d2f7b644c9e8cfdd9aee21f3bedb7b",
+    "semantic_hash": "50d2f7b644c9e8cfdd9aee21f3bedb7b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\morning_brief.py": {
+    "mtime": 1779776025.8319397,
+    "ast_hash": "cda2a642a0d49a983f3d54f53fba91fa",
+    "semantic_hash": "cda2a642a0d49a983f3d54f53fba91fa"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\natural_reasoning.py": {
+    "mtime": 1779776025.8395393,
+    "ast_hash": "a6644d81208175416510c81c56a9a9d0",
+    "semantic_hash": "a6644d81208175416510c81c56a9a9d0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\paperarena.py": {
+    "mtime": 1779776025.8460479,
+    "ast_hash": "947bf3abc2415669de13ee6c8f48fc46",
+    "semantic_hash": "947bf3abc2415669de13ee6c8f48fc46"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\pinchbench.py": {
+    "mtime": 1779776025.851556,
+    "ast_hash": "04bfe52c4782e1b009799ff32f52edd6",
+    "semantic_hash": "04bfe52c4782e1b009799ff32f52edd6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\research_mining.py": {
+    "mtime": 1779776025.8588452,
+    "ast_hash": "9c8fc6d2bbcf0213ff0e8d412243913e",
+    "semantic_hash": "9c8fc6d2bbcf0213ff0e8d412243913e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\security_scanner.py": {
+    "mtime": 1779776025.8768556,
+    "ast_hash": "68b043a12894089343e0b7479d4112f0",
+    "semantic_hash": "68b043a12894089343e0b7479d4112f0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\simpleqa.py": {
+    "mtime": 1779776025.881736,
+    "ast_hash": "7f98bf3f5d91f6d2f0b790d75e54acb6",
+    "semantic_hash": "7f98bf3f5d91f6d2f0b790d75e54acb6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\supergpqa.py": {
+    "mtime": 1779776025.8887527,
+    "ast_hash": "ebe62acd57a589068e886e3a7ff9b555",
+    "semantic_hash": "ebe62acd57a589068e886e3a7ff9b555"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\swebench.py": {
+    "mtime": 1779776025.8952625,
+    "ast_hash": "71c302334c84d917ec37a19b16b1411e",
+    "semantic_hash": "71c302334c84d917ec37a19b16b1411e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\swefficiency.py": {
+    "mtime": 1779776025.9018931,
+    "ast_hash": "1be91f1a48e2bc0e847bfcb6bb7e35a5",
+    "semantic_hash": "1be91f1a48e2bc0e847bfcb6bb7e35a5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\taubench.py": {
+    "mtime": 1779776025.9081843,
+    "ast_hash": "09a2c0f2b23cd48df787621360b837e1",
+    "semantic_hash": "09a2c0f2b23cd48df787621360b837e1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\terminalbench.py": {
+    "mtime": 1779776025.9146914,
+    "ast_hash": "8a8ec71136a7a310c7dc478317e0f1a8",
+    "semantic_hash": "8a8ec71136a7a310c7dc478317e0f1a8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\terminalbench_native.py": {
+    "mtime": 1779776025.920691,
+    "ast_hash": "3d8f59fdc57774c7028bae31ed9a15e4",
+    "semantic_hash": "3d8f59fdc57774c7028bae31ed9a15e4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\terminalbench_v2_1.py": {
+    "mtime": 1779776025.9271984,
+    "ast_hash": "f5e1d93e9af3598c029fde77188bba7c",
+    "semantic_hash": "f5e1d93e9af3598c029fde77188bba7c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\toolcall15.py": {
+    "mtime": 1779776025.9331987,
+    "ast_hash": "c94e4c0a130c1c61950c875903a7804a",
+    "semantic_hash": "c94e4c0a130c1c61950c875903a7804a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\toolorchestra.py": {
+    "mtime": 1779776025.9393263,
+    "ast_hash": "157bbf674f4cba2c20f18b0fd4f55053",
+    "semantic_hash": "157bbf674f4cba2c20f18b0fd4f55053"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\webchorearena.py": {
+    "mtime": 1779776025.94583,
+    "ast_hash": "a8e46ef6ec9d357fa317e51622fb2657",
+    "semantic_hash": "a8e46ef6ec9d357fa317e51622fb2657"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\wildchat.py": {
+    "mtime": 1779776025.9513345,
+    "ast_hash": "02ed4b31b05839708bfa8411b6163768",
+    "semantic_hash": "02ed4b31b05839708bfa8411b6163768"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\workarena.py": {
+    "mtime": 1779776025.9573557,
+    "ast_hash": "b01e3a3f3bc7f516175afaf9427f3517",
+    "semantic_hash": "b01e3a3f3bc7f516175afaf9427f3517"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\datasets\\__init__.py": {
+    "mtime": 1779776025.6818564,
+    "ast_hash": "cf66022fad4deb1b556b38bd54391527",
+    "semantic_hash": "cf66022fad4deb1b556b38bd54391527"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\environments\\base.py": {
+    "mtime": 1779776025.9745796,
+    "ast_hash": "72b22199f172bcd2c26d3583eb2cad8a",
+    "semantic_hash": "72b22199f172bcd2c26d3583eb2cad8a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\environments\\lifelong_agent_env.py": {
+    "mtime": 1779776025.9805796,
+    "ast_hash": "c3b69f510907775f7f34b5a4b534d5f6",
+    "semantic_hash": "c3b69f510907775f7f34b5a4b534d5f6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\environments\\__init__.py": {
+    "mtime": 1779776025.9680758,
+    "ast_hash": "d9975dee4aeee463a80d8bcc658e2d08",
+    "semantic_hash": "d9975dee4aeee463a80d8bcc658e2d08"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\pinchbench_env.py": {
+    "mtime": 1779776025.9970999,
+    "ast_hash": "d8b0f031581c2bbfe1cce2f8b28dbf96",
+    "semantic_hash": "d8b0f031581c2bbfe1cce2f8b28dbf96"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\taubench_env.py": {
+    "mtime": 1779776026.0032032,
+    "ast_hash": "ab9e1f636efe6fd3e5b848b34e581adf",
+    "semantic_hash": "ab9e1f636efe6fd3e5b848b34e581adf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\terminalbench_env.py": {
+    "mtime": 1779776026.009553,
+    "ast_hash": "18094388b3b74c7bcc738ae64a281825",
+    "semantic_hash": "18094388b3b74c7bcc738ae64a281825"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\terminalbench_v2_1_env.py": {
+    "mtime": 1779776026.0150664,
+    "ast_hash": "29d315a9e24ec6cfc504426ec819284f",
+    "semantic_hash": "29d315a9e24ec6cfc504426ec819284f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\webchorearena_env.py": {
+    "mtime": 1779776026.0222175,
+    "ast_hash": "ea8a74588509de2b5947e000ecce1c53",
+    "semantic_hash": "ea8a74588509de2b5947e000ecce1c53"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\workarena_env.py": {
+    "mtime": 1779776026.0285704,
+    "ast_hash": "6a0aaa44d32d4b061ad916957f90ac23",
+    "semantic_hash": "6a0aaa44d32d4b061ad916957f90ac23"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\execution\\__init__.py": {
+    "mtime": 1779776025.9905934,
+    "ast_hash": "73099ca54c3f839140d735b6a2443820",
+    "semantic_hash": "73099ca54c3f839140d735b6a2443820"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\ama_bench_judge.py": {
+    "mtime": 1779776026.0504262,
+    "ast_hash": "6191282ac9b222c1f966fce8aadc2162",
+    "semantic_hash": "6191282ac9b222c1f966fce8aadc2162"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\browser_assistant.py": {
+    "mtime": 1779776026.0572069,
+    "ast_hash": "9ab60172d495360ddcb46587c18aa5db",
+    "semantic_hash": "9ab60172d495360ddcb46587c18aa5db"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\coding_assistant.py": {
+    "mtime": 1779776026.0637105,
+    "ast_hash": "a754aa520f17367d4ed1f1b5d67aa484",
+    "semantic_hash": "a754aa520f17367d4ed1f1b5d67aa484"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\coding_task.py": {
+    "mtime": 1779776026.0697117,
+    "ast_hash": "c7518523ddca09e8464e3cfb551cdbf4",
+    "semantic_hash": "c7518523ddca09e8464e3cfb551cdbf4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\daily_digest.py": {
+    "mtime": 1779776026.0762222,
+    "ast_hash": "f3de86edae04b5801d23779da1e9eeb7",
+    "semantic_hash": "f3de86edae04b5801d23779da1e9eeb7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\deepplanning_scorer.py": {
+    "mtime": 1779776026.08222,
+    "ast_hash": "ae9f38842bdc57677627d0c7b3310d7c",
+    "semantic_hash": "ae9f38842bdc57677627d0c7b3310d7c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\doc_qa.py": {
+    "mtime": 1779776026.087783,
+    "ast_hash": "33071ba10e81f3904e29b98d834b1c0e",
+    "semantic_hash": "33071ba10e81f3904e29b98d834b1c0e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\email_triage.py": {
+    "mtime": 1779776026.0942893,
+    "ast_hash": "ed529129f338f49a9c0d6a2092978d7e",
+    "semantic_hash": "ed529129f338f49a9c0d6a2092978d7e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\frames_judge.py": {
+    "mtime": 1779776026.0997944,
+    "ast_hash": "a4c525758e5692c8e2a569bf7ff4e476",
+    "semantic_hash": "a4c525758e5692c8e2a569bf7ff4e476"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\gaia_exact.py": {
+    "mtime": 1779776026.1071925,
+    "ast_hash": "ac1357d1a27572f8b2370ac5acc5f87b",
+    "semantic_hash": "ac1357d1a27572f8b2370ac5acc5f87b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\gpqa_mcq.py": {
+    "mtime": 1779776026.1147106,
+    "ast_hash": "c9ec5f8ab901389aaa8d1699ef0bc397",
+    "semantic_hash": "c9ec5f8ab901389aaa8d1699ef0bc397"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\hle_judge.py": {
+    "mtime": 1779776026.1207144,
+    "ast_hash": "f9a59f52d3bc64a336705cc2b156183c",
+    "semantic_hash": "f9a59f52d3bc64a336705cc2b156183c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\ipw_mixed.py": {
+    "mtime": 1779776026.1262226,
+    "ast_hash": "53b0abc37296e56f59f4c068c1f3be9f",
+    "semantic_hash": "53b0abc37296e56f59f4c068c1f3be9f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\knowledge_base.py": {
+    "mtime": 1779776026.1322222,
+    "ast_hash": "b81df0c495d6f8dba3b6d34ec194e6fc",
+    "semantic_hash": "b81df0c495d6f8dba3b6d34ec194e6fc"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\lifelong_agent_scorer.py": {
+    "mtime": 1779776026.139976,
+    "ast_hash": "82b55a1c46d4cf176a6b2b31bd3fcf48",
+    "semantic_hash": "82b55a1c46d4cf176a6b2b31bd3fcf48"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\livecodebench.py": {
+    "mtime": 1779776026.147488,
+    "ast_hash": "bfaca582385336b6d344447337ef9208",
+    "semantic_hash": "bfaca582385336b6d344447337ef9208"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\liveresearch.py": {
+    "mtime": 1779776026.1540534,
+    "ast_hash": "d5e108aa906e46744fa504021d33c7be",
+    "semantic_hash": "d5e108aa906e46744fa504021d33c7be"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\liveresearchbench.py": {
+    "mtime": 1779776026.1610525,
+    "ast_hash": "e7b7942e6b41e2d212d0cfb85ae35f00",
+    "semantic_hash": "e7b7942e6b41e2d212d0cfb85ae35f00"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\loghub_scorer.py": {
+    "mtime": 1779776026.1747084,
+    "ast_hash": "a88c591568333cacb947edaeb4849f02",
+    "semantic_hash": "a88c591568333cacb947edaeb4849f02"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\mmlu_pro_mcq.py": {
+    "mtime": 1779776026.181708,
+    "ast_hash": "d25cf7b48fffc5ac367831931dabe7e8",
+    "semantic_hash": "d25cf7b48fffc5ac367831931dabe7e8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\morning_brief.py": {
+    "mtime": 1779776026.187726,
+    "ast_hash": "e83c45f23d86d709bb0dc238f4789c15",
+    "semantic_hash": "e83c45f23d86d709bb0dc238f4789c15"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\paperarena_judge.py": {
+    "mtime": 1779776026.1932294,
+    "ast_hash": "6a325ba05098973329ccd83578b29e2d",
+    "semantic_hash": "6a325ba05098973329ccd83578b29e2d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\pinchbench.py": {
+    "mtime": 1779776026.1995199,
+    "ast_hash": "d77584cdab03a002f91f579a44d155a2",
+    "semantic_hash": "d77584cdab03a002f91f579a44d155a2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\reasoning_judge.py": {
+    "mtime": 1779776026.208058,
+    "ast_hash": "83b855636aab806b0f42a8154d1aaf9c",
+    "semantic_hash": "83b855636aab806b0f42a8154d1aaf9c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\research_mining.py": {
+    "mtime": 1779776026.2138731,
+    "ast_hash": "74a9a34595d9b9fc46d9e58b482d52ec",
+    "semantic_hash": "74a9a34595d9b9fc46d9e58b482d52ec"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\security_scanner.py": {
+    "mtime": 1779776026.2198765,
+    "ast_hash": "7f9019e786afefc00b44fea6fde17551",
+    "semantic_hash": "7f9019e786afefc00b44fea6fde17551"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\simpleqa_judge.py": {
+    "mtime": 1779776026.2253835,
+    "ast_hash": "9b0919caf09ccb4c0f58c92d005d7354",
+    "semantic_hash": "9b0919caf09ccb4c0f58c92d005d7354"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\supergpqa_mcq.py": {
+    "mtime": 1779776026.2321572,
+    "ast_hash": "d6ac516816ce86c7f46eba34278f654e",
+    "semantic_hash": "d6ac516816ce86c7f46eba34278f654e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\swebench_harness.py": {
+    "mtime": 1779776026.2377634,
+    "ast_hash": "ea80dcddc092ac721eaae24ddfda29bd",
+    "semantic_hash": "ea80dcddc092ac721eaae24ddfda29bd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\swebench_structural.py": {
+    "mtime": 1779776026.2446687,
+    "ast_hash": "1fbdf41a6998bd6d15ebf2dce42e9d28",
+    "semantic_hash": "1fbdf41a6998bd6d15ebf2dce42e9d28"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\swefficiency_structural.py": {
+    "mtime": 1779776026.2506683,
+    "ast_hash": "7b69bc5e7d5f8e1dab04647237ca30a1",
+    "semantic_hash": "7b69bc5e7d5f8e1dab04647237ca30a1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\taubench.py": {
+    "mtime": 1779776026.2571976,
+    "ast_hash": "38b5802084bda966c6094665d2844ec7",
+    "semantic_hash": "38b5802084bda966c6094665d2844ec7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\terminalbench_judge.py": {
+    "mtime": 1779776026.26546,
+    "ast_hash": "fa81fdeee9b27a17ce8f92d843c7cd23",
+    "semantic_hash": "fa81fdeee9b27a17ce8f92d843c7cd23"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\terminalbench_native_structural.py": {
+    "mtime": 1779776026.2723079,
+    "ast_hash": "8df2c8bf904ce8274174a03c294bc218",
+    "semantic_hash": "8df2c8bf904ce8274174a03c294bc218"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\terminalbench_v2_1.py": {
+    "mtime": 1779776026.2786405,
+    "ast_hash": "1d5144c2f637891fcc93e6fea49ee6a1",
+    "semantic_hash": "1d5144c2f637891fcc93e6fea49ee6a1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\toolcall15.py": {
+    "mtime": 1779776026.2856517,
+    "ast_hash": "93431764d2bb33f822a6bea5c13bbcd0",
+    "semantic_hash": "93431764d2bb33f822a6bea5c13bbcd0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\webchorearena_scorer.py": {
+    "mtime": 1779776026.2916565,
+    "ast_hash": "a513d4aebd21af393b7d74280700b79a",
+    "semantic_hash": "a513d4aebd21af393b7d74280700b79a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\wildchat_judge.py": {
+    "mtime": 1779776026.2991655,
+    "ast_hash": "7820de1920ef0df900a6492c512e5afd",
+    "semantic_hash": "7820de1920ef0df900a6492c512e5afd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\workarena_scorer.py": {
+    "mtime": 1779776026.3061838,
+    "ast_hash": "eda98fba0163eb8450bf278f2dbe1e9c",
+    "semantic_hash": "eda98fba0163eb8450bf278f2dbe1e9c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\_checklist.py": {
+    "mtime": 1779776026.045426,
+    "ast_hash": "3ffdf19354c90cc89c2f5ca84a909261",
+    "semantic_hash": "3ffdf19354c90cc89c2f5ca84a909261"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\scorers\\__init__.py": {
+    "mtime": 1779776026.039932,
+    "ast_hash": "f3ef4e7b2442a335794c016686f5b9a8",
+    "semantic_hash": "f3ef4e7b2442a335794c016686f5b9a8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\conftest.py": {
+    "mtime": 1779776026.3254416,
+    "ast_hash": "523349414b6046b615724273d678101b",
+    "semantic_hash": "523349414b6046b615724273d678101b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_backends.py": {
+    "mtime": 1779776026.333951,
+    "ast_hash": "9604d08f2af5e199a627e24f48b4a017",
+    "semantic_hash": "9604d08f2af5e199a627e24f48b4a017"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_cli_flags.py": {
+    "mtime": 1779776026.3413322,
+    "ast_hash": "d1c412342b65dc6ecd151b1decc0153a",
+    "semantic_hash": "d1c412342b65dc6ecd151b1decc0153a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_config.py": {
+    "mtime": 1779776026.347839,
+    "ast_hash": "48622437fafd55ddb87cc889104e1422",
+    "semantic_hash": "48622437fafd55ddb87cc889104e1422"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_display.py": {
+    "mtime": 1779776026.3548584,
+    "ast_hash": "ef439daa8e74a5abde9371b58e6490d6",
+    "semantic_hash": "ef439daa8e74a5abde9371b58e6490d6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_frames.py": {
+    "mtime": 1779776026.3618574,
+    "ast_hash": "28947256000526096c5747545334001c",
+    "semantic_hash": "28947256000526096c5747545334001c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_gaia.py": {
+    "mtime": 1779776026.3693635,
+    "ast_hash": "0a1eb1b43eab35886ac5942320a535bc",
+    "semantic_hash": "0a1eb1b43eab35886ac5942320a535bc"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_runner.py": {
+    "mtime": 1779776026.3768759,
+    "ast_hash": "25b3bdc990a2e5109176ef89e71f10cb",
+    "semantic_hash": "25b3bdc990a2e5109176ef89e71f10cb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_supergpqa.py": {
+    "mtime": 1779776026.3833792,
+    "ast_hash": "f6ea2771bedfc29d23e9dae6cfba9807",
+    "semantic_hash": "f6ea2771bedfc29d23e9dae6cfba9807"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_types.py": {
+    "mtime": 1779776026.390899,
+    "ast_hash": "726db371066a7a66e6fcb783c36803e8",
+    "semantic_hash": "726db371066a7a66e6fcb783c36803e8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\test_wildchat.py": {
+    "mtime": 1779776026.397405,
+    "ast_hash": "0b02b8d46973156cc89ce50320e9cb2f",
+    "semantic_hash": "0b02b8d46973156cc89ce50320e9cb2f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\tests\\__init__.py": {
+    "mtime": 1779776026.3179357,
+    "ast_hash": "048157c70399a89e5bc0ecf0d4e8fb45",
+    "semantic_hash": "048157c70399a89e5bc0ecf0d4e8fb45"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\trackers\\sheets_tracker.py": {
+    "mtime": 1779776026.4169264,
+    "ast_hash": "d1ac1d28e4c934e62fe1f66c61477ee8",
+    "semantic_hash": "d1ac1d28e4c934e62fe1f66c61477ee8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\trackers\\wandb_tracker.py": {
+    "mtime": 1779776026.4234161,
+    "ast_hash": "f62a74443e989306bb4b6865916f282d",
+    "semantic_hash": "f62a74443e989306bb4b6865916f282d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\evals\\trackers\\__init__.py": {
+    "mtime": 1779776026.4094193,
+    "ast_hash": "220634c25efe2c5f8176b01b250eb89f",
+    "semantic_hash": "220634c25efe2c5f8176b01b250eb89f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\base.py": {
+    "mtime": 1780021111.3392973,
+    "ast_hash": "5967a2236be590389e2d3c9201fcba0f",
+    "semantic_hash": "5967a2236be590389e2d3c9201fcba0f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\registry.py": {
+    "mtime": 1779856795.821046,
+    "ast_hash": "65c08505595037ec119102a6d4a65c0f",
+    "semantic_hash": "65c08505595037ec119102a6d4a65c0f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\_manifest.py": {
+    "mtime": 1779856851.0593252,
+    "ast_hash": "90b18a5cc56ad73ed45c1defc3e18ace",
+    "semantic_hash": "90b18a5cc56ad73ed45c1defc3e18ace"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\__init__.py": {
+    "mtime": 1779856715.724287,
+    "ast_hash": "d8d00432aa24b1c8545080bd280fb3e4",
+    "semantic_hash": "d8d00432aa24b1c8545080bd280fb3e4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\primitives\\docker.py": {
+    "mtime": 1780028495.4944339,
+    "ast_hash": "6c79ffe2cb8d57166a3c1238c11edb06",
+    "semantic_hash": "6c79ffe2cb8d57166a3c1238c11edb06"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\primitives\\files.py": {
+    "mtime": 1779857022.04522,
+    "ast_hash": "ce167e67cb47088fedffdee7fb3a176f",
+    "semantic_hash": "ce167e67cb47088fedffdee7fb3a176f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\primitives\\__init__.py": {
+    "mtime": 1780028510.038026,
+    "ast_hash": "88a536c64c4d42297591c6b5753b4a38",
+    "semantic_hash": "88a536c64c4d42297591c6b5753b4a38"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\recipes\\searxng.py": {
+    "mtime": 1779857122.3076584,
+    "ast_hash": "40cc2b7f67747d808e188f86d20a7eed",
+    "semantic_hash": "40cc2b7f67747d808e188f86d20a7eed"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\installers\\recipes\\__init__.py": {
+    "mtime": 1779857097.25375,
+    "ast_hash": "56f64196102ad8ea88a64c66fd8c33af",
+    "semantic_hash": "56f64196102ad8ea88a64c66fd8c33af"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\intelligence\\model_catalog.py": {
+    "mtime": 1779776026.4413593,
+    "ast_hash": "d56ec725af054ca5edcb1fd6d942ea46",
+    "semantic_hash": "d56ec725af054ca5edcb1fd6d942ea46"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\intelligence\\__init__.py": {
+    "mtime": 1779776026.4344523,
+    "ast_hash": "75db8b6895f3457dd8fbee3f13ea0a6a",
+    "semantic_hash": "75db8b6895f3457dd8fbee3f13ea0a6a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\learning_orchestrator.py": {
+    "mtime": 1779776026.4644928,
+    "ast_hash": "c7047d74acf5f55cdc02a61b717e521a",
+    "semantic_hash": "c7047d74acf5f55cdc02a61b717e521a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\_stubs.py": {
+    "mtime": 1779776026.458938,
+    "ast_hash": "0cf323c4009ed140ffec006f22bd0a15",
+    "semantic_hash": "0cf323c4009ed140ffec006f22bd0a15"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\__init__.py": {
+    "mtime": 1779776026.452379,
+    "ast_hash": "821927abc2d7b3b141312dca4ccf738e",
+    "semantic_hash": "821927abc2d7b3b141312dca4ccf738e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\ace_optimizer.py": {
+    "mtime": 1779776026.479635,
+    "ast_hash": "1ed0f24e75a01c2d641c27795cd78298",
+    "semantic_hash": "1ed0f24e75a01c2d641c27795cd78298"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\agent_evolver.py": {
+    "mtime": 1779776026.486144,
+    "ast_hash": "aad3697697897b6cb05e84bf02da0b36",
+    "semantic_hash": "aad3697697897b6cb05e84bf02da0b36"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\dspy_optimizer.py": {
+    "mtime": 1779776026.4916499,
+    "ast_hash": "010f7e53341da0fb15c07d06fd017c31",
+    "semantic_hash": "010f7e53341da0fb15c07d06fd017c31"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\gepa_optimizer.py": {
+    "mtime": 1779776026.4981585,
+    "ast_hash": "b131ecc0b85bc1416800b722ca8246c3",
+    "semantic_hash": "b131ecc0b85bc1416800b722ca8246c3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\skill_discovery.py": {
+    "mtime": 1779776026.5046966,
+    "ast_hash": "c1dcc53d873058f8a37ec9b501cd2e3d",
+    "semantic_hash": "c1dcc53d873058f8a37ec9b501cd2e3d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\skill_optimizer.py": {
+    "mtime": 1779776026.511583,
+    "ast_hash": "21af095c235a3c954afcdd5dbe4a8857",
+    "semantic_hash": "21af095c235a3c954afcdd5dbe4a8857"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\agents\\__init__.py": {
+    "mtime": 1779776026.4734924,
+    "ast_hash": "c0f5327a6e62558098a2bc81cc976e23",
+    "semantic_hash": "c0f5327a6e62558098a2bc81cc976e23"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\grpo_trainer.py": {
+    "mtime": 1779776026.529166,
+    "ast_hash": "3886045d5010fcbc2219d494ddd76d71",
+    "semantic_hash": "3886045d5010fcbc2219d494ddd76d71"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\sft_trainer.py": {
+    "mtime": 1779776026.5354035,
+    "ast_hash": "f38ddd4063b8c7a2bcb380469800a376",
+    "semantic_hash": "f38ddd4063b8c7a2bcb380469800a376"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\__init__.py": {
+    "mtime": 1779776026.5230925,
+    "ast_hash": "70c5ddc1c50ca01677dcb18816fb43dd",
+    "semantic_hash": "70c5ddc1c50ca01677dcb18816fb43dd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\environment.py": {
+    "mtime": 1779776026.5514255,
+    "ast_hash": "6b1479a7daa000aac129bf123bc9a912",
+    "semantic_hash": "6b1479a7daa000aac129bf123bc9a912"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\grpo_trainer.py": {
+    "mtime": 1779776026.557317,
+    "ast_hash": "ed8c6dd71e2af56b66dc030361b4fec8",
+    "semantic_hash": "ed8c6dd71e2af56b66dc030361b4fec8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\policy_model.py": {
+    "mtime": 1779776026.5638204,
+    "ast_hash": "4ee5dc355860958304a7c9bedea8018e",
+    "semantic_hash": "4ee5dc355860958304a7c9bedea8018e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\prompt_registry.py": {
+    "mtime": 1779776026.570822,
+    "ast_hash": "4930b7cac8a6ab9c7a6f2b44be7860bf",
+    "semantic_hash": "4930b7cac8a6ab9c7a6f2b44be7860bf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\reward.py": {
+    "mtime": 1779776026.5763283,
+    "ast_hash": "c25d1104175ff12b529241e8b0faae57",
+    "semantic_hash": "c25d1104175ff12b529241e8b0faae57"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\sft_trainer.py": {
+    "mtime": 1779776026.5833287,
+    "ast_hash": "a9c788cd40715f4ea611d7887e01bf31",
+    "semantic_hash": "a9c788cd40715f4ea611d7887e01bf31"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\types.py": {
+    "mtime": 1779776026.5892677,
+    "ast_hash": "75c198ed44ed4c90e70f07beee5aaef6",
+    "semantic_hash": "75c198ed44ed4c90e70f07beee5aaef6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\intelligence\\orchestrator\\__init__.py": {
+    "mtime": 1779776026.5454147,
+    "ast_hash": "a12b9fe6b5f213f22af27b8a549c0cdf",
+    "semantic_hash": "a12b9fe6b5f213f22af27b8a549c0cdf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\config.py": {
+    "mtime": 1779776026.608614,
+    "ast_hash": "1ea6572376fb299b80f477a6d6850f77",
+    "semantic_hash": "1ea6572376fb299b80f477a6d6850f77"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\llm_optimizer.py": {
+    "mtime": 1779776026.6146312,
+    "ast_hash": "7c3aad8abeb5198eb695cfed9f6f986c",
+    "semantic_hash": "7c3aad8abeb5198eb695cfed9f6f986c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\optimizer.py": {
+    "mtime": 1779776026.6220462,
+    "ast_hash": "d48e40b008f1611223e0fd651e132b46",
+    "semantic_hash": "d48e40b008f1611223e0fd651e132b46"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\search_space.py": {
+    "mtime": 1779776026.6285527,
+    "ast_hash": "855593011edb6f0a56ce4d1b29968850",
+    "semantic_hash": "855593011edb6f0a56ce4d1b29968850"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\store.py": {
+    "mtime": 1779776026.6350613,
+    "ast_hash": "004cfbaba182cb871f994c74466b9f63",
+    "semantic_hash": "004cfbaba182cb871f994c74466b9f63"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\trial_runner.py": {
+    "mtime": 1779776026.6414945,
+    "ast_hash": "b30b9daa7015c7b52c48667ba14263ef",
+    "semantic_hash": "b30b9daa7015c7b52c48667ba14263ef"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\types.py": {
+    "mtime": 1779776026.6470022,
+    "ast_hash": "32951e5690ddbac5a59db716a4d649ef",
+    "semantic_hash": "32951e5690ddbac5a59db716a4d649ef"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\__init__.py": {
+    "mtime": 1779776026.6032832,
+    "ast_hash": "ca94cd9d7f5a18ccc29e367852437f8c",
+    "semantic_hash": "ca94cd9d7f5a18ccc29e367852437f8c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\feedback\\collector.py": {
+    "mtime": 1779776026.6781337,
+    "ast_hash": "264d1e483eb7ae1527a819b66e6ec2e2",
+    "semantic_hash": "264d1e483eb7ae1527a819b66e6ec2e2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\feedback\\judge.py": {
+    "mtime": 1779776026.6846385,
+    "ast_hash": "3d0a8c5a2cd80f4247d5ac1aa3e977a2",
+    "semantic_hash": "3d0a8c5a2cd80f4247d5ac1aa3e977a2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\feedback\\__init__.py": {
+    "mtime": 1779776026.6710844,
+    "ast_hash": "f38f4b599ee3327bb49d475e95f89b6d",
+    "semantic_hash": "f38f4b599ee3327bb49d475e95f89b6d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\personal\\dataset.py": {
+    "mtime": 1779776026.7017617,
+    "ast_hash": "aef6c90024997cf6a1fe71b8a15b3f20",
+    "semantic_hash": "aef6c90024997cf6a1fe71b8a15b3f20"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\personal\\scorer.py": {
+    "mtime": 1779776026.7085516,
+    "ast_hash": "9192ab33dd1431403ff50e668a7cc7f2",
+    "semantic_hash": "9192ab33dd1431403ff50e668a7cc7f2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\personal\\synthesizer.py": {
+    "mtime": 1779776026.714067,
+    "ast_hash": "7358b4191ed1b4715db10e8c1a0f3a0f",
+    "semantic_hash": "7358b4191ed1b4715db10e8c1a0f3a0f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\optimize\\personal\\__init__.py": {
+    "mtime": 1779776026.6952589,
+    "ast_hash": "8435f08caacff628d7bdc87ccbc49d16",
+    "semantic_hash": "8435f08caacff628d7bdc87ccbc49d16"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\complexity.py": {
+    "mtime": 1779776026.7362242,
+    "ast_hash": "25f55d2aadb2b2071866348c118942e4",
+    "semantic_hash": "25f55d2aadb2b2071866348c118942e4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\heuristic_policy.py": {
+    "mtime": 1779776026.7423267,
+    "ast_hash": "6c2aaf776fc93c0006ac4ea463633876",
+    "semantic_hash": "6c2aaf776fc93c0006ac4ea463633876"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\heuristic_reward.py": {
+    "mtime": 1779776026.7518468,
+    "ast_hash": "ca17fb42b28347440bbce441dce16f46",
+    "semantic_hash": "ca17fb42b28347440bbce441dce16f46"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\learned_router.py": {
+    "mtime": 1779776026.7603338,
+    "ast_hash": "6003091fc687080658f698cb72b54d16",
+    "semantic_hash": "6003091fc687080658f698cb72b54d16"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\router.py": {
+    "mtime": 1779776026.7665684,
+    "ast_hash": "c41d64b35ead97680dc54254c9eda82e",
+    "semantic_hash": "c41d64b35ead97680dc54254c9eda82e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\_utils.py": {
+    "mtime": 1779776026.7302132,
+    "ast_hash": "5f7f6233dec89dda69a8178bdfa89233",
+    "semantic_hash": "5f7f6233dec89dda69a8178bdfa89233"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\routing\\__init__.py": {
+    "mtime": 1779776026.7242112,
+    "ast_hash": "9b6fb5ff815493a53127b94f64bc0bcf",
+    "semantic_hash": "9b6fb5ff815493a53127b94f64bc0bcf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\composite_reward.py": {
+    "mtime": 1779776026.7835908,
+    "ast_hash": "893ccef860e6de055562e791b66cb798",
+    "semantic_hash": "893ccef860e6de055562e791b66cb798"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\external_adapter.py": {
+    "mtime": 1779776026.7909539,
+    "ast_hash": "c1286605d90f66096ceedc98766588d3",
+    "semantic_hash": "c1286605d90f66096ceedc98766588d3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\models.py": {
+    "mtime": 1779776026.7969813,
+    "ast_hash": "7e135f4054be136e2f726ae49327176e",
+    "semantic_hash": "7e135f4054be136e2f726ae49327176e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\multi_session.py": {
+    "mtime": 1779776026.8024879,
+    "ast_hash": "8282666a72138601fb2d0bb1c91aae3b",
+    "semantic_hash": "8282666a72138601fb2d0bb1c91aae3b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\orchestrator.py": {
+    "mtime": 1779776026.8102994,
+    "ast_hash": "5b2a189616b9168ec7ac2212efa4e9c8",
+    "semantic_hash": "5b2a189616b9168ec7ac2212efa4e9c8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\pending_queue.py": {
+    "mtime": 1779776026.8158038,
+    "ast_hash": "9a5d16ff91867106167d678832c34e0f",
+    "semantic_hash": "9a5d16ff91867106167d678832c34e0f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\student_runner.py": {
+    "mtime": 1779776026.8218048,
+    "ast_hash": "653b71e4f33e1038efc70a2e0c356dd9",
+    "semantic_hash": "653b71e4f33e1038efc70a2e0c356dd9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\triggers.py": {
+    "mtime": 1779776026.8283198,
+    "ast_hash": "9550056d6ee19e4cc5dd52e7dcc908c9",
+    "semantic_hash": "9550056d6ee19e4cc5dd52e7dcc908c9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\__init__.py": {
+    "mtime": 1779776026.7780836,
+    "ast_hash": "39acdb8520d18c627db2134348da95a3",
+    "semantic_hash": "39acdb8520d18c627db2134348da95a3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\checkpoint\\store.py": {
+    "mtime": 1779776026.8457108,
+    "ast_hash": "5b2fb448bd513a7129b6fd68d12add26",
+    "semantic_hash": "5b2fb448bd513a7129b6fd68d12add26"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\checkpoint\\__init__.py": {
+    "mtime": 1779776026.8394487,
+    "ast_hash": "d8eae64eb10432cbc3ea2900a455a1c4",
+    "semantic_hash": "d8eae64eb10432cbc3ea2900a455a1c4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\diagnose\\runner.py": {
+    "mtime": 1779776026.8631885,
+    "ast_hash": "909895c920ed680f04f5bd2fc5033987",
+    "semantic_hash": "909895c920ed680f04f5bd2fc5033987"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\diagnose\\teacher_agent.py": {
+    "mtime": 1779776026.8691924,
+    "ast_hash": "40fdf44221695eaf0caa2838e4e58380",
+    "semantic_hash": "40fdf44221695eaf0caa2838e4e58380"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\diagnose\\tools.py": {
+    "mtime": 1779776026.8756993,
+    "ast_hash": "850597b6f29dad1dee60b4a713569a37",
+    "semantic_hash": "850597b6f29dad1dee60b4a713569a37"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\diagnose\\types.py": {
+    "mtime": 1779776026.8832016,
+    "ast_hash": "47bbfa16a0e72eedf9f3e9d550b3ed6e",
+    "semantic_hash": "47bbfa16a0e72eedf9f3e9d550b3ed6e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\diagnose\\__init__.py": {
+    "mtime": 1779776026.8573673,
+    "ast_hash": "e215b989acf0da95a07fde749d9ffa85",
+    "semantic_hash": "e215b989acf0da95a07fde749d9ffa85"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\base.py": {
+    "mtime": 1779776026.9017448,
+    "ast_hash": "6138d78ea959af0ad8a972c7338a9b13",
+    "semantic_hash": "6138d78ea959af0ad8a972c7338a9b13"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\loop.py": {
+    "mtime": 1779776026.9077682,
+    "ast_hash": "c62875105d2b7ca4e0a8e307133f4e42",
+    "semantic_hash": "c62875105d2b7ca4e0a8e307133f4e42"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\__init__.py": {
+    "mtime": 1779776026.894224,
+    "ast_hash": "ca74bb99664a1dfb60383f7d151e8cb8",
+    "semantic_hash": "ca74bb99664a1dfb60383f7d151e8cb8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\appliers\\agent.py": {
+    "mtime": 1779776026.9244697,
+    "ast_hash": "0a4348d64cdba8435662542b4ca1dbe7",
+    "semantic_hash": "0a4348d64cdba8435662542b4ca1dbe7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\appliers\\intelligence.py": {
+    "mtime": 1779776026.9304695,
+    "ast_hash": "e16965d5f4b229d5ae581d035f5b177a",
+    "semantic_hash": "e16965d5f4b229d5ae581d035f5b177a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\appliers\\lora_stub.py": {
+    "mtime": 1779776026.9364789,
+    "ast_hash": "dcc971be69bf31441bf67b8cccd42c5a",
+    "semantic_hash": "dcc971be69bf31441bf67b8cccd42c5a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\appliers\\tools.py": {
+    "mtime": 1779776026.9431875,
+    "ast_hash": "dba22c400c6850aa84b2d8c25b35340d",
+    "semantic_hash": "dba22c400c6850aa84b2d8c25b35340d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\execute\\appliers\\__init__.py": {
+    "mtime": 1779776026.9179592,
+    "ast_hash": "448d879d6d10895748d85a41eb59ed07",
+    "semantic_hash": "448d879d6d10895748d85a41eb59ed07"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\gate\\benchmark_gate.py": {
+    "mtime": 1779776026.9599607,
+    "ast_hash": "cc55328b54c3850f6f9820de5a0231e3",
+    "semantic_hash": "cc55328b54c3850f6f9820de5a0231e3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\gate\\cold_start.py": {
+    "mtime": 1779776026.9659798,
+    "ast_hash": "e6be74893acdf6b9169ca70cc462f72e",
+    "semantic_hash": "e6be74893acdf6b9169ca70cc462f72e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\gate\\regression.py": {
+    "mtime": 1779776026.9716544,
+    "ast_hash": "247c5a428a69c479f26296ac636d2bc9",
+    "semantic_hash": "247c5a428a69c479f26296ac636d2bc9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\gate\\__init__.py": {
+    "mtime": 1779776026.9538121,
+    "ast_hash": "adbd468212ccf0bdf9b96580316da6fb",
+    "semantic_hash": "adbd468212ccf0bdf9b96580316da6fb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\plan\\planner.py": {
+    "mtime": 1779776026.988757,
+    "ast_hash": "bb9c26e5c1ec1159106c290c9395b4d5",
+    "semantic_hash": "bb9c26e5c1ec1159106c290c9395b4d5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\plan\\prompt_diff.py": {
+    "mtime": 1779776026.9952662,
+    "ast_hash": "73d9ec92349b86bdaaf0761d8074dedb",
+    "semantic_hash": "73d9ec92349b86bdaaf0761d8074dedb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\plan\\risk_tier.py": {
+    "mtime": 1779776026.9997761,
+    "ast_hash": "a078fe6affafb4cbf00158219c11ba35",
+    "semantic_hash": "a078fe6affafb4cbf00158219c11ba35"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\plan\\__init__.py": {
+    "mtime": 1779776026.983203,
+    "ast_hash": "70d8ab34f8d0e4cb43a2969d2e3ae5b7",
+    "semantic_hash": "70d8ab34f8d0e4cb43a2969d2e3ae5b7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\storage\\paths.py": {
+    "mtime": 1779776027.018302,
+    "ast_hash": "529527c93aefb737ae7bc18adccd7f32",
+    "semantic_hash": "529527c93aefb737ae7bc18adccd7f32"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\storage\\session_store.py": {
+    "mtime": 1779776027.0233011,
+    "ast_hash": "c45e19031d0b52aaba615d3bc279500c",
+    "semantic_hash": "c45e19031d0b52aaba615d3bc279500c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\spec_search\\storage\\__init__.py": {
+    "mtime": 1779776027.011792,
+    "ast_hash": "ebf4ce918882cf4939629d539a4f7fd7",
+    "semantic_hash": "ebf4ce918882cf4939629d539a4f7fd7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\training\\data.py": {
+    "mtime": 1779776027.0399034,
+    "ast_hash": "a2c1869ebf463b9f2187aaa97dfc7a3a",
+    "semantic_hash": "a2c1869ebf463b9f2187aaa97dfc7a3a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\training\\lora.py": {
+    "mtime": 1779776027.0454094,
+    "ast_hash": "00207e7e98863a8cfddee3b0bb553068",
+    "semantic_hash": "00207e7e98863a8cfddee3b0bb553068"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\learning\\training\\__init__.py": {
+    "mtime": 1779776027.0338905,
+    "ast_hash": "43c587389c0ad600a49be53176a03953",
+    "semantic_hash": "43c587389c0ad600a49be53176a03953"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mcp\\client.py": {
+    "mtime": 1779776027.0634427,
+    "ast_hash": "6d59f4723be94efe3014961b3743284f",
+    "semantic_hash": "6d59f4723be94efe3014961b3743284f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mcp\\protocol.py": {
+    "mtime": 1779776027.0696342,
+    "ast_hash": "006f633fd57d7ea3ea7583a04a467bda",
+    "semantic_hash": "006f633fd57d7ea3ea7583a04a467bda"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mcp\\server.py": {
+    "mtime": 1779776027.0761511,
+    "ast_hash": "5458583e0bf04cd6319b4a25dd0b8692",
+    "semantic_hash": "5458583e0bf04cd6319b4a25dd0b8692"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mcp\\transport.py": {
+    "mtime": 1779776027.0821495,
+    "ast_hash": "879e17fd050cfb026c2135328e29d22c",
+    "semantic_hash": "879e17fd050cfb026c2135328e29d22c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mcp\\__init__.py": {
+    "mtime": 1779776027.0574305,
+    "ast_hash": "ffd9c56499f6be64bf833fbc06650cf7",
+    "semantic_hash": "ffd9c56499f6be64bf833fbc06650cf7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\apple_mps_pearl.py": {
+    "mtime": 1779776027.1743865,
+    "ast_hash": "a8bdda60736ec83de72cf0af393c4511",
+    "semantic_hash": "a8bdda60736ec83de72cf0af393c4511"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\cpu_pearl.py": {
+    "mtime": 1779776027.1803849,
+    "ast_hash": "52144943f3df3e85f96f35e4c1be048c",
+    "semantic_hash": "52144943f3df3e85f96f35e4c1be048c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\vllm_pearl.py": {
+    "mtime": 1779776027.1881518,
+    "ast_hash": "3c66105bdfef3ed81c69d9a1fe632c64",
+    "semantic_hash": "3c66105bdfef3ed81c69d9a1fe632c64"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_collector.py": {
+    "mtime": 1779776027.0983667,
+    "ast_hash": "808ce2aee57cb0ce80d5d9324a4dd17b",
+    "semantic_hash": "808ce2aee57cb0ce80d5d9324a4dd17b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_constants.py": {
+    "mtime": 1779776027.1043587,
+    "ast_hash": "79d9f643ea470d9739fe24e9480ecaee",
+    "semantic_hash": "79d9f643ea470d9739fe24e9480ecaee"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_discovery.py": {
+    "mtime": 1779776027.1098664,
+    "ast_hash": "b209d81b9d405c1797e8e44edb9d1e8c",
+    "semantic_hash": "b209d81b9d405c1797e8e44edb9d1e8c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_docker.py": {
+    "mtime": 1779776027.116742,
+    "ast_hash": "773255dfbaef93ee8a367df867484ad1",
+    "semantic_hash": "773255dfbaef93ee8a367df867484ad1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_install.py": {
+    "mtime": 1779776027.1217375,
+    "ast_hash": "b258c7877781f566a7e64b1c9451c80c",
+    "semantic_hash": "b258c7877781f566a7e64b1c9451c80c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_metrics.py": {
+    "mtime": 1779776027.1360016,
+    "ast_hash": "83128de709cc10b881892bad8efbf92b",
+    "semantic_hash": "83128de709cc10b881892bad8efbf92b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_miner_loop_main.py": {
+    "mtime": 1779776027.1425133,
+    "ast_hash": "0db5d16dda0dde691003042044a1b079",
+    "semantic_hash": "0db5d16dda0dde691003042044a1b079"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_models.py": {
+    "mtime": 1779776027.1490176,
+    "ast_hash": "c3b1a72a503a2be87beb544f8cacbdb8",
+    "semantic_hash": "c3b1a72a503a2be87beb544f8cacbdb8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_mps_miner_loop_main.py": {
+    "mtime": 1779776027.1555486,
+    "ast_hash": "746b873400d6b4842110e87170ea059e",
+    "semantic_hash": "746b873400d6b4842110e87170ea059e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_pearl_subprocess.py": {
+    "mtime": 1779776027.1621757,
+    "ast_hash": "3366dba0bfba54edd53da2eea303dbd8",
+    "semantic_hash": "3366dba0bfba54edd53da2eea303dbd8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\_stubs.py": {
+    "mtime": 1779776027.1682808,
+    "ast_hash": "c52d8c42c310db8243c97ec65eac04c0",
+    "semantic_hash": "c52d8c42c310db8243c97ec65eac04c0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\__init__.py": {
+    "mtime": 1779776027.0918581,
+    "ast_hash": "6b27f1255a8a3fcd688507dd1d2e6953",
+    "semantic_hash": "6b27f1255a8a3fcd688507dd1d2e6953"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\mining\\pools\\__init__.py": {
+    "mtime": 1779776027.1986609,
+    "ast_hash": "e63b2b7c110c5fa175b916df28613060",
+    "semantic_hash": "e63b2b7c110c5fa175b916df28613060"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\operators\\loader.py": {
+    "mtime": 1779776027.2167342,
+    "ast_hash": "30ecb3d5db8ff780774a26b2e54b4671",
+    "semantic_hash": "30ecb3d5db8ff780774a26b2e54b4671"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\operators\\manager.py": {
+    "mtime": 1779776027.223238,
+    "ast_hash": "be973c63fc030839bc9a93b0db2443d4",
+    "semantic_hash": "be973c63fc030839bc9a93b0db2443d4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\operators\\types.py": {
+    "mtime": 1779776027.2302701,
+    "ast_hash": "5577d8d3dd472077b784257484a27ebf",
+    "semantic_hash": "5577d8d3dd472077b784257484a27ebf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\operators\\__init__.py": {
+    "mtime": 1779776027.2102306,
+    "ast_hash": "f17c32ed99ee62a8525ea94d7ab88af8",
+    "semantic_hash": "f17c32ed99ee62a8525ea94d7ab88af8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\prompt\\builder.py": {
+    "mtime": 1779776027.2672932,
+    "ast_hash": "3979a994b8cdbef989cdeab166b59ee8",
+    "semantic_hash": "3979a994b8cdbef989cdeab166b59ee8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\prompt\\__init__.py": {
+    "mtime": 1779776027.26187,
+    "ast_hash": "5de1980dee48c44fc3e850f3a8b673f6",
+    "semantic_hash": "5de1980dee48c44fc3e850f3a8b673f6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\composer.py": {
+    "mtime": 1779776027.283306,
+    "ast_hash": "a8e848a57cbbf5d97ff979d131b1e869",
+    "semantic_hash": "a8e848a57cbbf5d97ff979d131b1e869"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\loader.py": {
+    "mtime": 1779776027.2898226,
+    "ast_hash": "b3836efec5bf29d92d82d99f3a97831e",
+    "semantic_hash": "b3836efec5bf29d92d82d99f3a97831e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\__init__.py": {
+    "mtime": 1779776027.2777991,
+    "ast_hash": "aba79ef8d91150a5757e05571947c1c6",
+    "semantic_hash": "aba79ef8d91150a5757e05571947c1c6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sandbox\\mount_security.py": {
+    "mtime": 1779776027.4019332,
+    "ast_hash": "c1f0a883eddd63696691140b328c659b",
+    "semantic_hash": "c1f0a883eddd63696691140b328c659b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sandbox\\runner.py": {
+    "mtime": 1779776027.4081938,
+    "ast_hash": "b2dbabea252786c4926515e1179af686",
+    "semantic_hash": "b2dbabea252786c4926515e1179af686"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sandbox\\wasm_runner.py": {
+    "mtime": 1779776027.4167008,
+    "ast_hash": "92f85049f0941313f09e13f92b848918",
+    "semantic_hash": "92f85049f0941313f09e13f92b848918"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sandbox\\__init__.py": {
+    "mtime": 1779776027.3954272,
+    "ast_hash": "61f19100f62d210d32019828e020e938",
+    "semantic_hash": "61f19100f62d210d32019828e020e938"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\scheduler\\scheduler.py": {
+    "mtime": 1779776027.4347143,
+    "ast_hash": "a4f17ffcabef49814646c17ccc23ceaa",
+    "semantic_hash": "a4f17ffcabef49814646c17ccc23ceaa"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\scheduler\\store.py": {
+    "mtime": 1779776027.440201,
+    "ast_hash": "70bb08a1d3d82e3f10fec402109d0fda",
+    "semantic_hash": "70bb08a1d3d82e3f10fec402109d0fda"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\scheduler\\tools.py": {
+    "mtime": 1779776027.4463196,
+    "ast_hash": "bdc642a7f8562face5b92652e3215e50",
+    "semantic_hash": "bdc642a7f8562face5b92652e3215e50"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\scheduler\\__init__.py": {
+    "mtime": 1779776027.4282086,
+    "ast_hash": "790009a5add045d3ec0b1451728ce05d",
+    "semantic_hash": "790009a5add045d3ec0b1451728ce05d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\audit.py": {
+    "mtime": 1779776027.4698412,
+    "ast_hash": "4139e926edc56c66066b04d176e0ff01",
+    "semantic_hash": "4139e926edc56c66066b04d176e0ff01"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\boundary.py": {
+    "mtime": 1779776027.4753592,
+    "ast_hash": "a59dfa76a8448bedfc71330908102537",
+    "semantic_hash": "a59dfa76a8448bedfc71330908102537"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\capabilities.py": {
+    "mtime": 1779776027.482358,
+    "ast_hash": "689d9a2324035a24487fc74880e4f53a",
+    "semantic_hash": "689d9a2324035a24487fc74880e4f53a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\file_policy.py": {
+    "mtime": 1779776027.495538,
+    "ast_hash": "415c7133241f8b6eaeccd81d91f705d3",
+    "semantic_hash": "415c7133241f8b6eaeccd81d91f705d3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\file_utils.py": {
+    "mtime": 1779776027.5010424,
+    "ast_hash": "1fca4911428d9ebbcf22e173dbefb83f",
+    "semantic_hash": "1fca4911428d9ebbcf22e173dbefb83f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\guardrails.py": {
+    "mtime": 1779776027.5074255,
+    "ast_hash": "ef7634a363ebe6b6747028450ad7661f",
+    "semantic_hash": "ef7634a363ebe6b6747028450ad7661f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\injection_scanner.py": {
+    "mtime": 1779776027.5134337,
+    "ast_hash": "7b5f4be66d0b6ecda8d83c50649cc9c3",
+    "semantic_hash": "7b5f4be66d0b6ecda8d83c50649cc9c3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\rate_limiter.py": {
+    "mtime": 1779776027.5195842,
+    "ast_hash": "6035e317df4239e73d63fc1d7e8f0133",
+    "semantic_hash": "6035e317df4239e73d63fc1d7e8f0133"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\scanner.py": {
+    "mtime": 1779776027.5255961,
+    "ast_hash": "3c69f29ca7f035a3ba515d6027e38157",
+    "semantic_hash": "3c69f29ca7f035a3ba515d6027e38157"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\severity_policy.py": {
+    "mtime": 1779776027.5318553,
+    "ast_hash": "501aa6eb75041b7ee999cf9f0eadeba8",
+    "semantic_hash": "501aa6eb75041b7ee999cf9f0eadeba8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\signing.py": {
+    "mtime": 1779776027.5393827,
+    "ast_hash": "2147581cad038d60efe5ae7481af8690",
+    "semantic_hash": "2147581cad038d60efe5ae7481af8690"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\ssrf.py": {
+    "mtime": 1779776027.5458913,
+    "ast_hash": "d2be3d81290b0471aed38e8552959aa4",
+    "semantic_hash": "d2be3d81290b0471aed38e8552959aa4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\subprocess_sandbox.py": {
+    "mtime": 1779776027.5513976,
+    "ast_hash": "61c33edec5b96fea9a661b91e594be72",
+    "semantic_hash": "61c33edec5b96fea9a661b91e594be72"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\taint.py": {
+    "mtime": 1779776027.5574915,
+    "ast_hash": "2c7e51f99c78137e342fec6963661921",
+    "semantic_hash": "2c7e51f99c78137e342fec6963661921"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\types.py": {
+    "mtime": 1779776027.5649438,
+    "ast_hash": "1da75d0d928c37a1e1b21fec328d13c5",
+    "semantic_hash": "1da75d0d928c37a1e1b21fec328d13c5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\_stubs.py": {
+    "mtime": 1779776027.4633658,
+    "ast_hash": "86bd4684072c39201a9bc75868e4d75e",
+    "semantic_hash": "86bd4684072c39201a9bc75868e4d75e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\security\\__init__.py": {
+    "mtime": 1779776027.4573627,
+    "ast_hash": "2312a7f67996f8a5a6c958524423fa2f",
+    "semantic_hash": "2312a7f67996f8a5a6c958524423fa2f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\agent_manager_routes.py": {
+    "mtime": 1779834721.182427,
+    "ast_hash": "0d08d692315ee416c8691b5ddf83a422",
+    "semantic_hash": "0d08d692315ee416c8691b5ddf83a422"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\analytics_routes.py": {
+    "mtime": 1779776027.5874743,
+    "ast_hash": "c25055ce3f4071b73707e4c38e75bdd5",
+    "semantic_hash": "c25055ce3f4071b73707e4c38e75bdd5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\api_routes.py": {
+    "mtime": 1779776027.5934713,
+    "ast_hash": "4e81b952c1c80335cdc11550a91fd678",
+    "semantic_hash": "4e81b952c1c80335cdc11550a91fd678"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\app.py": {
+    "mtime": 1779934795.3044486,
+    "ast_hash": "1443f68c4bc6a1489fd056567028eea8",
+    "semantic_hash": "1443f68c4bc6a1489fd056567028eea8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\approval_routes.py": {
+    "mtime": 1779776027.6055245,
+    "ast_hash": "ab0989466bdf0b39901a90715801d1c8",
+    "semantic_hash": "ab0989466bdf0b39901a90715801d1c8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\auth_middleware.py": {
+    "mtime": 1779776027.612227,
+    "ast_hash": "7a14c6fb81cb99025bb49d4f67d2c93f",
+    "semantic_hash": "7a14c6fb81cb99025bb49d4f67d2c93f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\channel_bridge.py": {
+    "mtime": 1779776027.6187513,
+    "ast_hash": "5534c05820707ad55bd14f7190783b3b",
+    "semantic_hash": "5534c05820707ad55bd14f7190783b3b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\cloud_router.py": {
+    "mtime": 1779776027.625255,
+    "ast_hash": "054fa02000a2d580fdcefb801c8eab33",
+    "semantic_hash": "054fa02000a2d580fdcefb801c8eab33"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\comparison.py": {
+    "mtime": 1779776027.6312575,
+    "ast_hash": "76b4bd1926b2476619bb58de69a1bb06",
+    "semantic_hash": "76b4bd1926b2476619bb58de69a1bb06"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\connectors_router.py": {
+    "mtime": 1779921318.029907,
+    "ast_hash": "fdf0dc55b55363eaf585358bb7ed8a5f",
+    "semantic_hash": "fdf0dc55b55363eaf585358bb7ed8a5f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\cost_calculator.py": {
+    "mtime": 1779776027.6432772,
+    "ast_hash": "797920646f95dfcef4ced78ba74fb37c",
+    "semantic_hash": "797920646f95dfcef4ced78ba74fb37c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\dashboard.py": {
+    "mtime": 1779776027.6497872,
+    "ast_hash": "b8aca3712c4362bd55412f0f013b5c8d",
+    "semantic_hash": "b8aca3712c4362bd55412f0f013b5c8d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\digest_routes.py": {
+    "mtime": 1779776027.6552007,
+    "ast_hash": "ce6036c00b1a855bddbfd271fe64141a",
+    "semantic_hash": "ce6036c00b1a855bddbfd271fe64141a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\installers_router.py": {
+    "mtime": 1780021134.980251,
+    "ast_hash": "08b64d451fa99935fc9f20ee82689e5e",
+    "semantic_hash": "08b64d451fa99935fc9f20ee82689e5e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\middleware.py": {
+    "mtime": 1779776027.6612017,
+    "ast_hash": "57fc045bddc5049b1ab34e27eedfefa4",
+    "semantic_hash": "57fc045bddc5049b1ab34e27eedfefa4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\models.py": {
+    "mtime": 1779776027.6674383,
+    "ast_hash": "93ac07e5a8922ed7933fb3ff65c6e05e",
+    "semantic_hash": "93ac07e5a8922ed7933fb3ff65c6e05e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\research_router.py": {
+    "mtime": 1779776027.673944,
+    "ast_hash": "3d735405bf148ba0e627b6e4c0461d06",
+    "semantic_hash": "3d735405bf148ba0e627b6e4c0461d06"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\routes.py": {
+    "mtime": 1779776027.6809454,
+    "ast_hash": "65081919a23896dbe407a5125aee00c1",
+    "semantic_hash": "65081919a23896dbe407a5125aee00c1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\savings.py": {
+    "mtime": 1779776027.686962,
+    "ast_hash": "6b5ed6ad17180efcd7a9f31fc3705313",
+    "semantic_hash": "6b5ed6ad17180efcd7a9f31fc3705313"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\session_store.py": {
+    "mtime": 1779776027.6944678,
+    "ast_hash": "d81c395a3d8dc88d3e2fed1eeb93497d",
+    "semantic_hash": "d81c395a3d8dc88d3e2fed1eeb93497d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\stream_bridge.py": {
+    "mtime": 1779776027.6994672,
+    "ast_hash": "2a83b0d2d553cd4b99348292299531b2",
+    "semantic_hash": "2a83b0d2d553cd4b99348292299531b2"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\tools_router.py": {
+    "mtime": 1779934786.7877066,
+    "ast_hash": "d44ac2c326d8dedc2f250a1fe0e9c07e",
+    "semantic_hash": "d44ac2c326d8dedc2f250a1fe0e9c07e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\upload_router.py": {
+    "mtime": 1779776027.7064903,
+    "ast_hash": "45eaeebee3ce25363a9d74e3bd384c07",
+    "semantic_hash": "45eaeebee3ce25363a9d74e3bd384c07"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\webhook_routes.py": {
+    "mtime": 1779800828.567268,
+    "ast_hash": "f6094baee03023001dea88e0c6d49c8d",
+    "semantic_hash": "f6094baee03023001dea88e0c6d49c8d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\ws_bridge.py": {
+    "mtime": 1779776027.7222145,
+    "ast_hash": "2b2caf6b320da33ed9a46b82b332eb0b",
+    "semantic_hash": "2b2caf6b320da33ed9a46b82b332eb0b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\__init__.py": {
+    "mtime": 1779776027.5744498,
+    "ast_hash": "5f8b5b671048c6c2520ec6c972c6ac76",
+    "semantic_hash": "5f8b5b671048c6c2520ec6c972c6ac76"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\AgentsPage-UmIhVRpQ.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "5c3bce86da3750ca870b7ab218e162fc",
+    "semantic_hash": "5c3bce86da3750ca870b7ab218e162fc"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\analytics-DhTOQ_2s.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "aff0765a9e91dda7186cd61a4371db9d",
+    "semantic_hash": "aff0765a9e91dda7186cd61a4371db9d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\charts-CAP1OqQW.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "de1f54d74f30ad2f90a81a64568edc18",
+    "semantic_hash": "de1f54d74f30ad2f90a81a64568edc18"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\ChatPage-Dehcl30V.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "2eed29e3d28b7e2d64ddb3c1614a43f9",
+    "semantic_hash": "2eed29e3d28b7e2d64ddb3c1614a43f9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\connectors-api-BUYxZ7SC.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "b3473da1bc281782bfc09139f7ea2179",
+    "semantic_hash": "b3473da1bc281782bfc09139f7ea2179"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\connectors-CqLUuPgU.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "5abaf5942839ce51d56cbf5e6721e1b9",
+    "semantic_hash": "5abaf5942839ce51d56cbf5e6721e1b9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\DashboardPage-csI4n-AX.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "4f0220bff353775844514067a1b855f9",
+    "semantic_hash": "4f0220bff353775844514067a1b855f9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\DataSourcesPage-D0yQptmp.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "b310ab80657f12c219b976b277d43dfa",
+    "semantic_hash": "b310ab80657f12c219b976b277d43dfa"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\GetStartedPage-BiNht6hT.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "2a17dc0e1821865545f651d52d312a1e",
+    "semantic_hash": "2a17dc0e1821865545f651d52d312a1e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\index-CTa5Mleh.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "df1489545455d1b189badb8a095f4e1c",
+    "semantic_hash": "df1489545455d1b189badb8a095f4e1c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\LogsPage-B7hTl98-.js": {
+    "mtime": 1780021326.3849607,
+    "ast_hash": "397e458a920f7da232d3fd65f01bc4fc",
+    "semantic_hash": "397e458a920f7da232d3fd65f01bc4fc"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\markdown-highlight-BNToJ-Rp.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "19f0130892817c201cc243563edb7bc7",
+    "semantic_hash": "19f0130892817c201cc243563edb7bc7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\markdown-math-D6DWDY5V.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "1d9b32658757dc1aac1b6b7a03086769",
+    "semantic_hash": "1d9b32658757dc1aac1b6b7a03086769"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\markdown-q9NPPpXB.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "8b1e0e8de2b17211b20ad52be54ea6b7",
+    "semantic_hash": "8b1e0e8de2b17211b20ad52be54ea6b7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\motion-DqyqOxZn.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "6b00f52addb04b26389a38b93bb301e9",
+    "semantic_hash": "6b00f52addb04b26389a38b93bb301e9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\react-vendor-ClUA9vsN.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "a7306349e7f628c98a6c9fe137cc3d15",
+    "semantic_hash": "a7306349e7f628c98a6c9fe137cc3d15"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\SettingsPage-BTd5RLRy.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "3c296f1775700020272da0082ad3f30d",
+    "semantic_hash": "3c296f1775700020272da0082ad3f30d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\tauri-Cm4v3ZkX.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "65f038bd946a57c457591eef2fbca99b",
+    "semantic_hash": "65f038bd946a57c457591eef2fbca99b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\ToolCallCard-CjiNClu1.js": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "2a95342ec0496c1fb9b10d1f200396ec",
+    "semantic_hash": "2a95342ec0496c1fb9b10d1f200396ec"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\assets\\ui-base-BYE-tCQI.js": {
+    "mtime": 1780021326.383916,
+    "ast_hash": "52084b581e5ed17b17267d2f63dbde7c",
+    "semantic_hash": "52084b581e5ed17b17267d2f63dbde7c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sessions\\compression.py": {
+    "mtime": 1779776027.7387626,
+    "ast_hash": "9be808ed0a5ce5e07f7d9a0974e4b1a6",
+    "semantic_hash": "9be808ed0a5ce5e07f7d9a0974e4b1a6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sessions\\session.py": {
+    "mtime": 1779776027.7437713,
+    "ast_hash": "b5110daf2cf16ce1cba3581a22f7b8da",
+    "semantic_hash": "b5110daf2cf16ce1cba3581a22f7b8da"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\sessions\\__init__.py": {
+    "mtime": 1779776027.7332203,
+    "ast_hash": "c838aa3cdfa42cf05ba26521db8725c9",
+    "semantic_hash": "c838aa3cdfa42cf05ba26521db8725c9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\dependency.py": {
+    "mtime": 1779776027.7591279,
+    "ast_hash": "0738ff6bfee085caca1e559496957b28",
+    "semantic_hash": "0738ff6bfee085caca1e559496957b28"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\executor.py": {
+    "mtime": 1779776027.7662938,
+    "ast_hash": "936f9c10fce3dd8b266e3c2e94951d20",
+    "semantic_hash": "936f9c10fce3dd8b266e3c2e94951d20"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\importer.py": {
+    "mtime": 1779776027.772295,
+    "ast_hash": "9d2dcb55a8cf5fe62f1e46e8791b16ad",
+    "semantic_hash": "9d2dcb55a8cf5fe62f1e46e8791b16ad"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\index.py": {
+    "mtime": 1779776027.7789164,
+    "ast_hash": "8d5877e337b687fb32434e1d5af9564a",
+    "semantic_hash": "8d5877e337b687fb32434e1d5af9564a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\loader.py": {
+    "mtime": 1779776027.7844212,
+    "ast_hash": "f91ef5ccec079aa6c32a1cd018d3f9fe",
+    "semantic_hash": "f91ef5ccec079aa6c32a1cd018d3f9fe"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\manager.py": {
+    "mtime": 1779776027.7914734,
+    "ast_hash": "bc655d50c777683704504490678ee9c0",
+    "semantic_hash": "bc655d50c777683704504490678ee9c0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\overlay.py": {
+    "mtime": 1779776027.7986884,
+    "ast_hash": "d1e9a762c7c102c8179361053fb28f51",
+    "semantic_hash": "d1e9a762c7c102c8179361053fb28f51"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\parser.py": {
+    "mtime": 1779776027.805276,
+    "ast_hash": "ddfdf1f4d64cf9600cf0088e8d09ffb5",
+    "semantic_hash": "ddfdf1f4d64cf9600cf0088e8d09ffb5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\security.py": {
+    "mtime": 1779776027.8118832,
+    "ast_hash": "c36a07130e5b6dcf7b20b4fb216ed5fb",
+    "semantic_hash": "c36a07130e5b6dcf7b20b4fb216ed5fb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\tool_adapter.py": {
+    "mtime": 1779776027.8183904,
+    "ast_hash": "ce2db42a20d480ac88c206826eae867d",
+    "semantic_hash": "ce2db42a20d480ac88c206826eae867d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\tool_translator.py": {
+    "mtime": 1779776027.8233898,
+    "ast_hash": "3361a1c1a9a6d916edd3950329fd9704",
+    "semantic_hash": "3361a1c1a9a6d916edd3950329fd9704"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\types.py": {
+    "mtime": 1779776027.8304982,
+    "ast_hash": "a14fb924e8bb605e8a0cae834582c15e",
+    "semantic_hash": "a14fb924e8bb605e8a0cae834582c15e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\__init__.py": {
+    "mtime": 1779776027.7536194,
+    "ast_hash": "30a792cd109fd7f8765aa3c1ace46a54",
+    "semantic_hash": "30a792cd109fd7f8765aa3c1ace46a54"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\sources\\base.py": {
+    "mtime": 1779776027.9402835,
+    "ast_hash": "07ec9ab94c034364c88ca053d8e229ab",
+    "semantic_hash": "07ec9ab94c034364c88ca053d8e229ab"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\sources\\github.py": {
+    "mtime": 1779776027.9457867,
+    "ast_hash": "2c1652c7d482883d6bb3ffd2c365b1bd",
+    "semantic_hash": "2c1652c7d482883d6bb3ffd2c365b1bd"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\sources\\hermes.py": {
+    "mtime": 1779776027.9522982,
+    "ast_hash": "8b4881725ad6492c5cbfa4d67bf97d2b",
+    "semantic_hash": "8b4881725ad6492c5cbfa4d67bf97d2b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\sources\\openclaw.py": {
+    "mtime": 1779776027.9582448,
+    "ast_hash": "c573e731c9a99b9b861c01cd75d887de",
+    "semantic_hash": "c573e731c9a99b9b861c01cd75d887de"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\skills\\sources\\__init__.py": {
+    "mtime": 1779776027.9342587,
+    "ast_hash": "73664734800030c47660edfce8b9dfb5",
+    "semantic_hash": "73664734800030c47660edfce8b9dfb5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\cartesia_tts.py": {
+    "mtime": 1779776027.988493,
+    "ast_hash": "f07c3fb0b46fccb376dac648494c6ea7",
+    "semantic_hash": "f07c3fb0b46fccb376dac648494c6ea7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\deepgram.py": {
+    "mtime": 1779776027.995,
+    "ast_hash": "30f2b92f0c5049e48f9613f52ace815e",
+    "semantic_hash": "30f2b92f0c5049e48f9613f52ace815e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\faster_whisper.py": {
+    "mtime": 1779776028.000506,
+    "ast_hash": "ab92ebc54634fc1b66c0f02015b44a65",
+    "semantic_hash": "ab92ebc54634fc1b66c0f02015b44a65"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\kokoro_tts.py": {
+    "mtime": 1779776028.0070224,
+    "ast_hash": "d1e66e67d944f80457acd7fa8403bf17",
+    "semantic_hash": "d1e66e67d944f80457acd7fa8403bf17"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\openai_tts.py": {
+    "mtime": 1779776028.0132258,
+    "ast_hash": "addacbf9a5cfe55093664fdc7a4ad573",
+    "semantic_hash": "addacbf9a5cfe55093664fdc7a4ad573"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\openai_whisper.py": {
+    "mtime": 1779776028.0192292,
+    "ast_hash": "6471d8533d8cf5f00a0fddf703def155",
+    "semantic_hash": "6471d8533d8cf5f00a0fddf703def155"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\tts.py": {
+    "mtime": 1779776028.0253706,
+    "ast_hash": "e6f0992920246b9542810ac990796440",
+    "semantic_hash": "e6f0992920246b9542810ac990796440"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\_discovery.py": {
+    "mtime": 1779776027.9764807,
+    "ast_hash": "e8581b8ba2e46c0808190ff707d154fc",
+    "semantic_hash": "e8581b8ba2e46c0808190ff707d154fc"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\_stubs.py": {
+    "mtime": 1779776027.9824798,
+    "ast_hash": "83e5e66b0b4e8ea23b4dfea332036f37",
+    "semantic_hash": "83e5e66b0b4e8ea23b4dfea332036f37"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\speech\\__init__.py": {
+    "mtime": 1779776027.971439,
+    "ast_hash": "e61571f57d8a0d07612e633b573b0b90",
+    "semantic_hash": "e61571f57d8a0d07612e633b573b0b90"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\builder.py": {
+    "mtime": 1779776028.0489075,
+    "ast_hash": "c56dff1b5d35284cbdf2f08769aa0a3a",
+    "semantic_hash": "c56dff1b5d35284cbdf2f08769aa0a3a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\bundles.py": {
+    "mtime": 1779776028.0547874,
+    "ast_hash": "20756e2c7d1b755443f98bb6ac61bfce",
+    "semantic_hash": "20756e2c7d1b755443f98bb6ac61bfce"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\core.py": {
+    "mtime": 1779776028.0607913,
+    "ast_hash": "fd577db83a4620cfc28bb1c750eadd12",
+    "semantic_hash": "fd577db83a4620cfc28bb1c750eadd12"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\orchestrator.py": {
+    "mtime": 1779776028.0663023,
+    "ast_hash": "18d0ef14cb92c65c2691cafc67dc216a",
+    "semantic_hash": "18d0ef14cb92c65c2691cafc67dc216a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\protocols.py": {
+    "mtime": 1779776028.0738113,
+    "ast_hash": "3dd615510fcf7fde593683cffef4a7e6",
+    "semantic_hash": "3dd615510fcf7fde593683cffef4a7e6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\_channel_kwargs.py": {
+    "mtime": 1779776028.0418935,
+    "ast_hash": "bf7e729e0d3a432cf0848a1863134a81",
+    "semantic_hash": "bf7e729e0d3a432cf0848a1863134a81"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\system\\__init__.py": {
+    "mtime": 1779776028.034876,
+    "ast_hash": "65771cc5e68c4fd2cb7f258692b26d3e",
+    "semantic_hash": "65771cc5e68c4fd2cb7f258692b26d3e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\aggregator.py": {
+    "mtime": 1779776028.0898318,
+    "ast_hash": "52e51d41f985ff2733c9ee408028715b",
+    "semantic_hash": "52e51d41f985ff2733c9ee408028715b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\batch.py": {
+    "mtime": 1779776028.0953398,
+    "ast_hash": "a6092623dcce1d5a69d1029fbfd4cee6",
+    "semantic_hash": "a6092623dcce1d5a69d1029fbfd4cee6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\efficiency.py": {
+    "mtime": 1779776028.1008434,
+    "ast_hash": "ad6a25443de8079364190b1b4b00cf72",
+    "semantic_hash": "ad6a25443de8079364190b1b4b00cf72"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\energy_amd.py": {
+    "mtime": 1779776028.1081865,
+    "ast_hash": "970a7ab8f968433827fd20129ba5a5d0",
+    "semantic_hash": "970a7ab8f968433827fd20129ba5a5d0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\energy_apple.py": {
+    "mtime": 1779776028.113692,
+    "ast_hash": "c9245b0914215a1d578172fd97fbae75",
+    "semantic_hash": "c9245b0914215a1d578172fd97fbae75"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\energy_monitor.py": {
+    "mtime": 1779776028.120705,
+    "ast_hash": "54803c6e3c5c3a0f26e723d65e778661",
+    "semantic_hash": "54803c6e3c5c3a0f26e723d65e778661"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\energy_nvidia.py": {
+    "mtime": 1779776028.127216,
+    "ast_hash": "dc89cf8197447d8cd98ea37e8a6299e0",
+    "semantic_hash": "dc89cf8197447d8cd98ea37e8a6299e0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\energy_rapl.py": {
+    "mtime": 1779776028.1332135,
+    "ast_hash": "0e30de24440943897e647d451c8855ee",
+    "semantic_hash": "0e30de24440943897e647d451c8855ee"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\flops.py": {
+    "mtime": 1779776028.13993,
+    "ast_hash": "f134a9fc4e40f34f6e1930de18fa5405",
+    "semantic_hash": "f134a9fc4e40f34f6e1930de18fa5405"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\gpu_monitor.py": {
+    "mtime": 1779776028.1454382,
+    "ast_hash": "c533bf13a6bbcd1b94cf9171d8b395b9",
+    "semantic_hash": "c533bf13a6bbcd1b94cf9171d8b395b9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\instrumented_engine.py": {
+    "mtime": 1779776028.1519463,
+    "ast_hash": "785d56d0881025a16c0b7b9d49a07534",
+    "semantic_hash": "785d56d0881025a16c0b7b9d49a07534"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\itl.py": {
+    "mtime": 1779776028.1589582,
+    "ast_hash": "72bbea4fa0905ad4ff8f2209857559ab",
+    "semantic_hash": "72bbea4fa0905ad4ff8f2209857559ab"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\phase_metrics.py": {
+    "mtime": 1779776028.1644683,
+    "ast_hash": "0af7c60759b8c7c5e1e21698b6eb7ea5",
+    "semantic_hash": "0af7c60759b8c7c5e1e21698b6eb7ea5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\session.py": {
+    "mtime": 1779776028.1711812,
+    "ast_hash": "ac4c6e51c3fea07561b4372fd9415015",
+    "semantic_hash": "ac4c6e51c3fea07561b4372fd9415015"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\steady_state.py": {
+    "mtime": 1779776028.1776886,
+    "ast_hash": "54b610d5afc5b8dd2558b60b1f34b8b4",
+    "semantic_hash": "54b610d5afc5b8dd2558b60b1f34b8b4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\store.py": {
+    "mtime": 1779776028.1831896,
+    "ast_hash": "6f0a09d437823a2e617c9f3363c203c4",
+    "semantic_hash": "6f0a09d437823a2e617c9f3363c203c4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\vllm_metrics.py": {
+    "mtime": 1779776028.189702,
+    "ast_hash": "01c7ce6788cdb33a7cb05b79a97754b3",
+    "semantic_hash": "01c7ce6788cdb33a7cb05b79a97754b3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\wrapper.py": {
+    "mtime": 1779776028.195208,
+    "ast_hash": "4f2255e31d2395e84364aab9bed2556e",
+    "semantic_hash": "4f2255e31d2395e84364aab9bed2556e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\telemetry\\__init__.py": {
+    "mtime": 1779776028.0833173,
+    "ast_hash": "c73b724519c10639ce7562c499cc5ab5",
+    "semantic_hash": "c73b724519c10639ce7562c499cc5ab5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\templates\\agent_templates.py": {
+    "mtime": 1779776028.2114508,
+    "ast_hash": "e57f3b11006949a9e6a822ecbaf11add",
+    "semantic_hash": "e57f3b11006949a9e6a822ecbaf11add"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\templates\\__init__.py": {
+    "mtime": 1779776028.2052226,
+    "ast_hash": "ad978ac1fe0e2f10b0c132ee9f841b7e",
+    "semantic_hash": "ad978ac1fe0e2f10b0c132ee9f841b7e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\agent_tools.py": {
+    "mtime": 1779776028.3098357,
+    "ast_hash": "56237725c6fa7935455dccd8974ff3c0",
+    "semantic_hash": "56237725c6fa7935455dccd8974ff3c0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\apply_patch.py": {
+    "mtime": 1779776028.3173406,
+    "ast_hash": "bf829dd7ad52aadbf0fd59ef8fe5a0b7",
+    "semantic_hash": "bf829dd7ad52aadbf0fd59ef8fe5a0b7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\approval_store.py": {
+    "mtime": 1779776028.324383,
+    "ast_hash": "3026a0c7990299ae8a2fada824a435e6",
+    "semantic_hash": "3026a0c7990299ae8a2fada824a435e6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\audio_tool.py": {
+    "mtime": 1779776028.3303835,
+    "ast_hash": "59b07fda5d300d016635d38d9770a124",
+    "semantic_hash": "59b07fda5d300d016635d38d9770a124"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\browser.py": {
+    "mtime": 1779776028.3373587,
+    "ast_hash": "dd46a102468ec473c7a032107f7b53e1",
+    "semantic_hash": "dd46a102468ec473c7a032107f7b53e1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\browser_axtree.py": {
+    "mtime": 1779776028.3473713,
+    "ast_hash": "f665317be40541ac6ca2d8b56bea3448",
+    "semantic_hash": "f665317be40541ac6ca2d8b56bea3448"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\calculator.py": {
+    "mtime": 1779776028.3533814,
+    "ast_hash": "c0d577d78ccc47fdab731cc69ab5f42b",
+    "semantic_hash": "c0d577d78ccc47fdab731cc69ab5f42b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\channel_tools.py": {
+    "mtime": 1779776028.359891,
+    "ast_hash": "c8cf32fa4755df583fa89ba79b69c6c8",
+    "semantic_hash": "c8cf32fa4755df583fa89ba79b69c6c8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\code_interpreter.py": {
+    "mtime": 1779776028.3654094,
+    "ast_hash": "97adabdcc637de98f2cc257105103d3f",
+    "semantic_hash": "97adabdcc637de98f2cc257105103d3f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\code_interpreter_docker.py": {
+    "mtime": 1779776028.3714125,
+    "ast_hash": "d190cad7e65b5a5a25e5e2c635664dc5",
+    "semantic_hash": "d190cad7e65b5a5a25e5e2c635664dc5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\db_query.py": {
+    "mtime": 1779776028.3779187,
+    "ast_hash": "414e42288e787a486ea0762fe7fb4e7d",
+    "semantic_hash": "414e42288e787a486ea0762fe7fb4e7d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\description_loader.py": {
+    "mtime": 1779776028.384433,
+    "ast_hash": "f3fd736b0492e4150db33786cdb0ba1f",
+    "semantic_hash": "f3fd736b0492e4150db33786cdb0ba1f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\digest_collect.py": {
+    "mtime": 1779834856.2436807,
+    "ast_hash": "516d66a2336fd5f89bdbdfbba6849803",
+    "semantic_hash": "516d66a2336fd5f89bdbdfbba6849803"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\docker_shell_exec.py": {
+    "mtime": 1779776028.396449,
+    "ast_hash": "248e86808d74af608cea74e22cd53dcf",
+    "semantic_hash": "248e86808d74af608cea74e22cd53dcf"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\file_read.py": {
+    "mtime": 1779776028.4034593,
+    "ast_hash": "0070faf47e11509623a81ca203e7740b",
+    "semantic_hash": "0070faf47e11509623a81ca203e7740b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\file_write.py": {
+    "mtime": 1779776028.4089732,
+    "ast_hash": "4cd57f493f7bea9f03590bd32f3762bb",
+    "semantic_hash": "4cd57f493f7bea9f03590bd32f3762bb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\git_tool.py": {
+    "mtime": 1779776028.4154098,
+    "ast_hash": "ebbce94f450a5c5614d188b65ecd6d97",
+    "semantic_hash": "ebbce94f450a5c5614d188b65ecd6d97"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\http_request.py": {
+    "mtime": 1779776028.4224093,
+    "ast_hash": "18d3979c0fca1dbbcbbd4a77838d141e",
+    "semantic_hash": "18d3979c0fca1dbbcbbd4a77838d141e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\image_tool.py": {
+    "mtime": 1779776028.4289193,
+    "ast_hash": "00ffaccd069b3da0a4fc811e638dbc9e",
+    "semantic_hash": "00ffaccd069b3da0a4fc811e638dbc9e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\knowledge_search.py": {
+    "mtime": 1779776028.4344292,
+    "ast_hash": "433a61aba23aafad820d22f4004a759f",
+    "semantic_hash": "433a61aba23aafad820d22f4004a759f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\knowledge_sql.py": {
+    "mtime": 1779834875.8634217,
+    "ast_hash": "b5284b45b2d2dcb3785625eab242ed7b",
+    "semantic_hash": "b5284b45b2d2dcb3785625eab242ed7b"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\knowledge_tools.py": {
+    "mtime": 1779776028.4468117,
+    "ast_hash": "2ac0e6d2aafd4822bcc09738970d9ce6",
+    "semantic_hash": "2ac0e6d2aafd4822bcc09738970d9ce6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\llm_tool.py": {
+    "mtime": 1779776028.4533186,
+    "ast_hash": "f97bcd40f44f92b4bbc23d6cbd179295",
+    "semantic_hash": "f97bcd40f44f92b4bbc23d6cbd179295"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\mcp_adapter.py": {
+    "mtime": 1779776028.4594529,
+    "ast_hash": "20f8e64746f97e53d3ea49df9d2a10ea",
+    "semantic_hash": "20f8e64746f97e53d3ea49df9d2a10ea"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\memory_manage.py": {
+    "mtime": 1779776028.4657147,
+    "ast_hash": "f1298cb4687cf895b95b7e769bc11ed4",
+    "semantic_hash": "f1298cb4687cf895b95b7e769bc11ed4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\pdf_tool.py": {
+    "mtime": 1779776028.4717128,
+    "ast_hash": "862b8efa418de07a4cdaf230d8eb68e8",
+    "semantic_hash": "862b8efa418de07a4cdaf230d8eb68e8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\proactive_tools.py": {
+    "mtime": 1779834872.113718,
+    "ast_hash": "60e1571b79f6b1b0332289cc651f1905",
+    "semantic_hash": "60e1571b79f6b1b0332289cc651f1905"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\repl.py": {
+    "mtime": 1779776028.4847255,
+    "ast_hash": "8cd2b714aab3e0fd4268cf3c6c7c5ba0",
+    "semantic_hash": "8cd2b714aab3e0fd4268cf3c6c7c5ba0"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\retrieval.py": {
+    "mtime": 1779776028.4911144,
+    "ast_hash": "d8540a226b00cf7f93988fd4755eeea7",
+    "semantic_hash": "d8540a226b00cf7f93988fd4755eeea7"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\scan_chunks.py": {
+    "mtime": 1779776028.4981363,
+    "ast_hash": "1542c68615a63b5d56e49fde9f908605",
+    "semantic_hash": "1542c68615a63b5d56e49fde9f908605"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\shell_exec.py": {
+    "mtime": 1779776028.5042362,
+    "ast_hash": "7c85aaf381d23627e1eb2fbbf15cdd4d",
+    "semantic_hash": "7c85aaf381d23627e1eb2fbbf15cdd4d"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\skill_manage.py": {
+    "mtime": 1779776028.5104115,
+    "ast_hash": "2d80981e4bba8652b79ec620fc6fd15a",
+    "semantic_hash": "2d80981e4bba8652b79ec620fc6fd15a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage_tools.py": {
+    "mtime": 1779776028.5164416,
+    "ast_hash": "fca0a74668dfa2f09672b52594e6b230",
+    "semantic_hash": "fca0a74668dfa2f09672b52594e6b230"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\text_to_speech.py": {
+    "mtime": 1779776028.5234413,
+    "ast_hash": "b1a9c1c5d11ae3fb5b96104cf43eaead",
+    "semantic_hash": "b1a9c1c5d11ae3fb5b96104cf43eaead"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\think.py": {
+    "mtime": 1779776028.5288658,
+    "ast_hash": "30d7d8d6099a84fd77355221fec09af4",
+    "semantic_hash": "30d7d8d6099a84fd77355221fec09af4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\user_profile_manage.py": {
+    "mtime": 1779776028.5358782,
+    "ast_hash": "14b827639c8192463d9786075daf1523",
+    "semantic_hash": "14b827639c8192463d9786075daf1523"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\web_search.py": {
+    "mtime": 1779934756.8951564,
+    "ast_hash": "d8e3785f039649203900d0fb42483e13",
+    "semantic_hash": "d8e3785f039649203900d0fb42483e13"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\web_search_settings.py": {
+    "mtime": 1779934740.8400345,
+    "ast_hash": "5b8c05ae3b3c25e88c90f788dfdcb53c",
+    "semantic_hash": "5b8c05ae3b3c25e88c90f788dfdcb53c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\_stubs.py": {
+    "mtime": 1779776028.3043263,
+    "ast_hash": "9611e20c1303f39c1274a4be465790ed",
+    "semantic_hash": "9611e20c1303f39c1274a4be465790ed"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\__init__.py": {
+    "mtime": 1779776028.297486,
+    "ast_hash": "e266e8077a17479c7fffd5d541d9999a",
+    "semantic_hash": "e266e8077a17479c7fffd5d541d9999a"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\bm25.py": {
+    "mtime": 1779776028.564879,
+    "ast_hash": "f2d5bfee640b0344c83826a05582a083",
+    "semantic_hash": "f2d5bfee640b0344c83826a05582a083"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\chunking.py": {
+    "mtime": 1779776028.571872,
+    "ast_hash": "f7816e3a63af30c069e8470a5ec40477",
+    "semantic_hash": "f7816e3a63af30c069e8470a5ec40477"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\colbert_backend.py": {
+    "mtime": 1779776028.57738,
+    "ast_hash": "10b4afe8fddfc8ac261cccca685afac6",
+    "semantic_hash": "10b4afe8fddfc8ac261cccca685afac6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\context.py": {
+    "mtime": 1779776028.5838852,
+    "ast_hash": "90c524492b58214e97477ccf4807a407",
+    "semantic_hash": "90c524492b58214e97477ccf4807a407"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\dense.py": {
+    "mtime": 1779776028.590395,
+    "ast_hash": "337faeda30e5a65f34ccb9fb201c5a34",
+    "semantic_hash": "337faeda30e5a65f34ccb9fb201c5a34"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\embeddings.py": {
+    "mtime": 1779776028.595904,
+    "ast_hash": "ab91a722b3f67e44f90ac98ad1e07e6f",
+    "semantic_hash": "ab91a722b3f67e44f90ac98ad1e07e6f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\faiss_backend.py": {
+    "mtime": 1779776028.6024134,
+    "ast_hash": "dfa2c3f40c6c5245941e05e65c8300d9",
+    "semantic_hash": "dfa2c3f40c6c5245941e05e65c8300d9"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\hybrid.py": {
+    "mtime": 1779776028.6082828,
+    "ast_hash": "397e16c0d2546837d0b93d2d7e289a81",
+    "semantic_hash": "397e16c0d2546837d0b93d2d7e289a81"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\ingest.py": {
+    "mtime": 1779776028.6144974,
+    "ast_hash": "b18eab4139348884550d49045ecf6a8f",
+    "semantic_hash": "b18eab4139348884550d49045ecf6a8f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\knowledge_graph.py": {
+    "mtime": 1779776028.6215017,
+    "ast_hash": "97f1aeb7bd0741d4e994d6a0545166ad",
+    "semantic_hash": "97f1aeb7bd0741d4e994d6a0545166ad"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\sqlite.py": {
+    "mtime": 1779776028.6280158,
+    "ast_hash": "60c57f254ab8c77b4832054deb059f20",
+    "semantic_hash": "60c57f254ab8c77b4832054deb059f20"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\_stubs.py": {
+    "mtime": 1779776028.5588665,
+    "ast_hash": "7d37a85073e7d1e9fa1ebdd0e4f288d6",
+    "semantic_hash": "7d37a85073e7d1e9fa1ebdd0e4f288d6"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\storage\\__init__.py": {
+    "mtime": 1779776028.5534267,
+    "ast_hash": "7bfebb09c9374df00c7c30b471595d92",
+    "semantic_hash": "7bfebb09c9374df00c7c30b471595d92"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\templates\\loader.py": {
+    "mtime": 1779776028.644338,
+    "ast_hash": "455dc0e0537b1e30386a11bfbb9a1932",
+    "semantic_hash": "455dc0e0537b1e30386a11bfbb9a1932"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\tools\\templates\\__init__.py": {
+    "mtime": 1779776028.6376967,
+    "ast_hash": "5f9bc686d23b969443c05f1bf86084f5",
+    "semantic_hash": "5f9bc686d23b969443c05f1bf86084f5"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\traces\\analyzer.py": {
+    "mtime": 1779776028.70824,
+    "ast_hash": "266774686f710c01c540b352d9778d1f",
+    "semantic_hash": "266774686f710c01c540b352d9778d1f"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\traces\\collector.py": {
+    "mtime": 1779776028.7137444,
+    "ast_hash": "10a7e46fbd0a08af4279c6e1e9010540",
+    "semantic_hash": "10a7e46fbd0a08af4279c6e1e9010540"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\traces\\store.py": {
+    "mtime": 1779776028.7197452,
+    "ast_hash": "49ac4e88ca19a637c188e26e74c9b0df",
+    "semantic_hash": "49ac4e88ca19a637c188e26e74c9b0df"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\traces\\__init__.py": {
+    "mtime": 1779776028.7017927,
+    "ast_hash": "cb8706662d6a2f4702d8df22c1bd8a4c",
+    "semantic_hash": "cb8706662d6a2f4702d8df22c1bd8a4c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\workflow\\builder.py": {
+    "mtime": 1779776028.7369754,
+    "ast_hash": "046c5ff5194521807ffa3c7410b37067",
+    "semantic_hash": "046c5ff5194521807ffa3c7410b37067"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\workflow\\engine.py": {
+    "mtime": 1779776028.7424812,
+    "ast_hash": "becaa6efe23d388d5fb745991a1c30a3",
+    "semantic_hash": "becaa6efe23d388d5fb745991a1c30a3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\workflow\\graph.py": {
+    "mtime": 1779776028.748453,
+    "ast_hash": "b2f2365948231a22af9a5e7144430755",
+    "semantic_hash": "b2f2365948231a22af9a5e7144430755"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\workflow\\loader.py": {
+    "mtime": 1779776028.7551823,
+    "ast_hash": "fa6ba0b8659b3966d99374b0be80d5e3",
+    "semantic_hash": "fa6ba0b8659b3966d99374b0be80d5e3"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\workflow\\types.py": {
+    "mtime": 1779776028.7601879,
+    "ast_hash": "0821277a04d5b98b8f5331b0fc5ce1eb",
+    "semantic_hash": "0821277a04d5b98b8f5331b0fc5ce1eb"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\workflow\\__init__.py": {
+    "mtime": 1779776028.730254,
+    "ast_hash": "7997b5926e2f980005dc0fe5f849f5a4",
+    "semantic_hash": "7997b5926e2f980005dc0fe5f849f5a4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\agents\\hybrid\\README.md": {
+    "mtime": 1779776023.2076042,
+    "ast_hash": "bde51814f75b3ee7a244c8ddf5e27d38",
+    "semantic_hash": "bde51814f75b3ee7a244c8ddf5e27d38"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\data\\operators\\correspondent_prompt.md": {
+    "mtime": 1779776027.341593,
+    "ast_hash": "1267cb0af9e09d19cdc18c7ae7bd944c",
+    "semantic_hash": "1267cb0af9e09d19cdc18c7ae7bd944c"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\data\\operators\\openjarvis_twitter_bot_prompt.md": {
+    "mtime": 1779776027.3592982,
+    "ast_hash": "1117300b3193d7e3579e0b4747b543c1",
+    "semantic_hash": "1117300b3193d7e3579e0b4747b543c1"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\data\\operators\\researcher_prompt.md": {
+    "mtime": 1779776027.3718233,
+    "ast_hash": "b46a3803af124bc84c10f7c35e4663ee",
+    "semantic_hash": "b46a3803af124bc84c10f7c35e4663ee"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\recipes\\data\\operators\\sentinel_prompt.md": {
+    "mtime": 1779776027.3813386,
+    "ast_hash": "c64d03f399056dcb6ef4d9ecc20de5c4",
+    "semantic_hash": "c64d03f399056dcb6ef4d9ecc20de5c4"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\index.html": {
+    "mtime": 1780021326.3844385,
+    "ast_hash": "4c5914f01225981fd5d54c2c94b78cd8",
+    "semantic_hash": "4c5914f01225981fd5d54c2c94b78cd8"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\apple-touch-icon.png": {
+    "mtime": 1779776021.1869652,
+    "ast_hash": "994f2cbe60c90395d3a6b7a3db88303e",
+    "semantic_hash": "994f2cbe60c90395d3a6b7a3db88303e"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\pwa-192x192.png": {
+    "mtime": 1779776021.2064881,
+    "ast_hash": "effb107657d2554e559889eabdca8b94",
+    "semantic_hash": "effb107657d2554e559889eabdca8b94"
+  },
+  "D:\\Git\\OpenJarvis-Windows-focused\\src\\openjarvis\\server\\static\\pwa-512x512.png": {
+    "mtime": 1779776021.2149942,
+    "ast_hash": "1dbaf4282c5d869506e0be590c5138a4",
+    "semantic_hash": "1dbaf4282c5d869506e0be590c5138a4"
+  }
+}

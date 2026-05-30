@@ -50,7 +50,7 @@ class KnowledgeSQLTool(BaseTool):
                             "SQL SELECT query. Only SELECT statements allowed. "
                             "Example: SELECT author, COUNT(*) as n "
                             "FROM knowledge_chunks "
-                            "WHERE source='imessage' GROUP BY author "
+                            "WHERE source='slack' GROUP BY author "
                             "ORDER BY n DESC LIMIT 10"
                         ),
                     },

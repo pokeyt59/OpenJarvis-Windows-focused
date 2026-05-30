@@ -21,9 +21,6 @@ function getStarterQueries(connectedSources: string[]): string[] {
   if (has('gdrive') || has('notion') || has('obsidian')) {
     queries.push('Find my notes about project planning');
   }
-  if (has('imessage')) {
-    queries.push('What have I been texting about lately?');
-  }
   if (has('gcontacts')) {
     queries.push('Who are my most frequent collaborators?');
   }

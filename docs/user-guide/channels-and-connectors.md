@@ -410,45 +410,11 @@ We recommend creating **one Slack app** that handles both. The App Manifest belo
 
 ---
 
-## Apple Notes
-
-**What it indexes:** Notes from the macOS Notes app.
-
-### Setup (automatic)
-
-1. **Grant Full Disk Access** to your terminal app:
-   - Open System Settings → Privacy & Security → Full Disk Access
-   - Enable access for Terminal, iTerm, Warp, or the OpenJarvis desktop app
-
-2. Apple Notes is detected automatically when Full Disk Access is granted
-
-### Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| "Not connected" despite Full Disk Access | Restart your terminal app after granting access |
-| Notes content is garbled | Some very old notes may have encoding issues. Most notes should be clean. |
-| Missing notes | Only notes stored locally or in iCloud are indexed. Notes in third-party accounts (Gmail, Exchange) may not appear. |
-
----
-
-## iMessage
-
-**What it indexes:** Text messages from the macOS Messages app.
-
-### Setup (automatic)
-
-Same as Apple Notes — requires Full Disk Access.
-
-### Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| "Not connected" | Grant Full Disk Access (see Apple Notes above) |
-| Very slow sync | iMessage databases can be large (50K+ messages). First sync may take 10-30 seconds. |
-| Missing recent messages | Messages sync from the local database. If Messages.app hasn't synced from iCloud yet, recent messages may be missing. |
-
----
+<!-- Apple Notes, Apple Contacts, Apple Health, Apple Music, and the
+macOS-only iMessage *data connector* (chat.db reader) were removed from
+this Windows-focused fork. SendBlue still provides iMessage **as a
+messaging channel** (people text your agent's number); see the "iMessage
+& SMS (via SendBlue)" section near the top of this document. -->
 
 ## Outlook / Microsoft 365
 

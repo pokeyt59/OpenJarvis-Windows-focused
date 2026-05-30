@@ -4,13 +4,33 @@ Provides:
 - ``OAuthProvider`` registry with configs for Google, Strava, Spotify
 - Generic ``run_connector_oauth()`` that opens browser + catches callback
 - URL builder, token persistence, and token cleanup utilities
+- CSRF-defense state tokens (HMAC-signed, with TTL)
+- PKCE (RFC 7636) for the auth code grant — protects against intercepted
+  authorization codes by binding each code to a per-flow secret verifier
+
+Security notes:
+- Token files are written with ``0o600`` perms (effective on Unix; on
+  Windows the chmod is a no-op and files inherit the parent directory's
+  ACL — fine when ``~/.openjarvis`` is the default user-only profile).
+- ``state`` is mandatory on ``/oauth/start`` and verified on
+  ``/oauth/callback`` to block CSRF "account-confusion" attacks where a
+  malicious page tricks the user's browser into completing an auth
+  code that was issued for the attacker's session.
+- PKCE is used for every provider in ``OAUTH_PROVIDERS`` because
+  desktop apps are public clients (no client_secret kept on a server),
+  and the spec recommends PKCE unconditionally for public clients.
 """
 
 from __future__ import annotations
 
 import base64
+import hashlib
+import hmac
 import json
 import os
+import secrets
+import threading
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -174,6 +194,179 @@ def save_client_credentials(
 
 
 # ---------------------------------------------------------------------------
+# OAuth state (CSRF defense) + PKCE (RFC 7636)
+# ---------------------------------------------------------------------------
+#
+# Why both:
+#   - ``state`` defends against CSRF: a malicious page can't trick the
+#     user's browser into completing OUR callback URL because it can't
+#     forge a valid HMAC-signed state.
+#   - PKCE defends against intercepted authorization codes: even if an
+#     attacker grabs the ``?code=...`` query string off the redirect, they
+#     can't exchange it for tokens without the matching ``code_verifier``
+#     that only our process knows.
+#
+# Both are belt-and-suspenders for OAuth public clients (desktop apps).
+
+# Default state TTL — 10 minutes. The OAuth window is usually < 30s but
+# we allow slack for slow consent screens / 2FA prompts.
+_STATE_TTL_SECONDS: int = 600
+
+# Per-state PKCE verifiers, keyed by the state token. Cleared when the
+# callback consumes them, or evicted on TTL expiry by ``verify_state``.
+# Module-level dict guarded by a lock because the FastAPI app can call
+# /oauth/start and /oauth/callback from different threads.
+_pkce_store: Dict[str, Tuple[str, float]] = {}
+_pkce_lock = threading.Lock()
+
+
+def _state_signing_key() -> bytes:
+    """Per-installation HMAC key for OAuth state tokens.
+
+    Derived deterministically from the user's home directory so it's
+    stable across restarts but unique per install. NOT committed
+    anywhere — exists only in memory at runtime.
+
+    This is acceptable for the threat model (CSRF defense for OAuth):
+    the attacker would need to know the user's exact home path to forge
+    a state, and even then forgery only enables CSRF, not credential
+    theft. For stronger guarantees we'd persist a random key on first
+    use, but that adds setup friction for marginal gain on a single-user
+    desktop app.
+    """
+    seed = f"openjarvis-oauth-state-v1::{Path.home()}".encode("utf-8")
+    return hashlib.sha256(seed).digest()
+
+
+def _b64url_encode(data: bytes) -> str:
+    """RFC 4648 §5 base64url encoding, no padding."""
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
+
+
+def _b64url_decode(s: str) -> bytes:
+    """Inverse of :func:`_b64url_encode`."""
+    pad = "=" * (-len(s) % 4)
+    return base64.urlsafe_b64decode((s + pad).encode("ascii"))
+
+
+def generate_state(connector_id: str) -> str:
+    """Generate an HMAC-signed state token for *connector_id*.
+
+    Payload encodes the connector_id, a random nonce, and the current
+    Unix timestamp; signed with the per-installation signing key.
+    Format: ``<payload_b64url>.<sig_b64url>``.
+
+    The callback uses :func:`verify_state` to:
+      1. Check the HMAC (forgery defense)
+      2. Check the timestamp is within ``_STATE_TTL_SECONDS`` (replay
+         defense — old state shouldn't work)
+      3. Check the connector_id matches (binding defense — state for
+         connector A can't be replayed against connector B)
+    """
+    payload = {
+        "c": connector_id,
+        "n": _b64url_encode(secrets.token_bytes(16)),
+        "t": int(time.time()),
+    }
+    payload_bytes = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+    sig = hmac.new(_state_signing_key(), payload_bytes, hashlib.sha256).digest()
+    return f"{_b64url_encode(payload_bytes)}.{_b64url_encode(sig)}"
+
+
+def verify_state(state: str, connector_id: str) -> bool:
+    """Verify *state* was issued for *connector_id* and is still valid.
+
+    Returns ``True`` only when ALL of:
+      - state is well-formed (payload + signature, both base64url)
+      - HMAC signature is valid (``hmac.compare_digest`` to prevent
+        timing attacks)
+      - payload's ``c`` field equals *connector_id*
+      - payload's ``t`` field is within ``_STATE_TTL_SECONDS`` of now
+    """
+    if not state or "." not in state:
+        return False
+    try:
+        payload_b64, sig_b64 = state.split(".", 1)
+        payload_bytes = _b64url_decode(payload_b64)
+        sig = _b64url_decode(sig_b64)
+    except (ValueError, base64.binascii.Error):
+        return False
+
+    expected_sig = hmac.new(
+        _state_signing_key(), payload_bytes, hashlib.sha256
+    ).digest()
+    if not hmac.compare_digest(sig, expected_sig):
+        return False
+
+    try:
+        payload = json.loads(payload_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return False
+
+    if payload.get("c") != connector_id:
+        return False
+    issued_at = payload.get("t")
+    if not isinstance(issued_at, int):
+        return False
+    if abs(time.time() - issued_at) > _STATE_TTL_SECONDS:
+        return False
+    return True
+
+
+def generate_pkce_pair() -> Tuple[str, str]:
+    """Return ``(code_verifier, code_challenge)`` per RFC 7636 §4.
+
+    The verifier is 64 bytes of cryptographic randomness encoded as
+    base64url (43 chars after stripping padding — within the
+    43–128 char range the spec requires).
+
+    The challenge is the SHA-256 of the verifier, base64url-encoded.
+    The provider receives the challenge in ``/authorize`` and stores it.
+    On token exchange we send the verifier; the provider re-hashes it
+    and refuses the exchange if the result doesn't match — so an
+    attacker who only intercepts the redirect URL (containing the code,
+    not the verifier) cannot complete the flow.
+    """
+    verifier = _b64url_encode(secrets.token_bytes(32))
+    challenge = _b64url_encode(hashlib.sha256(verifier.encode("ascii")).digest())
+    return verifier, challenge
+
+
+def remember_pkce_verifier(state: str, verifier: str) -> None:
+    """Cache *verifier* indexed by *state* until the callback consumes it.
+
+    Older entries (past TTL) are opportunistically evicted on each call.
+    The PKCE verifier MUST NOT travel over the network — that's the
+    whole point of PKCE. We keep it in process memory only.
+    """
+    now = time.time()
+    cutoff = now - _STATE_TTL_SECONDS
+    with _pkce_lock:
+        # Evict stale entries first to bound memory.
+        stale = [s for s, (_, ts) in _pkce_store.items() if ts < cutoff]
+        for s in stale:
+            _pkce_store.pop(s, None)
+        _pkce_store[state] = (verifier, now)
+
+
+def consume_pkce_verifier(state: str) -> Optional[str]:
+    """Pop and return the PKCE verifier for *state*, or ``None``.
+
+    One-shot: a state can only be consumed once. Caller is expected to
+    verify the state first (HMAC + TTL); this just retrieves the
+    matching verifier so token exchange can include it.
+    """
+    with _pkce_lock:
+        entry = _pkce_store.pop(state, None)
+    if entry is None:
+        return None
+    verifier, ts = entry
+    if time.time() - ts > _STATE_TTL_SECONDS:
+        return None
+    return verifier
+
+
+# ---------------------------------------------------------------------------
 # Shared credentials file — one OAuth flow covers all Google connectors
 # ---------------------------------------------------------------------------
 
@@ -193,6 +386,8 @@ def build_google_auth_url(
     client_id: str,
     redirect_uri: str = _DEFAULT_REDIRECT_URI,
     scopes: Optional[List[str]] = None,
+    state: Optional[str] = None,
+    code_challenge: Optional[str] = None,
 ) -> str:
     """Build a Google OAuth2 consent URL.
 
@@ -206,6 +401,15 @@ def build_google_auth_url(
     scopes:
         List of OAuth scopes to request.  Defaults to
         ``["openid", "email", "profile"]``.
+    state:
+        Optional CSRF state token. When provided, Google echoes it back
+        to the callback so we can verify the response is a legitimate
+        reply to a request we issued. See :func:`generate_state`.
+    code_challenge:
+        Optional PKCE challenge (S256). When provided, the token
+        exchange must include the matching verifier or Google refuses
+        — defeats redirect-URL interception attacks. See
+        :func:`generate_pkce_pair`.
 
     Returns
     -------
@@ -215,7 +419,7 @@ def build_google_auth_url(
     if scopes is None:
         scopes = _DEFAULT_SCOPES
 
-    params = {
+    params: Dict[str, str] = {
         "client_id": client_id,
         "redirect_uri": redirect_uri,
         "response_type": "code",
@@ -223,6 +427,11 @@ def build_google_auth_url(
         "access_type": "offline",
         "prompt": "consent",
     }
+    if state:
+        params["state"] = state
+    if code_challenge:
+        params["code_challenge"] = code_challenge
+        params["code_challenge_method"] = "S256"
     return f"{_GOOGLE_AUTH_ENDPOINT}?{urlencode(params)}"
 
 
@@ -340,6 +549,7 @@ def exchange_google_token(
     client_id: str,
     client_secret: str,
     redirect_uri: str = _DEFAULT_REDIRECT_URI,
+    code_verifier: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Exchange an authorization code for access + refresh tokens.
 
@@ -353,6 +563,11 @@ def exchange_google_token(
         OAuth 2.0 client secret.
     redirect_uri:
         Must match the redirect URI used when obtaining the auth code.
+    code_verifier:
+        Optional PKCE verifier — required when the auth request
+        included a code_challenge. Google enforces the PKCE check
+        even when the client is confidential (has a secret), so we
+        always include it when we have one.
 
     Returns
     -------
@@ -362,15 +577,19 @@ def exchange_google_token(
     """
     import httpx
 
+    data: Dict[str, str] = {
+        "code": code,
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "redirect_uri": redirect_uri,
+        "grant_type": "authorization_code",
+    }
+    if code_verifier is not None:
+        data["code_verifier"] = code_verifier
+
     resp = httpx.post(
         "https://oauth2.googleapis.com/token",
-        data={
-            "code": code,
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "redirect_uri": redirect_uri,
-            "grant_type": "authorization_code",
-        },
+        data=data,
         timeout=30.0,
     )
     resp.raise_for_status()
@@ -423,14 +642,25 @@ def run_oauth_flow(
     from http.server import BaseHTTPRequestHandler, HTTPServer
     from urllib.parse import parse_qs, urlparse
 
+    # Google supports both state and PKCE; include both. Without them
+    # an attacker who intercepts the redirect URL can replay the code
+    # or trick a victim into completing the attacker's session.
+    # ``connector_id`` here is "google" since gdrive/gcal/etc. all share
+    # one consent flow.
+    state = generate_state("google")
+    code_verifier, code_challenge = generate_pkce_pair()
+
     auth_url = build_google_auth_url(
         client_id=client_id,
         redirect_uri=redirect_uri,
         scopes=scopes,
+        state=state,
+        code_challenge=code_challenge,
     )
 
     # Mutable containers used by the callback handler closure.
     auth_code: List[str] = []
+    state_value: List[str] = []
     error: List[str] = []
 
     class _CallbackHandler(BaseHTTPRequestHandler):
@@ -440,6 +670,7 @@ def run_oauth_flow(
 
             if "code" in params:
                 auth_code.append(params["code"][0])
+                state_value.append(params.get("state", [""])[0])
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html")
                 self.end_headers()
@@ -505,12 +736,23 @@ def run_oauth_flow(
     if not auth_code:
         raise RuntimeError("OAuth authorization timed out")
 
-    # Exchange the authorization code for tokens
+    # Verify state — defends against CSRF. We generated it bound to
+    # "google" above; the callback must echo back an exact match.
+    if not verify_state(state_value[0] if state_value else "", "google"):
+        raise RuntimeError(
+            "OAuth state mismatch — request was tampered with or expired"
+        )
+
+    # Exchange the authorization code for tokens, including the PKCE
+    # verifier. Google enforces PKCE on the exchange when a challenge
+    # was sent — so without the matching verifier the exchange fails
+    # even with a valid code.
     tokens = exchange_google_token(
         code=auth_code[0],
         client_id=client_id,
         client_secret=client_secret,
         redirect_uri=redirect_uri,
+        code_verifier=code_verifier,
     )
 
     # Persist tokens together with client credentials (needed for refresh)
@@ -542,15 +784,23 @@ def _wait_for_callback_code(
     port: int = 8789,
     path: str = "/callback",
     timeout: int = 120,
-) -> str:
+) -> Tuple[str, str]:
     """Start a localhost HTTP server and wait for ``?code=`` on *path*.
 
-    Returns the authorization code received from the OAuth redirect.
+    Returns
+    -------
+    (code, state)
+        Tuple of the authorization code and ``state`` query parameter
+        received from the OAuth redirect. ``state`` is empty string
+        when the provider didn't echo one back (older providers).
+        Caller is responsible for verifying it with :func:`verify_state`
+        before using the code.
     """
     from http.server import BaseHTTPRequestHandler, HTTPServer
     from urllib.parse import parse_qs, urlparse
 
     auth_code: List[str] = []
+    state_value: List[str] = []
     error: List[str] = []
 
     class _Handler(BaseHTTPRequestHandler):
@@ -558,6 +808,7 @@ def _wait_for_callback_code(
             params = parse_qs(urlparse(self.path).query)
             if "code" in params:
                 auth_code.append(params["code"][0])
+                state_value.append(params.get("state", [""])[0])
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html")
                 self.end_headers()
@@ -613,7 +864,7 @@ def _wait_for_callback_code(
         raise RuntimeError(f"OAuth authorization denied: {error[0]}")
     if not auth_code:
         raise RuntimeError("OAuth callback timed out")
-    return auth_code[0]
+    return auth_code[0], state_value[0] if state_value else ""
 
 
 def _exchange_token(
@@ -622,8 +873,19 @@ def _exchange_token(
     client_id: str,
     client_secret: str,
     redirect_uri: str,
+    code_verifier: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Exchange an authorization *code* for tokens using *provider* config."""
+    """Exchange an authorization *code* for tokens using *provider* config.
+
+    Parameters
+    ----------
+    code_verifier:
+        Optional PKCE verifier matching the ``code_challenge`` sent to
+        the provider during the auth request. Required when PKCE is in
+        use; the provider re-hashes the verifier and rejects the
+        exchange if it doesn't match the stored challenge — that's what
+        protects against attackers who only intercept the redirect URL.
+    """
     import httpx
 
     data: Dict[str, str] = {
@@ -640,6 +902,9 @@ def _exchange_token(
         data["client_id"] = client_id
         data["client_secret"] = client_secret
 
+    if code_verifier is not None:
+        data["code_verifier"] = code_verifier
+
     resp = httpx.post(provider.token_endpoint, data=data, headers=headers, timeout=30.0)
     resp.raise_for_status()
     return resp.json()
@@ -650,14 +915,32 @@ def run_connector_oauth(
     client_id: str = "",
     client_secret: str = "",
 ) -> Dict[str, Any]:
-    """Run a complete OAuth flow for *connector_id*.
+    """Run a complete OAuth flow for *connector_id* using its own local
+    callback server.
 
+    Used by ``handle_callback`` on connectors that need to launch the
+    browser dance themselves (e.g. Spotify/Strava when the user pastes
+    ``client_id:client_secret`` into the catalog form). The FastAPI
+    ``/oauth/start`` route is the alternative path — both apply the
+    same state + PKCE protections.
+
+    Security
+    --------
+    - HMAC-signed ``state`` parameter prevents CSRF (the local
+      callback server refuses codes that don't carry our state)
+    - PKCE ``code_challenge`` (S256) prevents token theft if the
+      redirect URL is intercepted
+
+    Steps
+    -----
     1. Look up the ``OAuthProvider``
     2. Resolve client credentials (arg → stored → env)
-    3. Build auth URL and open the user's browser
-    4. Start localhost callback server and wait for the code
-    5. Exchange the code for tokens
-    6. Save tokens to all relevant credential files
+    3. Generate state + PKCE pair
+    4. Build auth URL and open the user's browser
+    5. Start localhost callback server, wait for code + state
+    6. Verify state matches (HMAC + TTL + connector binding)
+    7. Exchange the code for tokens with the PKCE verifier
+    8. Save tokens to all relevant credential files
 
     Returns the raw token response dict.
     """
@@ -683,26 +966,50 @@ def run_connector_oauth(
         f"{provider.callback_path}"
     )
 
-    # Build auth URL
+    state = generate_state(connector_id)
+    code_verifier, code_challenge = generate_pkce_pair()
+
+    # Build auth URL with state + PKCE
     params: Dict[str, str] = {
         "client_id": client_id,
         "redirect_uri": redirect_uri,
         "response_type": "code",
         "scope": " ".join(provider.scopes),
+        "state": state,
+        "code_challenge": code_challenge,
+        "code_challenge_method": "S256",
         **provider.extra_auth_params,
     }
     auth_url = f"{provider.auth_endpoint}?{urlencode(params)}"
 
     # Open browser and wait for callback
     webbrowser.open(auth_url)
-    code = _wait_for_callback_code(
+    code, returned_state = _wait_for_callback_code(
         host=provider.callback_host,
         port=provider.callback_port,
         path=provider.callback_path,
     )
 
-    # Exchange code for tokens
-    tokens = _exchange_token(provider, code, client_id, client_secret, redirect_uri)
+    # Verify state — protects against CSRF "account confusion" where
+    # the user's browser is tricked into completing a code from the
+    # attacker's session.
+    if not verify_state(returned_state, connector_id):
+        raise RuntimeError(
+            "OAuth state mismatch — request was tampered with or expired"
+        )
+
+    # Exchange code for tokens, including the PKCE verifier. Without
+    # the verifier the provider rejects the exchange even with a valid
+    # code, so an attacker who only intercepts the redirect URL can't
+    # complete the flow.
+    tokens = _exchange_token(
+        provider,
+        code,
+        client_id,
+        client_secret,
+        redirect_uri,
+        code_verifier=code_verifier,
+    )
 
     # Build payload with client credentials included (needed for refresh)
     payload = {

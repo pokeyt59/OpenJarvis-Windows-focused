@@ -105,13 +105,12 @@ class MorningDigestAgent(ToolUsingAgent):
                 "gmail",
                 "slack",
                 "google_tasks",
-                "imessage",
                 "github_notifications",
             ],
             "calendar": ["gcalendar"],
-            "health": ["oura", "apple_health"],
+            "health": ["oura"],
             "world": ["weather", "hackernews", "news_rss"],
-            "music": ["spotify", "apple_music"],
+            "music": ["spotify"],
         }
         sources = set()
         for section in self._sections:

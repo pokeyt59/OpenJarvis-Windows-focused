@@ -7,8 +7,13 @@ import {
   bindAgentChannel,
   unbindAgentChannel,
   createManagedAgent,
-  sendblueRegisterWebhook,
   sendblueHealth,
+  SENDBLUE_WEBHOOK_PATH,
+  ensureNgrokTunnel,
+  configureNgrokAuthtoken,
+  installNgrok,
+  getOsLocation,
+  getIpLocation,
   getMemoryStats,
   searchMemory,
   storeMemory,
@@ -18,9 +23,18 @@ import type { ChannelBinding, ManagedAgent, MemoryStats, MemorySearchResult } fr
 import { getBase, isTauri } from '../lib/api';
 import {
   Database, MessageSquare, Loader2, Brain, Search, FolderOpen, FileText,
-  Mail, Hash, MessageCircle, CalendarDays, Contact, StickyNote, BookText,
+  Mail, Hash, CalendarDays, Contact, BookText,
   Package, Upload, Link2, PhoneCall,
+  StickyNote, Cloud, CheckSquare, Globe, MessageCircle, Smartphone,
+  Code2,
+  Bell, Rss, Activity, Music, Bike,
+  Wrench,
 } from 'lucide-react';
+// The Tools tab lives in its own component tree (web search backend
+// chooser + SearXNG installer + global Docker resources). Imported
+// here so the tab can render without duplicating the layout.
+import { WebSearchToolCard } from '../components/tools/WebSearchToolCard';
+import { DockerResourcesCard } from '../components/tools/DockerResourcesCard';
 import type { LucideIcon } from 'lucide-react';
 import { SOURCE_CATALOG } from '../types/connectors';
 import type { ConnectRequest } from '../types/connectors';
@@ -36,16 +50,104 @@ function InlineConnectForm({
   loading,
   onSubmit,
 }: {
-  fields: Array<{ name: string; placeholder: string; type?: string }>;
+  fields: Array<{
+    name: string;
+    placeholder: string;
+    type?: string;
+    browseFolder?: boolean;
+    useLocation?: boolean;
+  }>;
   loading: boolean;
   onSubmit: (req: ConnectRequest) => void;
 }) {
   const [inputs, setInputs] = useState<Record<string, string>>({});
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState('');
+  const [locNote, setLocNote] = useState('');
+  const [offerIp, setOfferIp] = useState(false);
 
   const update = (name: string, value: string) =>
     setInputs((p) => ({ ...p, [name]: value }));
 
   const allFilled = fields.every((f) => inputs[f.name]?.trim());
+
+  /**
+   * Browse helper for fields that opt into ``browseFolder``. Uses the
+   * native OS folder picker via @tauri-apps/plugin-dialog on Tauri,
+   * and falls back to <input type=file webkitdirectory> on the web
+   * (which can only return the folder NAME, not the absolute path —
+   * known web sandbox limitation, mostly useful for dev-server work).
+   */
+  const handleBrowse = async (name: string) => {
+    if (isTauri()) {
+      try {
+        const { open } = await import('@tauri-apps/plugin-dialog');
+        const selected = await open({
+          directory: true,
+          multiple: false,
+          title: 'Select folder',
+        });
+        if (selected) update(name, selected as string);
+        return;
+      } catch {
+        // Fall through to the web picker — extremely unlikely to hit
+        // this path because Tauri is the primary target, but keeps
+        // dev-server runs functional.
+      }
+    }
+    const el = document.createElement('input');
+    el.type = 'file';
+    el.setAttribute('webkitdirectory', '');
+    el.onchange = () => {
+      const files = el.files;
+      if (files && files.length > 0) {
+        const rel = (files[0] as any).webkitRelativePath || '';
+        const folder = rel.split('/')[0];
+        if (folder) update(name, folder);
+      }
+    };
+    el.click();
+  };
+
+  /**
+   * Fill a field with the device's current coordinates from the OS location
+   * service (Windows). The weather connector queries OpenWeatherMap by these
+   * lat/lon, so the user never has to type a city.
+   */
+  const handleUseLocation = async (name: string) => {
+    setLocating(true);
+    setLocError('');
+    setLocNote('');
+    setOfferIp(false);
+    try {
+      const { lat, lon } = await getOsLocation();
+      update(name, `${lat.toFixed(4)},${lon.toFixed(4)}`);
+      setLocNote('Using your device location.');
+    } catch {
+      // Don't silently contact a third party — offer an explicit IP estimate
+      // (the actual lookup is hardened on the Rust side and runs only on click).
+      setOfferIp(true);
+    } finally {
+      setLocating(false);
+    }
+  };
+
+  // Explicit, user-initiated IP estimate (opt-in backup, hardened in Rust:
+  // single HTTPS-only provider, strict timeout, range-checked, not persisted).
+  const handleIpLocation = async (name: string) => {
+    setLocating(true);
+    setLocError('');
+    try {
+      const { lat, lon } = await getIpLocation();
+      update(name, `${lat.toFixed(4)},${lon.toFixed(4)}`);
+      setLocNote('Approximate location (IP-based).');
+      setOfferIp(false);
+    } catch {
+      setLocError("Couldn't estimate from your IP either — type a city instead.");
+    } finally {
+      setLocating(false);
+    }
+  };
 
   const submit = () => {
     const req: ConnectRequest = {};
@@ -63,24 +165,131 @@ function InlineConnectForm({
     onSubmit(req);
   };
 
+  const inputBaseStyle: React.CSSProperties = {
+    padding: '7px 10px',
+    background: 'var(--color-bg)',
+    border: '1px solid var(--color-border)',
+    borderRadius: 4,
+    color: 'var(--color-text)',
+    fontSize: 12,
+    boxSizing: 'border-box',
+  };
+
   return (
     <div>
       {fields.map((f) => (
-        <input
-          key={f.name}
-          value={inputs[f.name] || ''}
-          onChange={(e) => update(f.name, e.target.value)}
-          placeholder={f.placeholder}
-          type={f.type || 'text'}
-          style={{
-            width: '100%', padding: '7px 10px',
-            background: 'var(--color-bg)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 4, color: 'var(--color-text)',
-            fontSize: 12, marginBottom: 6,
-            boxSizing: 'border-box',
-          }}
-        />
+        f.browseFolder ? (
+          // Path field with native folder picker — text input + Browse
+          // button share a row so the path is editable and clickable.
+          <div
+            key={f.name}
+            style={{
+              display: 'flex',
+              gap: 6,
+              marginBottom: 6,
+            }}
+          >
+            <input
+              value={inputs[f.name] || ''}
+              onChange={(e) => update(f.name, e.target.value)}
+              placeholder={f.placeholder}
+              type={f.type || 'text'}
+              style={{ ...inputBaseStyle, flex: 1, marginBottom: 0 }}
+            />
+            <button
+              type="button"
+              onClick={() => handleBrowse(f.name)}
+              style={{
+                padding: '7px 12px',
+                background: 'var(--color-bg)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text-secondary)',
+                borderRadius: 4,
+                fontSize: 12,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+              title="Pick a folder using the system file dialog"
+            >
+              Browse…
+            </button>
+          </div>
+        ) : f.useLocation ? (
+          // Location field with an OS-location button (weather connector).
+          <div key={f.name}>
+            <div style={{ display: 'flex', gap: 6, marginBottom: locError || locNote || offerIp ? 4 : 6 }}>
+              <input
+                value={inputs[f.name] || ''}
+                onChange={(e) => update(f.name, e.target.value)}
+                placeholder={f.placeholder}
+                type={f.type || 'text'}
+                style={{ ...inputBaseStyle, flex: 1, marginBottom: 0 }}
+              />
+              <button
+                type="button"
+                onClick={() => handleUseLocation(f.name)}
+                disabled={locating}
+                style={{
+                  padding: '7px 12px',
+                  background: 'var(--color-bg)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text-secondary)',
+                  borderRadius: 4,
+                  fontSize: 12,
+                  cursor: locating ? 'default' : 'pointer',
+                  whiteSpace: 'nowrap',
+                  opacity: locating ? 0.6 : 1,
+                }}
+                title="Use your current location (Windows location services)"
+              >
+                {locating ? 'Locating…' : '📍 My location'}
+              </button>
+            </div>
+            {locError && (
+              <div style={{ fontSize: 10, color: 'var(--color-error)', marginBottom: 6 }}>
+                {locError}
+              </div>
+            )}
+            {locNote && !locError && (
+              <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginBottom: 6 }}>
+                {locNote}
+              </div>
+            )}
+            {offerIp && !locError && (
+              <div style={{ marginBottom: 6 }}>
+                <div style={{ fontSize: 10, color: 'var(--color-text-secondary)', marginBottom: 4 }}>
+                  Windows location wasn&apos;t available.
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleIpLocation(f.name)}
+                  disabled={locating}
+                  style={{
+                    fontSize: 11, padding: '5px 10px',
+                    background: 'var(--color-bg)', border: '1px solid var(--color-border)',
+                    color: 'var(--color-text)', borderRadius: 4,
+                    cursor: locating ? 'default' : 'pointer', opacity: locating ? 0.6 : 1,
+                  }}
+                  title="Estimate your location from your IP address"
+                >
+                  {locating ? 'Estimating…' : 'Estimate from my IP'}
+                </button>
+                <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 4 }}>
+                  Sends your IP address to ipapi.co to estimate your city (approximate).
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <input
+            key={f.name}
+            value={inputs[f.name] || ''}
+            onChange={(e) => update(f.name, e.target.value)}
+            placeholder={f.placeholder}
+            type={f.type || 'text'}
+            style={{ ...inputBaseStyle, width: '100%', marginBottom: 6 }}
+          />
+        )
       ))}
       <button
         onClick={submit}
@@ -293,18 +502,32 @@ const iconMap: Record<string, LucideIcon> = {
   gmail_api: Mail,
   outlook: Mail,
   slack: Hash,
-  imessage: MessageCircle,
   whatsapp: PhoneCall,
   gdrive: FolderOpen,
   dropbox: Package,
   notion: BookText,
   obsidian: FileText,
-  apple_notes: StickyNote,
   granola: FileText,
   gcalendar: CalendarDays,
   gcontacts: Contact,
-  apple_contacts: Contact,
   upload: Upload,
+  // Windows-native additions
+  onenote: StickyNote,
+  onedrive: Cloud,
+  mstodo: CheckSquare,
+  local_folder: FolderOpen,
+  edge: Globe,
+  discord: MessageCircle,
+  phone_link: Smartphone,
+  ide_workspaces: Code2,
+  // External services (added in the Windows-focused fork)
+  github_notifications: Bell,
+  google_tasks: CheckSquare,
+  news_rss: Rss,
+  oura: Activity,
+  spotify: Music,
+  strava: Bike,
+  weather: Cloud,
 };
 
 const IconFor = ({ id, size = 18 }: { id: string; size?: number }) => {
@@ -602,6 +825,10 @@ function DataSourcesSection() {
   const [syncStatuses, setSyncStatuses] = useState<Record<string, SyncStatus>>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  // Opt-in dev overlay (Settings → Developer → Data-source debug overlay).
+  // When enabled, surfaces the runtime connector_id, catalog size, and
+  // metaFor() lookup result inside every expanded card. Off in normal use.
+  const debugOverlay = useAppStore((s) => s.settings.debugOverlay);
 
   const loadConnectors = useCallback(() => {
     listConnectors()
@@ -651,6 +878,10 @@ function DataSourcesSection() {
   const [connectingId, setConnectingId] = useState<string | null>(null);
   const [connectStage, setConnectStage] = useState<string>('');
   const [connectError, setConnectError] = useState<string>('');
+  // Which connector the error belongs to — scopes the message to its own card
+  // so a failure on one (e.g. weather 400) doesn't render on a different card
+  // expanded later (connectError is shared state).
+  const [connectErrorId, setConnectErrorId] = useState<string | null>(null);
   const [disconnectingId, setDisconnectingId] = useState<string | null>(null);
 
   const handleDisconnect = async (id: string) => {
@@ -672,6 +903,7 @@ function DataSourcesSection() {
     setConnectingId(id);
     setConnectStage('Connecting...');
     setConnectError('');
+    setConnectErrorId(null);
     try {
       await connectSource(id, req);
       setConnectStage('Connected! Starting sync...');
@@ -710,6 +942,7 @@ function DataSourcesSection() {
         errorMsg = 'Invalid credentials — make sure you\'re using an App Password (16 characters), not your regular Gmail password.';
       }
       setConnectError(errorMsg);
+      setConnectErrorId(id);
       setConnectStage('');
     } finally {
       setLoading(false);
@@ -893,6 +1126,22 @@ function DataSourcesSection() {
                   </div>
                 )}
 
+                {isExpanded && c.connector_id !== 'upload' && debugOverlay && (
+                  <div style={{
+                    borderTop: '1px solid #ff0',
+                    padding: 8, background: '#000', color: '#0f0',
+                    fontFamily: 'monospace', fontSize: 10,
+                    whiteSpace: 'pre-wrap', wordBreak: 'break-all',
+                  }}>
+                    {`[DEBUG]
+backend connector_id: ${JSON.stringify(c.connector_id)}
+backend connector_id length: ${(c.connector_id || '').length}
+backend connector_id codes: ${[...(c.connector_id || '')].map(ch => ch.charCodeAt(0)).join(',')}
+catalog total length: ${SOURCE_CATALOG.length}
+catalog ids: ${SOURCE_CATALOG.map(s => s.connector_id).join(', ')}
+metaFor result: ${meta ? 'FOUND (' + meta.display_name + ', steps=' + (meta.steps?.length ?? 'undef') + ')' : 'NOT FOUND'}`}
+                  </div>
+                )}
                 {isExpanded && c.connector_id !== 'upload' && meta?.steps && (
                   <div style={{ borderTop: '1px solid var(--color-border)', padding: 12 }}>
                     {meta.steps.map((step, i) => (
@@ -976,7 +1225,7 @@ function DataSourcesSection() {
                       </div>
                     )}
                     {/* Connection error */}
-                    {connectError && connectingId === null && expandedId === c.connector_id && (
+                    {connectError && connectErrorId === c.connector_id && connectingId === null && expandedId === c.connector_id && (
                       <div style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 6 }}>
                         {connectError}
                       </div>
@@ -1058,7 +1307,16 @@ function SendBlueSection({
   const [apiSecret, setApiSecret] = useState('');
   const [phone, setPhone] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
-  const [webhookStatus, setWebhookStatus] = useState<'idle' | 'registering' | 'done' | 'error'>('idle');
+  // Dashboard-assist flow: start a hidden ngrok tunnel, then the user pastes
+  // the resulting URL into the SendBlue dashboard (the path that works on the
+  // free tier — see memory note sendblue-free-tier).
+  const [autoStatus, setAutoStatus] = useState<
+    'idle' | 'starting' | 'installing' | 'ready' | 'needauth' | 'notinstalled' | 'error'
+  >('idle');
+  const [autoMsg, setAutoMsg] = useState('');
+  const [ngrokToken, setNgrokToken] = useState('');
+  const [showManual, setShowManual] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [health, setHealth] = useState<any>(null);
@@ -1069,16 +1327,87 @@ function SendBlueSection({
     }
   }, [agentId, binding]);
 
-  const registerWebhook = async () => {
-    if (!webhookUrl.trim()) return;
-    setWebhookStatus('registering');
+  // Full webhook URL the user pastes into the SendBlue dashboard.
+  const fullWebhookUrl = webhookUrl.trim()
+    ? webhookUrl.trim().replace(/\/+$/, '') + SENDBLUE_WEBHOOK_PATH
+    : '';
+
+  // Start a hidden ngrok tunnel (managed by the desktop app, like the API
+  // server) and capture its public URL. Registration itself happens in the
+  // SendBlue dashboard — on the free tier that's the path that actually works,
+  // so we don't pretend to auto-register via the API.
+  const startTunnel = async () => {
+    setAutoStatus('starting');
+    setAutoMsg('');
+    setCopied(false);
     try {
-      const url = webhookUrl.trim().replace(/\/+$/, '') + '/v1/channels/sendblue/webhook';
-      await sendblueRegisterWebhook(apiKey.trim(), apiSecret.trim(), url);
-      setWebhookStatus('done');
-    } catch {
-      setWebhookStatus('error');
+      const { public_url } = await ensureNgrokTunnel();
+      setWebhookUrl(public_url);
+      setAutoStatus('ready');
+    } catch (e: any) {
+      const msg = String(e?.message ?? e);
+      if (msg.includes('NGROK_NOT_INSTALLED')) setAutoStatus('notinstalled');
+      else if (msg.includes('NGROK_NO_AUTHTOKEN')) setAutoStatus('needauth');
+      else if (msg.includes('NGROK_REQUIRES_DESKTOP')) {
+        // Browser/dev build — no desktop shell to launch ngrok. Fall back.
+        setShowManual(true);
+        setAutoStatus('idle');
+      } else {
+        setAutoMsg(msg);
+        setAutoStatus('error');
+      }
     }
+  };
+
+  // Persist the ngrok authtoken (one-time), then retry starting the tunnel.
+  const saveTokenAndRetry = async () => {
+    if (!ngrokToken.trim()) return;
+    setAutoStatus('starting');
+    setAutoMsg('');
+    try {
+      await configureNgrokAuthtoken(ngrokToken.trim());
+      setNgrokToken('');
+      await startTunnel();
+    } catch (e: any) {
+      setAutoMsg(String(e?.message ?? e));
+      setAutoStatus('error');
+    }
+  };
+
+  // Install ngrok via the user's package manager (scoop/winget), then continue
+  // straight into starting the tunnel (which prompts for the authtoken if the
+  // fresh install has none yet).
+  const autoInstallNgrok = async () => {
+    setAutoStatus('installing');
+    setAutoMsg('');
+    try {
+      await installNgrok();
+      await startTunnel();
+    } catch (e: any) {
+      const msg = String(e?.message ?? e);
+      if (msg.includes('NO_PACKAGE_MANAGER')) {
+        setAutoMsg("Couldn't find scoop or winget to auto-install. Download ngrok manually, then retry.");
+        setAutoStatus('notinstalled');
+      } else {
+        setAutoMsg(msg);
+        setAutoStatus('error');
+      }
+    }
+  };
+
+  const copyWebhookUrl = async () => {
+    if (!fullWebhookUrl) return;
+    try {
+      await navigator.clipboard.writeText(fullWebhookUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard blocked — the field is selectable as a fallback */
+    }
+  };
+
+  const openWebhookDashboard = () => {
+    window.open('https://dashboard.sendblue.com/developer-overview/webhooks', '_blank');
   };
 
   if (binding) {
@@ -1130,6 +1459,44 @@ function SendBlueSection({
     boxSizing: 'border-box',
   };
 
+  // Shared panel: the URL to paste into the SendBlue dashboard + actions.
+  const pastePanel = (
+    <div style={{ marginTop: 10 }}>
+      <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 6 }}>
+        Paste this URL into SendBlue &rarr; <strong>Webhooks &rarr; Inbound Messages &rarr; + Add</strong>:
+      </div>
+      <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
+        <input
+          readOnly
+          value={fullWebhookUrl}
+          onFocus={(e) => e.currentTarget.select()}
+          style={{ ...inputStyle, flex: 1, fontFamily: 'monospace' }}
+        />
+        <button
+          onClick={copyWebhookUrl}
+          style={{
+            fontSize: 11, padding: '6px 12px', whiteSpace: 'nowrap',
+            background: copied ? 'var(--color-success)' : 'var(--color-bg)',
+            color: copied ? 'var(--color-on-accent)' : 'var(--color-text)',
+            border: '1px solid var(--color-border)', borderRadius: 4,
+            cursor: 'pointer', fontWeight: 600,
+          }}
+        >{copied ? 'Copied!' : 'Copy'}</button>
+      </div>
+      <button
+        onClick={openWebhookDashboard}
+        style={{
+          width: '100%', fontSize: 12, padding: '8px 12px', fontWeight: 600,
+          background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)',
+          border: 'none', borderRadius: 4, cursor: 'pointer',
+        }}
+      >Open SendBlue webhooks dashboard &#8599;</button>
+      <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 8 }}>
+        On the dashboard, click <strong>+ Add</strong> under <strong>Inbound Messages</strong>, paste the URL, and save. Incoming texts then reach your agent while OpenJarvis is running.
+      </div>
+    </div>
+  );
+
   // Not active — setup wizard
   const steps = [
     {
@@ -1141,17 +1508,17 @@ function SendBlueSection({
           </div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
             <a
-              href="https://sendblue.co"
+              href="https://sendblue.com"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'var(--color-accent)', fontSize: 12, textDecoration: 'underline' }}
             >
-              1. Sign up at sendblue.co &rarr;
+              1. Sign up at sendblue.com &rarr;
             </a>
           </div>
           <div style={{ marginBottom: 8 }}>
             <a
-              href="https://dashboard.sendblue.co/api-credentials"
+              href="https://dashboard.sendblue.com/api-credentials"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'var(--color-accent)', fontSize: 12, textDecoration: 'underline' }}
@@ -1184,61 +1551,138 @@ function SendBlueSection({
       canAdvance: phone.trim().length >= 10,
     },
     {
-      title: 'Set up webhook (ngrok tunnel)',
+      title: 'Connect the webhook',
       content: (
         <div>
-          <div style={{ fontSize: 12, marginBottom: 8 }}>
-            SendBlue needs a public URL to send incoming messages to your local server. Use ngrok to create a tunnel.
+          <div style={{ fontSize: 12, marginBottom: 10 }}>
+            SendBlue delivers incoming texts to a public HTTPS URL. OpenJarvis opens a secure tunnel for you &mdash; no terminal needed &mdash; then you paste the URL into your SendBlue dashboard.
           </div>
-          <div style={{
-            fontSize: 11, lineHeight: 1.6,
-            color: 'var(--color-text-secondary)',
-            padding: '8px 10px', marginBottom: 10,
-            background: 'var(--color-bg-secondary)',
-            borderRadius: 6,
-            borderLeft: '3px solid var(--color-accent, var(--color-accent-purple))',
-          }}>
-            <div><strong>1.</strong> Open a terminal and run: <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>ngrok http 8000</code></div>
-            <div style={{ marginTop: 4 }}><strong>2.</strong> Copy the <code style={{ color: 'var(--color-accent)', background: 'var(--color-bg)', padding: '1px 4px', borderRadius: 3 }}>https://</code> forwarding URL (e.g. https://abc123.ngrok.io)</div>
-            <div style={{ marginTop: 4 }}><strong>3.</strong> Paste it below and click "Register Webhook"</div>
-          </div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            <input
-              value={webhookUrl}
-              onChange={(e) => { setWebhookUrl(e.target.value); setWebhookStatus('idle'); }}
-              placeholder="https://abc123.ngrok-free.app"
-              style={{ ...inputStyle, flex: 1 }}
-            />
-            <button
-              onClick={registerWebhook}
-              disabled={!webhookUrl.trim() || webhookStatus === 'registering'}
-              style={{
-                fontSize: 11, padding: '6px 12px', whiteSpace: 'nowrap',
-                background: webhookStatus === 'done' ? 'var(--color-success)' : 'var(--color-accent-purple)',
-                color: 'var(--color-on-accent)', border: 'none', borderRadius: 4,
-                cursor: 'pointer', fontWeight: 600,
-                opacity: !webhookUrl.trim() || webhookStatus === 'registering' ? 0.5 : 1,
-              }}
-            >
-              {webhookStatus === 'registering' ? 'Registering...'
-                : webhookStatus === 'done' ? 'Registered!'
-                : webhookStatus === 'error' ? 'Retry'
-                : 'Register Webhook'}
-            </button>
-          </div>
-          {webhookStatus === 'done' && (
-            <div style={{ fontSize: 11, color: 'var(--color-success)', marginTop: 6 }}>
-              Webhook registered! Incoming texts will be forwarded to your agent.
+
+          {/* ---- Automatic tunnel (desktop) ---- */}
+          {!showManual && (
+            <div>
+              {(autoStatus === 'idle' || autoStatus === 'starting' || autoStatus === 'error') && (
+                <button
+                  onClick={startTunnel}
+                  disabled={autoStatus === 'starting'}
+                  style={{
+                    width: '100%', fontSize: 12, padding: '9px 12px', fontWeight: 600,
+                    background: 'var(--color-accent-purple)',
+                    color: 'var(--color-on-accent)', border: 'none', borderRadius: 4,
+                    cursor: autoStatus === 'starting' ? 'default' : 'pointer',
+                    opacity: autoStatus === 'starting' ? 0.65 : 1,
+                  }}
+                >
+                  {autoStatus === 'starting' ? 'Starting secure tunnel…'
+                    : autoStatus === 'error' ? 'Try again'
+                    : 'Start secure tunnel'}
+                </button>
+              )}
+
+              {autoStatus === 'installing' && (
+                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', padding: '9px 2px', textAlign: 'center' }}>
+                  Installing ngrok… this can take ~30-60s.
+                </div>
+              )}
+
+              {autoStatus === 'ready' && (
+                <div>
+                  <div style={{ fontSize: 11, color: 'var(--color-success)', marginBottom: 2 }}>
+                    ✓ Tunnel live.
+                  </div>
+                  {pastePanel}
+                </div>
+              )}
+
+              {autoStatus === 'notinstalled' && (
+                <div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
+                    {autoMsg || "ngrok isn't installed yet — OpenJarvis can install it for you (via scoop or winget)."}
+                  </div>
+                  <button
+                    onClick={autoInstallNgrok}
+                    style={{
+                      width: '100%', fontSize: 12, padding: '9px 12px', fontWeight: 600,
+                      background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)',
+                      border: 'none', borderRadius: 4, cursor: 'pointer', marginBottom: 6,
+                    }}
+                  >Install ngrok automatically</button>
+                  <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)' }}>
+                    Or <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>download it manually</a> and{' '}
+                    <button
+                      onClick={startTunnel}
+                      style={{ background: 'none', border: 'none', padding: 0, color: 'var(--color-accent)', textDecoration: 'underline', cursor: 'pointer', fontSize: 10 }}
+                    >retry</button>.
+                  </div>
+                </div>
+              )}
+
+              {autoStatus === 'needauth' && (
+                <div style={{ marginTop: 8 }}>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 6 }}>
+                    ngrok needs a free authtoken (one-time). Copy it from your{' '}
+                    <a href="https://dashboard.ngrok.com/get-started/your-authtoken" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>ngrok dashboard</a>{' '}and paste it here:
+                  </div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <input
+                      value={ngrokToken}
+                      onChange={(e) => setNgrokToken(e.target.value)}
+                      placeholder="ngrok authtoken"
+                      type="password"
+                      style={{ ...inputStyle, flex: 1 }}
+                    />
+                    <button
+                      onClick={saveTokenAndRetry}
+                      disabled={!ngrokToken.trim()}
+                      style={{
+                        fontSize: 11, padding: '6px 12px', whiteSpace: 'nowrap',
+                        background: 'var(--color-accent-purple)', color: 'var(--color-on-accent)',
+                        border: 'none', borderRadius: 4, cursor: 'pointer', fontWeight: 600,
+                        opacity: ngrokToken.trim() ? 1 : 0.5,
+                      }}
+                    >Save &amp; continue</button>
+                  </div>
+                </div>
+              )}
+
+              {autoStatus === 'error' && (
+                <div style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 6, wordBreak: 'break-word' }}>
+                  {autoMsg || 'Could not start the tunnel.'}
+                </div>
+              )}
+
+              <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 10 }}>
+                Prefer your own tunnel or a static domain?{' '}
+                <button
+                  onClick={() => setShowManual(true)}
+                  style={{ background: 'none', border: 'none', padding: 0, color: 'var(--color-accent)', textDecoration: 'underline', cursor: 'pointer', fontSize: 10 }}
+                >Enter it manually</button>. You can also skip this and set it up later.
+              </div>
             </div>
           )}
-          {webhookStatus === 'error' && (
-            <div style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 6 }}>
-              Failed to register webhook. Check your ngrok URL and SendBlue credentials.
+
+          {/* ---- Manual: bring your own tunnel/domain ---- */}
+          {showManual && (
+            <div>
+              <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
+                Paste your public base URL (e.g. an ngrok or static domain pointing at port 8000):
+              </div>
+              <input
+                value={webhookUrl}
+                onChange={(e) => setWebhookUrl(e.target.value)}
+                placeholder="https://abc123.ngrok-free.app"
+                style={inputStyle}
+              />
+              {fullWebhookUrl && pastePanel}
+              <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 8 }}>
+                Don&apos;t have a tunnel? <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>Get ngrok free</a>.{' '}
+                <button
+                  onClick={() => setShowManual(false)}
+                  style={{ background: 'none', border: 'none', padding: 0, color: 'var(--color-accent)', textDecoration: 'underline', cursor: 'pointer', fontSize: 10 }}
+                >Back to automatic tunnel</button>
+              </div>
             </div>
           )}
-          <div style={{ fontSize: 10, color: 'var(--color-text-tertiary)', marginTop: 8 }}>
-            Don't have ngrok? <a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>Download it free</a>. You can also skip this step and register the webhook later.
-          </div>
         </div>
       ),
       canAdvance: true, // webhook is optional — user can skip
@@ -1254,21 +1698,19 @@ function SendBlueSection({
         api_secret: apiSecret.trim(),
         phone_number: phone.trim(),
       });
-      // If webhook was registered in the wizard, that's already done.
-      // If not, try a best-effort registration with the provided URL.
-      if (webhookUrl.trim() && webhookStatus !== 'done') {
-        try {
-          const url = webhookUrl.trim().replace(/\/+$/, '') + '/v1/channels/sendblue/webhook';
-          await sendblueRegisterWebhook(apiKey.trim(), apiSecret.trim(), url);
-        } catch { /* */ }
-      }
+      // Webhook registration is done by the user in the SendBlue dashboard
+      // (the path that works on the free tier), so nothing to register here.
       onDone();
       setStep(0);
       setApiKey('');
       setApiSecret('');
       setPhone('');
       setWebhookUrl('');
-      setWebhookStatus('idle');
+      setAutoStatus('idle');
+      setAutoMsg('');
+      setNgrokToken('');
+      setShowManual(false);
+      setCopied(false);
     } catch (err: any) {
       setError(err.message || 'Failed to connect');
     } finally {
@@ -1576,6 +2018,31 @@ function MessagingSection({ agentId }: { agentId: string }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Tools section — runtime tool configuration (currently web_search +
+// the SearXNG installer). Kept here next to MemorySection so all
+// settings-style sub-pages live in one file.
+// ---------------------------------------------------------------------------
+
+function ToolsSection() {
+  return (
+    <div className="flex flex-col gap-5">
+      <section>
+        <div className="hud-label mb-2" style={{ color: 'var(--color-text-tertiary)' }}>
+          Web Search
+        </div>
+        <WebSearchToolCard />
+      </section>
+      <section>
+        <div className="hud-label mb-2" style={{ color: 'var(--color-text-tertiary)' }}>
+          Containers
+        </div>
+        <DockerResourcesCard />
+      </section>
     </div>
   );
 }
@@ -1951,7 +2418,7 @@ function MemorySection() {
 
 export function DataSourcesPage() {
   const [agents, setAgents] = useState<ManagedAgent[]>([]);
-  const [activeTab, setActiveTab] = useState<'sources' | 'messaging' | 'memory'>('sources');
+  const [activeTab, setActiveTab] = useState<'sources' | 'tools' | 'messaging' | 'memory'>('sources');
   const [creatingAgent, setCreatingAgent] = useState(false);
 
   const loadAgents = useCallback(() => {
@@ -1990,6 +2457,11 @@ export function DataSourcesPage() {
 
   const tabs = [
     { id: 'sources' as const, label: 'Data Sources', icon: Database },
+    // Tools tab: surfaces tool-level settings (right now just web_search
+    // backend + the SearXNG installer). Separate from Data Sources
+    // because nothing here is a sync-able connector — it's runtime
+    // configuration for the agent's tool calls.
+    { id: 'tools' as const, label: 'Tools', icon: Wrench },
     { id: 'messaging' as const, label: 'Messaging Channels', icon: MessageSquare },
     { id: 'memory' as const, label: 'Memory', icon: Brain },
   ];
@@ -2038,6 +2510,7 @@ export function DataSourcesPage() {
 
       <div>
         {activeTab === 'sources' && <DataSourcesSection />}
+        {activeTab === 'tools' && <ToolsSection />}
         {activeTab === 'messaging' && (
           firstAgent ? (
             <MessagingSection agentId={firstAgent.id} />

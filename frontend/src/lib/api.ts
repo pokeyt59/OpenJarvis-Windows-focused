@@ -82,6 +82,154 @@ export async function getSetupStatus(): Promise<SetupStatus | null> {
 }
 
 // ---------------------------------------------------------------------------
+// API server lifecycle (desktop only)
+//
+// The Tauri shell owns the Python server child process. These wrappers let
+// the Settings page show its status and bounce it without restarting the
+// whole app — useful when the server wedges, when the user edits a tool's
+// config sidecar, or when a `git pull` changed `pyproject.toml`.
+// ---------------------------------------------------------------------------
+
+export interface JarvisStatus {
+  running: boolean;        // we hold a Child handle
+  healthy: boolean;        // /health responds 2xx within ~1s
+  port: number;
+  phase: string;           // mirror of SetupStatus.phase
+  detail: string;
+  error: string | null;
+  /** Fast-restart possible — i.e. boot_backend has succeeded this session. */
+  can_fast_restart: boolean;
+}
+
+export async function getJarvisStatus(): Promise<JarvisStatus | null> {
+  if (!isTauri()) return null;
+  try {
+    const { invoke } = await import('@tauri-apps/api/core');
+    return await invoke<JarvisStatus>('get_jarvis_status');
+  } catch {
+    return null;
+  }
+}
+
+/** Kill the Python server child. Ollama keeps running. */
+export async function stopJarvis(): Promise<void> {
+  if (!isTauri()) return;
+  const { invoke } = await import('@tauri-apps/api/core');
+  await invoke('stop_jarvis');
+}
+
+/**
+ * Fast restart — re-spawn the Python server using the (project root,
+ * model, uv path) recorded by the last successful boot. ~3s on a warm
+ * system. Throws if there's no previous boot to copy from (e.g. the
+ * initial boot is still in progress).
+ */
+export async function restartJarvis(): Promise<void> {
+  if (!isTauri()) return;
+  const { invoke } = await import('@tauri-apps/api/core');
+  await invoke('restart_jarvis');
+}
+
+/**
+ * Full re-bootstrap — Ollama check, model pull, uv sync, server spawn.
+ * Slow (1-2 min on a fresh state). Use after a `git pull` or when fast
+ * restart isn't fixing whatever's wrong.
+ */
+export async function hardRestartBackend(): Promise<void> {
+  if (!isTauri()) return;
+  const { invoke } = await import('@tauri-apps/api/core');
+  await invoke('hard_restart_backend');
+}
+
+/** Re-run the initial boot sequence (Ollama + model + uv sync + spawn). */
+export async function startBackend(): Promise<void> {
+  if (!isTauri()) return;
+  const { invoke } = await import('@tauri-apps/api/core');
+  await invoke('start_backend');
+}
+
+// ---------------------------------------------------------------------------
+// ngrok tunnel — silent public HTTPS tunnel for inbound webhooks (SendBlue).
+// The Tauri backend launches ngrok hidden (like the API server) and tears it
+// down on app exit. Browser/dev mode has no desktop shell, so these throw
+// NGROK_REQUIRES_DESKTOP there.
+// ---------------------------------------------------------------------------
+
+export interface NgrokTunnel {
+  public_url: string;
+  /** True if an existing tunnel was reused rather than a new one started. */
+  already_running: boolean;
+}
+
+/**
+ * Start (or reuse) a hidden ngrok tunnel to the local API server and return
+ * its public HTTPS URL. Rejects with the raw Rust error string; two are
+ * machine-readable codes the caller switches on: `NGROK_NOT_INSTALLED` and
+ * `NGROK_NO_AUTHTOKEN`.
+ */
+export async function ensureNgrokTunnel(): Promise<NgrokTunnel> {
+  if (!isTauri()) throw new Error('NGROK_REQUIRES_DESKTOP');
+  const { invoke } = await import('@tauri-apps/api/core');
+  return await invoke<NgrokTunnel>('ensure_ngrok_tunnel');
+}
+
+/** Tear down the ngrok tunnel the desktop app started (no-op otherwise). */
+export async function stopNgrokTunnel(): Promise<void> {
+  if (!isTauri()) return;
+  const { invoke } = await import('@tauri-apps/api/core');
+  await invoke('stop_ngrok_tunnel');
+}
+
+/**
+ * One-time ngrok setup: persist the free authtoken via
+ * `ngrok config add-authtoken`. The token is a secret — pass it from a masked
+ * field; it's never logged.
+ */
+export async function configureNgrokAuthtoken(token: string): Promise<void> {
+  if (!isTauri()) throw new Error('NGROK_REQUIRES_DESKTOP');
+  const { invoke } = await import('@tauri-apps/api/core');
+  await invoke('configure_ngrok_authtoken', { token });
+}
+
+/**
+ * Auto-install ngrok via the user's package manager (scoop preferred, winget
+ * fallback). Resolves with the manager used ('scoop' | 'winget' |
+ * 'already-installed'); rejects with 'NO_PACKAGE_MANAGER' when none is found.
+ */
+export async function installNgrok(): Promise<string> {
+  if (!isTauri()) throw new Error('NGROK_REQUIRES_DESKTOP');
+  const { invoke } = await import('@tauri-apps/api/core');
+  return await invoke<string>('install_ngrok');
+}
+
+export interface OsLocation {
+  lat: number;
+  lon: number;
+}
+
+/**
+ * Current coordinates from the OS location service (Windows Location
+ * Services) — no third-party IP lookup. Rejects if location is off/denied,
+ * or if not running on the desktop app.
+ */
+export async function getOsLocation(): Promise<OsLocation> {
+  if (!isTauri()) throw new Error('OS_LOCATION_REQUIRES_DESKTOP');
+  const { invoke } = await import('@tauri-apps/api/core');
+  return await invoke<OsLocation>('get_os_location');
+}
+
+/**
+ * Backup location: approximate coordinates from an IP-geolocation lookup, used
+ * when OS location is off/denied/unavailable. Reaches a third-party service
+ * (so callers should label the result as approximate).
+ */
+export async function getIpLocation(): Promise<OsLocation> {
+  if (!isTauri()) throw new Error('IP_LOCATION_REQUIRES_DESKTOP');
+  const { invoke } = await import('@tauri-apps/api/core');
+  return await invoke<OsLocation>('get_ip_location');
+}
+
+// ---------------------------------------------------------------------------
 // API functions
 // ---------------------------------------------------------------------------
 
@@ -490,6 +638,13 @@ export async function unbindAgentChannel(
 }
 
 // -- SendBlue auto-setup helpers ------------------------------------------
+
+// Canonical inbound webhook path. Must match WEBHOOK_PATH in
+// src/openjarvis/channels/sendblue.py (and the @router.post in
+// src/openjarvis/server/webhook_routes.py). The pre-fix code built
+// "/v1/channels/sendblue/webhook" at three call sites, which has no route
+// and 404s every inbound delivery — see BUGS.md BUG #1.
+export const SENDBLUE_WEBHOOK_PATH = '/webhooks/sendblue';
 
 export async function sendblueVerify(
   apiKeyId: string,

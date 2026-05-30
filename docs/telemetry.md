@@ -20,14 +20,18 @@ collected, where the data goes, and how to opt out.
 
 | Event | Source | Why we send it |
 |---|---|---|
-| `install_started` | `install.sh` | Top of install funnel |
-| `install_stage_completed` | `install.sh` | Per-stage timing — where do people drop off? |
-| `install_completed` | `install.sh` | Did the install succeed? |
-| `install_failed` | `install.sh` | Which stage failed, and on what OS |
 | `app_opened` | Backend + frontend | DAU / WAU / MAU |
 | `setup_completed` | Frontend | First-run wizard finished |
 | `first_chat_sent` | Backend | First-ever message — activation |
-| `uninstall_started` | `uninstall.sh` (if user runs it) | Churn signal |
+
+!!! note "Install funnel events"
+    The upstream OpenJarvis project sends `install_started`,
+    `install_stage_completed`, `install_completed`, `install_failed`, and
+    `uninstall_started` events from its bash installer. This Windows-focused
+    fork uses `uv` + manual setup instead, so those events are not emitted —
+    the `EventSpec` definitions remain in
+    [`src/openjarvis/analytics/events.py`](../src/openjarvis/analytics/events.py)
+    for upstream compatibility but never fire on Windows.
 
 ### Usage events
 

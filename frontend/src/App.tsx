@@ -1,14 +1,20 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { ChatPage } from './pages/ChatPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { SettingsPage } from './pages/SettingsPage';
-import { GetStartedPage } from './pages/GetStartedPage';
-import { AgentsPage } from './pages/AgentsPage';
-import { DataSourcesPage } from './pages/DataSourcesPage';
-import { LogsPage } from './pages/LogsPage';
 import { CommandPalette } from './components/CommandPalette';
+
+// Lazy-load every page so non-Chat routes (and their heavy deps —
+// recharts on Dashboard, the analytics components, etc.) drop out of
+// the initial bundle. Each page imports as its own chunk on first
+// navigation. The pages use named exports, so we adapt to React.lazy's
+// default-export convention inline.
+const ChatPage        = lazy(() => import('./pages/ChatPage').then((m) => ({ default: m.ChatPage })));
+const DashboardPage   = lazy(() => import('./pages/DashboardPage').then((m) => ({ default: m.DashboardPage })));
+const SettingsPage    = lazy(() => import('./pages/SettingsPage').then((m) => ({ default: m.SettingsPage })));
+const GetStartedPage  = lazy(() => import('./pages/GetStartedPage').then((m) => ({ default: m.GetStartedPage })));
+const AgentsPage      = lazy(() => import('./pages/AgentsPage').then((m) => ({ default: m.AgentsPage })));
+const DataSourcesPage = lazy(() => import('./pages/DataSourcesPage').then((m) => ({ default: m.DataSourcesPage })));
+const LogsPage        = lazy(() => import('./pages/LogsPage').then((m) => ({ default: m.LogsPage })));
 import { SetupScreen } from './components/SetupScreen';
 import { Toaster } from './components/ui/sonner';
 import { useAppStore } from './lib/store';
@@ -178,17 +184,25 @@ export default function App() {
   return (
     <>
       <UpdateChecker />
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<ChatPage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="get-started" element={<GetStartedPage />} />
-          <Route path="data-sources" element={<DataSourcesPage />} />
-          <Route path="agents" element={<AgentsPage />} />
-          <Route path="logs" element={<LogsPage />} />
-        </Route>
-      </Routes>
+      {/*
+        Suspense fallback intentionally renders nothing — pages load fast
+        enough on local hardware that a spinner would just flash. If a
+        page chunk fails to load (e.g. network blip in the dev proxy),
+        React surfaces the error to the nearest ErrorBoundary above.
+      */}
+      <Suspense fallback={null}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<ChatPage />} />
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="get-started" element={<GetStartedPage />} />
+            <Route path="data-sources" element={<DataSourcesPage />} />
+            <Route path="agents" element={<AgentsPage />} />
+            <Route path="logs" element={<LogsPage />} />
+          </Route>
+        </Routes>
+      </Suspense>
       <Toaster position="bottom-right" />
       {commandPaletteOpen && <CommandPalette />}
       {optInModalOpen && (

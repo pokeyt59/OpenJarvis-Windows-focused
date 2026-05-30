@@ -9,10 +9,8 @@ use tokio::sync::Mutex;
 const OLLAMA_PORT: u16 = 11434;
 const JARVIS_PORT: u16 = 8000;
 
-/// Small, fast model pulled at startup so the app opens quickly.
-const STARTUP_MODEL: &str = "qwen3.5:4b";
-
-/// Tiny fallback model if even the startup model can't be pulled.
+/// Tiny fallback model used only when even the machine's chosen model can't
+/// be pulled (e.g. no network on first boot).
 const FALLBACK_MODEL: &str = "qwen3:0.6b";
 
 /// Qwen3.5 model variants, ordered smallest to largest.
@@ -27,8 +25,17 @@ const QWEN35_MODELS: &[(&str, f64, f64)] = &[
     ("qwen3.5:122b", 81.0, 96.0),
 ];
 
-/// Get total system RAM in GB.
+/// Get total system RAM in GB (cached — RAM is fixed for the process run and
+/// the Windows path shells out to `wmic`, which we don't want to repeat on
+/// every model-selection call during boot).
 fn total_ram_gb() -> f64 {
+    use std::sync::OnceLock;
+    static CACHE: OnceLock<f64> = OnceLock::new();
+    *CACHE.get_or_init(detect_total_ram_gb)
+}
+
+/// Detect total system RAM in GB (uncached; see `total_ram_gb`).
+fn detect_total_ram_gb() -> f64 {
     #[cfg(target_os = "macos")]
     {
         use std::process::Command;
@@ -58,9 +65,10 @@ fn total_ram_gb() -> f64 {
     {
         use std::process::Command;
         // wmic returns TotalVisibleMemorySize in KB
-        if let Ok(output) = Command::new("wmic")
-            .args(["OS", "get", "TotalVisibleMemorySize", "/value"])
-            .output()
+        let mut cmd = Command::new("wmic");
+        cmd.args(["OS", "get", "TotalVisibleMemorySize", "/value"]);
+        hide_console_std(&mut cmd);
+        if let Ok(output) = cmd.output()
         {
             if let Ok(s) = String::from_utf8(output.stdout) {
                 for line in s.lines() {
@@ -76,9 +84,8 @@ fn total_ram_gb() -> f64 {
     8.0
 }
 
-/// Return the list of Qwen3.5 models that fit on this machine, smallest first.
-fn models_that_fit() -> Vec<&'static str> {
-    let ram = total_ram_gb();
+/// Return the list of Qwen3.5 models that fit in `ram` GB, smallest first.
+fn models_that_fit_for_ram(ram: f64) -> Vec<&'static str> {
     QWEN35_MODELS
         .iter()
         .filter(|(_, _, min_ram)| ram >= *min_ram)
@@ -86,19 +93,81 @@ fn models_that_fit() -> Vec<&'static str> {
         .collect()
 }
 
-/// Pick the default model — prefers STARTUP_MODEL if it fits, otherwise
-/// falls back to the third-largest model that fits on this machine.
+/// Pick this machine's default model from total RAM — conservatively.
+///
+/// Mirrors the Python `_MODEL_TIERS` policy (`core/config.py`): reserve
+/// ~4 GB for the OS + Chromium webview + KV-cache, so the default never
+/// over-commits memory and swaps. Critically an **8 GB** machine gets
+/// `qwen3.5:2b`, NOT `qwen3.5:4b` — 4b needs the whole 8 GB for itself and
+/// thrashes once Windows and the webview are accounted for.
 fn preferred_model() -> &'static str {
-    let fitting = models_that_fit();
-    // Prefer STARTUP_MODEL when it fits (fast, good quality)
-    if fitting.contains(&STARTUP_MODEL) {
-        return STARTUP_MODEL;
+    preferred_model_for_ram(total_ram_gb())
+}
+
+fn preferred_model_for_ram(ram: f64) -> &'static str {
+    let pick = if ram < 5.0 {
+        FALLBACK_MODEL
+    } else if ram <= 14.0 {
+        "qwen3.5:2b"
+    } else if ram <= 24.0 {
+        "qwen3.5:4b"
+    } else if ram <= 44.0 {
+        "qwen3.5:9b"
+    } else {
+        "qwen3.5:27b"
+    };
+    // Safety net: never hand back a model the RAM table says can't load.
+    let fitting = models_that_fit_for_ram(ram);
+    if pick == FALLBACK_MODEL || fitting.contains(&pick) {
+        pick
+    } else {
+        fitting.first().copied().unwrap_or(FALLBACK_MODEL)
     }
-    match fitting.len() {
-        0 => FALLBACK_MODEL,
-        1 => fitting[0],
-        2 => fitting[0],
-        n => fitting[n - 3], // third-largest
+}
+
+/// Small model pulled first for a fast first-open, never larger than the
+/// machine's default. On <=14 GB this equals `preferred_model()` (already
+/// small: 2b, or the 0.6b fallback); bigger machines open fast on 4b and
+/// upgrade to their larger default in the background (Phase 4).
+fn startup_model() -> &'static str {
+    startup_model_for_ram(total_ram_gb())
+}
+
+fn startup_model_for_ram(ram: f64) -> &'static str {
+    if ram <= 14.0 {
+        preferred_model_for_ram(ram)
+    } else {
+        "qwen3.5:4b"
+    }
+}
+
+#[cfg(test)]
+mod model_selection_tests {
+    use super::{preferred_model_for_ram, startup_model_for_ram, FALLBACK_MODEL};
+
+    #[test]
+    fn eight_gb_uses_2b_never_4b() {
+        // The whole point of the 8 GB tuning: 4b needs the entire 8 GB for
+        // itself and swaps once Windows + the webview are accounted for.
+        assert_eq!(preferred_model_for_ram(8.0), "qwen3.5:2b");
+        assert_eq!(preferred_model_for_ram(7.9), "qwen3.5:2b");
+        assert_eq!(startup_model_for_ram(8.0), "qwen3.5:2b");
+    }
+
+    #[test]
+    fn tiers_match_python_policy() {
+        assert_eq!(preferred_model_for_ram(4.0), FALLBACK_MODEL); // too small for a real model
+        assert_eq!(preferred_model_for_ram(12.0), "qwen3.5:2b");
+        assert_eq!(preferred_model_for_ram(16.0), "qwen3.5:4b");
+        assert_eq!(preferred_model_for_ram(32.0), "qwen3.5:9b");
+        assert_eq!(preferred_model_for_ram(48.0), "qwen3.5:27b");
+    }
+
+    #[test]
+    fn big_machines_open_fast_then_upgrade() {
+        // Fast-open stays small (4b) even when the machine's default is larger.
+        assert_eq!(startup_model_for_ram(48.0), "qwen3.5:4b");
+        assert_ne!(startup_model_for_ram(48.0), preferred_model_for_ram(48.0));
     }
 }
 
@@ -107,6 +176,42 @@ fn home_dir() -> String {
     std::env::var("HOME")
         .or_else(|_| std::env::var("USERPROFILE"))
         .unwrap_or_default()
+}
+
+// ---------------------------------------------------------------------------
+// Console-window suppression (Windows only).
+//
+// The Tauri shell is built with `windows_subsystem = "windows"` so it never
+// owns a console. But every child process we spawn — `uv run`, `ollama
+// serve`, `git clone`, `where`, `wmic`, `taskkill` — is a console-subsystem
+// binary, and Windows hands each one a fresh black console window unless
+// CREATE_NO_WINDOW (0x08000000) is passed at spawn time.
+//
+// These helpers are no-ops on macOS/Linux so call sites stay portable.
+// ---------------------------------------------------------------------------
+
+#[cfg(target_os = "windows")]
+const CREATE_NO_WINDOW: u32 = 0x08000000;
+
+#[cfg(target_os = "windows")]
+fn hide_console(cmd: &mut tokio::process::Command) -> &mut tokio::process::Command {
+    cmd.creation_flags(CREATE_NO_WINDOW)
+}
+
+#[cfg(not(target_os = "windows"))]
+fn hide_console(cmd: &mut tokio::process::Command) -> &mut tokio::process::Command {
+    cmd
+}
+
+#[cfg(target_os = "windows")]
+fn hide_console_std(cmd: &mut std::process::Command) -> &mut std::process::Command {
+    use std::os::windows::process::CommandExt;
+    cmd.creation_flags(CREATE_NO_WINDOW)
+}
+
+#[cfg(not(target_os = "windows"))]
+fn hide_console_std(cmd: &mut std::process::Command) -> &mut std::process::Command {
+    cmd
 }
 
 /// Resolve full path to a binary by checking common locations.
@@ -135,6 +240,8 @@ fn resolve_bin(name: &str) -> String {
             format!("{localappdata}\\Programs\\Git\\cmd\\{name}.exe"),
             // Scoop package manager
             format!("{home}\\scoop\\shims\\{name}.exe"),
+            // winget shims (e.g. `winget install ngrok.ngrok`)
+            format!("{localappdata}\\Microsoft\\WinGet\\Links\\{name}.exe"),
             // Cargo, local bin
             format!("{home}\\.cargo\\bin\\{name}.exe"),
             format!("{home}\\.local\\bin\\{name}.exe"),
@@ -158,9 +265,10 @@ fn resolve_bin(name: &str) -> String {
     // On Windows this uses `where.exe`, on Unix `which`.
     #[cfg(target_os = "windows")]
     {
-        if let Ok(output) = std::process::Command::new("where")
-            .arg(format!("{name}.exe"))
-            .output()
+        let mut probe = std::process::Command::new("where");
+        probe.arg(format!("{name}.exe"));
+        hide_console_std(&mut probe);
+        if let Ok(output) = probe.output()
         {
             if output.status.success() {
                 let stdout = String::from_utf8_lossy(&output.stdout);
@@ -291,10 +399,24 @@ impl ChildHandle {
     }
 }
 
+/// Parameters captured the last time we successfully started the Python
+/// server — so a "Restart" button can re-spawn it without going through the
+/// 1–2 minute Ollama-check + model-pull + uv-sync prelude again.
+#[derive(Default, Clone)]
+struct LastBoot {
+    project_root: Option<std::path::PathBuf>,
+    model: Option<String>,
+    uv_bin: Option<String>,
+}
+
 #[derive(Default)]
 struct BackendManager {
     ollama: Option<ChildHandle>,
     jarvis: Option<ChildHandle>,
+    /// Hidden ngrok agent opened on demand for inbound webhooks (SendBlue).
+    /// Tracked here so it's torn down with the app like the other children.
+    ngrok: Option<ChildHandle>,
+    last_boot: LastBoot,
 }
 
 impl BackendManager {
@@ -303,10 +425,33 @@ impl BackendManager {
             h.kill().await;
         }
         self.jarvis = None;
+        if let Some(ref mut h) = self.ngrok {
+            h.kill().await;
+        }
+        self.ngrok = None;
         if let Some(ref mut h) = self.ollama {
             h.kill().await;
         }
         self.ollama = None;
+    }
+
+    /// Tear down only the ngrok tunnel (SendBlue "Remove" / stop_ngrok_tunnel).
+    /// Leaves Ollama and the Python server running.
+    async fn stop_ngrok(&mut self) {
+        if let Some(ref mut h) = self.ngrok {
+            h.kill().await;
+        }
+        self.ngrok = None;
+    }
+
+    /// Kill only the Python server, leaving Ollama running. Used by the
+    /// "Stop API" / "Restart" buttons — Ollama re-init is expensive and
+    /// almost never the thing the user is trying to bounce.
+    async fn stop_jarvis(&mut self) {
+        if let Some(ref mut h) = self.jarvis {
+            h.kill().await;
+        }
+        self.jarvis = None;
     }
 }
 
@@ -460,6 +605,154 @@ fn format_uv_sync_spawn_error(root: &std::path::Path, uv_bin: &str, err: &str) -
 // Backend boot sequence (runs in background after app launch)
 // ---------------------------------------------------------------------------
 
+/// If something is already listening on JARVIS_PORT, kill it.
+///
+/// Used at boot (clean up zombies from a previous run that didn't shut down
+/// gracefully) AND by restart_jarvis (defence-in-depth — kill() on our own
+/// child should be enough, but if the user clicked Restart because the
+/// server already wedged, the port may need a forced takedown).
+async fn free_jarvis_port_if_busy() {
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(2))
+        .build()
+        .unwrap();
+    let busy = client
+        .get(format!("http://127.0.0.1:{}/health", JARVIS_PORT))
+        .send()
+        .await
+        .is_ok();
+    if !busy {
+        return;
+    }
+    #[cfg(unix)]
+    {
+        let _ = tokio::process::Command::new("fuser")
+            .args(["-k", &format!("{}/tcp", JARVIS_PORT)])
+            .output()
+            .await;
+        tokio::time::sleep(Duration::from_secs(2)).await;
+    }
+    #[cfg(target_os = "windows")]
+    {
+        let mut killer = tokio::process::Command::new("cmd");
+        killer.args(["/C", &format!(
+            "for /f \"tokens=5\" %a in ('netstat -ano ^| findstr :{port} ^| findstr LISTENING') do taskkill /PID %a /F",
+            port = JARVIS_PORT,
+        )]);
+        hide_console(&mut killer);
+        let _ = killer.output().await;
+        tokio::time::sleep(Duration::from_secs(2)).await;
+    }
+}
+
+/// Spawn `uv run jarvis serve` and block until /health responds.
+///
+/// Records (root, model, uv_bin) in BackendManager.last_boot so that
+/// restart_jarvis can call this again without redoing the boot prelude
+/// (Ollama check, model pull, uv sync). On failure, the SetupStatus.error
+/// field is populated and Err(detail) is returned.
+async fn spawn_jarvis_server(
+    backend: SharedBackend,
+    status: SharedStatus,
+    project_root: std::path::PathBuf,
+    model: String,
+    uv_bin: String,
+) -> Result<(), String> {
+    let mut cmd = tokio::process::Command::new(&uv_bin);
+    cmd.args([
+        "run",
+        // --no-sync: the boot prelude already ran `uv sync --inexact`, so
+        // don't re-reconcile here. A plain `uv run` re-prunes packages not
+        // in the lockfile — including the maturin-built `openjarvis_rust`
+        // extension we depend on (web_search/SSRF has no Python fallback).
+        "--no-sync",
+        "jarvis",
+        "serve",
+        "--port",
+        &JARVIS_PORT.to_string(),
+        "--model",
+        &model,
+        "--agent",
+        "simple",
+    ])
+    .stdout(std::process::Stdio::null())
+    .stderr(std::process::Stdio::piped())
+    .current_dir(&project_root);
+    hide_console(&mut cmd);
+
+    // Inject cloud API keys from ~/.openjarvis/cloud-keys.env so the server
+    // can see them without the user having to set system-wide env vars.
+    for (key, value) in read_cloud_keys() {
+        cmd.env(&key, &value);
+    }
+
+    match cmd.spawn() {
+        Ok(child) => {
+            let mut mgr = backend.lock().await;
+            mgr.jarvis = Some(ChildHandle { child });
+            mgr.last_boot = LastBoot {
+                project_root: Some(project_root.clone()),
+                model: Some(model.clone()),
+                uv_bin: Some(uv_bin.clone()),
+            };
+        }
+        Err(e) => {
+            let detail = format!(
+                "Could not start jarvis server: {}. \
+                 Make sure uv is installed (https://astral.sh/uv) and the OpenJarvis repo is cloned at {}",
+                e,
+                project_root.display(),
+            );
+            status.lock().await.error = Some(detail.clone());
+            return Err(detail);
+        }
+    }
+
+    let server_url = format!("http://127.0.0.1:{}/health", JARVIS_PORT);
+    let server_ok = wait_for_url(&server_url, Duration::from_secs(600)).await;
+
+    if !server_ok {
+        // Try to read stderr from the failed process for a useful error.
+        let mut stderr_msg = String::new();
+        {
+            let mut mgr = backend.lock().await;
+            if let Some(ref mut h) = mgr.jarvis {
+                if let Some(ref mut stderr) = h.child.stderr.take() {
+                    use tokio::io::AsyncReadExt;
+                    let mut buf = vec![0u8; 4096];
+                    if let Ok(n) = stderr.read(&mut buf).await {
+                        stderr_msg = String::from_utf8_lossy(&buf[..n]).to_string();
+                    }
+                }
+            }
+        }
+        let detail = if stderr_msg.is_empty() {
+            format!(
+                "Jarvis server did not start. Check that:\n\
+                 1. uv is installed ({})\n\
+                 2. The OpenJarvis repo is at {}\n\
+                 3. Run 'uv sync' in that directory",
+                uv_bin,
+                project_root.display(),
+            )
+        } else {
+            format!("Server failed to start: {}", stderr_msg.trim())
+        };
+        status.lock().await.error = Some(detail.clone());
+        return Err(detail);
+    }
+
+    {
+        let mut s = status.lock().await;
+        s.server_ready = true;
+        s.error = None;
+        // phase="ready" is set by the CALLER: boot_backend waits for the
+        // background model warmup first (#5); restart_jarvis sets it directly
+        // (the model is already present on a restart).
+    }
+    Ok(())
+}
+
 async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
     // Phase 1: Start Ollama
     {
@@ -471,13 +764,13 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
     // Try the bundled sidecar first, fall back to system ollama
     let ollama_child = {
         let ollama_bin = resolve_bin("ollama");
-        let sidecar = tokio::process::Command::new(&ollama_bin)
-            .arg("serve")
+        let mut cmd = tokio::process::Command::new(&ollama_bin);
+        cmd.arg("serve")
             .env("OLLAMA_HOST", format!("127.0.0.1:{}", OLLAMA_PORT))
             .stdout(std::process::Stdio::null())
-            .stderr(std::process::Stdio::null())
-            .spawn();
-        match sidecar {
+            .stderr(std::process::Stdio::null());
+        hide_console(&mut cmd);
+        match cmd.spawn() {
             Ok(child) => Some(child),
             Err(_) => None,
         }
@@ -502,40 +795,41 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
         s.detail = "Inference engine ready.".into();
     }
 
-    // Phase 2: Pull one small model (qwen3.5:2b) so the app can open fast.
-    // Remaining models are pulled in the background after the server starts.
+    // Phase 2: choose this machine's model (RAM-aware) and start warming it in
+    // the BACKGROUND so the download/load overlaps with the server boot below
+    // (#5 — overlap warmup with server start). On low-RAM machines (<=14 GB,
+    // e.g. 8 GB) preferred_model() is qwen3.5:2b, never 4b — 4b leaves no
+    // headroom for Windows + the Chromium webview and swaps.
     {
         let mut s = status.lock().await;
         s.phase = "model".into();
-        s.detail = format!("Checking for {}...", STARTUP_MODEL);
     }
-
-    if !ollama_has_model(STARTUP_MODEL).await {
-        {
-            let mut s = status.lock().await;
-            s.detail = format!("Downloading {}... (this may take a minute)", STARTUP_MODEL);
-        }
-        if let Err(e) = pull_model(STARTUP_MODEL).await {
-            // If the startup model fails, try the tiny fallback
-            eprintln!("Warning: failed to pull {}: {}", STARTUP_MODEL, e);
-            if !ollama_has_model(FALLBACK_MODEL).await {
+    let server_model: &'static str = if ollama_has_model(preferred_model()).await {
+        preferred_model()
+    } else {
+        startup_model()
+    };
+    let warmup_handle = {
+        let status = status.clone();
+        let model = server_model.to_string();
+        tauri::async_runtime::spawn(async move {
+            {
                 let mut s = status.lock().await;
-                s.detail = format!("Downloading {}...", FALLBACK_MODEL);
-                drop(s);
-                if let Err(e2) = pull_model(FALLBACK_MODEL).await {
-                    let mut s = status.lock().await;
-                    s.error = Some(format!("Failed to download model: {}", e2));
-                    return;
+                s.detail = format!("Preparing model {} (downloads in the background)...", model);
+            }
+            if !ollama_has_model(&model).await {
+                if let Err(e) = pull_model(&model).await {
+                    // Last resort so the app is still usable on a flaky network.
+                    eprintln!("Warning: failed to pull {}: {}", model, e);
+                    if !ollama_has_model(FALLBACK_MODEL).await {
+                        let _ = pull_model(FALLBACK_MODEL).await;
+                    }
                 }
             }
-        }
-    }
-
-    {
-        let mut s = status.lock().await;
-        s.model_ready = true;
-        s.detail = "Model ready.".into();
-    }
+            let mut s = status.lock().await;
+            s.model_ready = true;
+        })
+    };
 
     // Phase 3: Start jarvis serve
     {
@@ -612,7 +906,8 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
             s.detail = "Downloading OpenJarvis (first launch)...".into();
         }
 
-        let clone_result = tokio::process::Command::new(&git_bin)
+        let mut clone_cmd = tokio::process::Command::new(&git_bin);
+        clone_cmd
             .args([
                 "clone",
                 "--depth",
@@ -621,8 +916,9 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
                 &clone_target,
             ])
             .stdout(std::process::Stdio::null())
-            .stderr(std::process::Stdio::piped())
-            .spawn();
+            .stderr(std::process::Stdio::piped());
+        hide_console(&mut clone_cmd);
+        let clone_result = clone_cmd.spawn();
 
         match clone_result {
             Ok(child) => match child.wait_with_output().await {
@@ -663,53 +959,9 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
     }
 
     // Kill any leftover server on our port from a previous run
-    {
-        let client = reqwest::Client::builder()
-            .timeout(Duration::from_secs(2))
-            .build()
-            .unwrap();
-        if client
-            .get(format!("http://127.0.0.1:{}/health", JARVIS_PORT))
-            .send()
-            .await
-            .is_ok()
-        {
-            // Something is already listening — try to kill it
-            #[cfg(unix)]
-            {
-                let _ = tokio::process::Command::new("fuser")
-                    .args(["-k", &format!("{}/tcp", JARVIS_PORT)])
-                    .output()
-                    .await;
-                tokio::time::sleep(Duration::from_secs(2)).await;
-            }
-            #[cfg(target_os = "windows")]
-            {
-                // Find the PID holding the port via netstat, then kill it
-                if let Ok(output) = tokio::process::Command::new("cmd")
-                    .args(["/C", &format!(
-                        "for /f \"tokens=5\" %a in ('netstat -ano ^| findstr :{port} ^| findstr LISTENING') do taskkill /PID %a /F",
-                        port = JARVIS_PORT,
-                    )])
-                    .output()
-                    .await
-                {
-                    let _ = output; // best-effort
-                }
-                tokio::time::sleep(Duration::from_secs(2)).await;
-            }
-        }
-    }
+    free_jarvis_port_if_busy().await;
 
-    // Start with STARTUP_MODEL (just pulled) or preferred if already available.
-    let pref = preferred_model();
-    let startup_model = if ollama_has_model(pref).await {
-        pref
-    } else if ollama_has_model(STARTUP_MODEL).await {
-        STARTUP_MODEL
-    } else {
-        FALLBACK_MODEL
-    };
+    // `server_model` was chosen — and started warming — in Phase 2 above.
 
     let root = project_root.as_ref().unwrap();
 
@@ -731,18 +983,24 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
         let mut s = status.lock().await;
         s.detail = "Installing dependencies (uv sync — may take 1-2 min on first boot)...".into();
     }
-    let sync_output = tokio::process::Command::new(&uv_bin)
+    let mut sync_cmd = tokio::process::Command::new(&uv_bin);
+    sync_cmd
         .args([
             "sync",
+            // --inexact: keep packages that aren't in the lockfile instead
+            // of pruning them. The maturin-built `openjarvis_rust` extension
+            // isn't a declared dependency, so a plain `uv sync` deletes it on
+            // every cold boot, breaking web_search/SSRF (no Python fallback).
+            "--inexact",
             "--extra", "server",
             "--extra", "inference-cloud",
             "--extra", "inference-google",
         ])
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::piped())
-        .current_dir(root)
-        .output()
-        .await;
+        .current_dir(root);
+    hide_console(&mut sync_cmd);
+    let sync_output = sync_cmd.output().await;
     match sync_output {
         Ok(out) if !out.status.success() => {
             let stderr = String::from_utf8_lossy(&out.stderr);
@@ -762,104 +1020,58 @@ async fn boot_backend(backend: SharedBackend, status: SharedStatus) {
         let mut s = status.lock().await;
         s.detail = format!(
             "Starting server with {} from {}...",
-            startup_model,
+            server_model,
             root.display(),
         );
     }
 
-    let mut cmd = tokio::process::Command::new(&uv_bin);
-    cmd.args([
-        "run",
-        "jarvis",
-        "serve",
-        "--port",
-        &JARVIS_PORT.to_string(),
-        "--model",
-        startup_model,
-        "--agent",
-        "simple",
-    ])
-    .stdout(std::process::Stdio::null())
-    .stderr(std::process::Stdio::piped())
-    .current_dir(root);
-
-    // Inject cloud API keys from ~/.openjarvis/cloud-keys.env
-    for (key, value) in read_cloud_keys() {
-        cmd.env(&key, &value);
-    }
-    let jarvis_child = cmd.spawn();
-
-    match jarvis_child {
-        Ok(child) => {
-            backend.lock().await.jarvis = Some(ChildHandle { child });
-        }
-        Err(e) => {
-            let mut s = status.lock().await;
-            s.error = Some(format!(
-                "Could not start jarvis server: {}. \
-                 Make sure uv is installed (https://astral.sh/uv) and the OpenJarvis repo is cloned at {}",
-                e,
-                root.display(),
-            ));
-            return;
-        }
-    }
-
-    let server_url = format!("http://127.0.0.1:{}/health", JARVIS_PORT);
-    let server_ok = wait_for_url(&server_url, Duration::from_secs(600)).await;
-
-    if !server_ok {
-        // Try to read stderr from the failed process for a useful error
-        let mut stderr_msg = String::new();
-        {
-            let mut mgr = backend.lock().await;
-            if let Some(ref mut h) = mgr.jarvis {
-                if let Some(ref mut stderr) = h.child.stderr.take() {
-                    use tokio::io::AsyncReadExt;
-                    let mut buf = vec![0u8; 4096];
-                    if let Ok(n) = stderr.read(&mut buf).await {
-                        stderr_msg = String::from_utf8_lossy(&buf[..n]).to_string();
-                    }
-                }
-            }
-        }
-        let detail = if stderr_msg.is_empty() {
-            format!(
-                "Jarvis server did not start. Check that:\n\
-                 1. uv is installed ({})\n\
-                 2. The OpenJarvis repo is at {}\n\
-                 3. Run 'uv sync' in that directory",
-                uv_bin,
-                root.display(),
-            )
-        } else {
-            format!("Server failed to start: {}", stderr_msg.trim())
-        };
-        let mut s = status.lock().await;
-        s.error = Some(detail);
+    // Spawn the Python server and wait for /health. The helper records
+    // (root, model, uv_bin) in BackendManager.last_boot so the "Restart"
+    // button can re-spawn the server without redoing the prelude.
+    if spawn_jarvis_server(
+        backend.clone(),
+        status.clone(),
+        root.clone(),
+        server_model.to_string(),
+        uv_bin.clone(),
+    )
+    .await
+    .is_err()
+    {
+        // status.error is already populated by spawn_jarvis_server.
         return;
     }
 
+    // #5: the model has been warming in parallel with the server boot above.
+    // Wait for it before declaring "ready" so the first inference never races
+    // a half-pulled model. On warm boots (model already present) this returns
+    // immediately; on first boot it overlaps the multi-minute download with
+    // the server start instead of running them back-to-back.
+    let _ = warmup_handle.await;
     {
         let mut s = status.lock().await;
-        s.server_ready = true;
+        s.model_ready = true;
         s.phase = "ready".into();
         s.detail = "All systems ready.".into();
+        s.error = None;
     }
 
-    // Phase 4: Pull remaining Qwen3.5 models in the background.
-    // The app is already usable with qwen3.5:2b; as each model finishes
-    // it appears in the model list automatically.
-    let fitting = models_that_fit();
-    tokio::spawn(async move {
-        for model in fitting {
-            if model != STARTUP_MODEL && model != FALLBACK_MODEL {
-                if !ollama_has_model(model).await {
-                    let _ = pull_model(model).await;
-                }
+    // Phase 4: in the background, upgrade to the machine's full default model
+    // if it is larger than what we opened with (e.g. a 32 GB box opens on 4b
+    // then pulls 9b). Capped to ONE model — never the whole "fits" list — so
+    // low-RAM machines (8 GB) don't fill the disk or get a model that swaps.
+    {
+        let pref = preferred_model();
+        let opened_with = server_model;
+        tauri::async_runtime::spawn(async move {
+            if pref != opened_with
+                && pref != FALLBACK_MODEL
+                && !ollama_has_model(pref).await
+            {
+                let _ = pull_model(pref).await;
             }
-        }
-    });
+        });
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -895,6 +1107,514 @@ async fn start_backend(
 async fn stop_backend(backend: tauri::State<'_, SharedBackend>) -> Result<(), String> {
     backend.lock().await.stop_all().await;
     Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// API-server lifecycle (Settings page Start/Stop/Restart buttons)
+//
+// stop_jarvis / start_jarvis / restart_jarvis only touch the Python server.
+// Ollama stays running because the model-pull state is expensive to rebuild
+// and almost never the thing the user is trying to bounce.
+//
+// hard_restart_backend runs the full boot sequence — meant for "I edited
+// pyproject.toml and need a fresh uv sync".
+// ---------------------------------------------------------------------------
+
+/// Status snapshot for the Settings card. Cheap to compute — `running`
+/// reflects whether we hold a child handle; `healthy` is a 1-second probe
+/// of /health (a `running: true, healthy: false` combo usually means the
+/// server is mid-boot or has wedged).
+#[derive(serde::Serialize, Clone)]
+struct JarvisStatus {
+    running: bool,
+    healthy: bool,
+    port: u16,
+    phase: String,
+    detail: String,
+    error: Option<String>,
+    /// Whether last_boot has remembered parameters — i.e. restart_jarvis
+    /// can be used without a full hard_restart. False until the first
+    /// successful boot of the current app session.
+    can_fast_restart: bool,
+}
+
+#[tauri::command]
+async fn get_jarvis_status(
+    backend: tauri::State<'_, SharedBackend>,
+    status: tauri::State<'_, SharedStatus>,
+) -> Result<JarvisStatus, String> {
+    let (running, can_fast_restart) = {
+        let mgr = backend.lock().await;
+        (mgr.jarvis.is_some(), mgr.last_boot.project_root.is_some())
+    };
+    // Quick probe — keep timeout small so the Settings card stays responsive.
+    let healthy = {
+        let client = reqwest::Client::builder()
+            .timeout(Duration::from_millis(800))
+            .build()
+            .unwrap();
+        client
+            .get(format!("http://127.0.0.1:{}/health", JARVIS_PORT))
+            .send()
+            .await
+            .map(|r| r.status().is_success())
+            .unwrap_or(false)
+    };
+    let s = status.lock().await;
+    Ok(JarvisStatus {
+        running,
+        healthy,
+        port: JARVIS_PORT,
+        phase: s.phase.clone(),
+        detail: s.detail.clone(),
+        error: s.error.clone(),
+        can_fast_restart,
+    })
+}
+
+#[tauri::command]
+async fn stop_jarvis(
+    backend: tauri::State<'_, SharedBackend>,
+    status: tauri::State<'_, SharedStatus>,
+) -> Result<(), String> {
+    backend.lock().await.stop_jarvis().await;
+    let mut s = status.lock().await;
+    s.server_ready = false;
+    s.phase = "stopped".into();
+    s.detail = "API server stopped.".into();
+    s.error = None;
+    Ok(())
+}
+
+/// Fast restart: kill the Python child and re-spawn using the (root, model,
+/// uv_bin) recorded by the last successful boot. Requires that we've
+/// already booted once this session (otherwise we don't know which Python
+/// to run). Falls back with a clear error if the user clicked this without
+/// ever having had a successful boot.
+#[tauri::command]
+async fn restart_jarvis(
+    backend: tauri::State<'_, SharedBackend>,
+    status: tauri::State<'_, SharedStatus>,
+) -> Result<(), String> {
+    let last = backend.lock().await.last_boot.clone();
+    let (Some(root), Some(model), Some(uv_bin)) =
+        (last.project_root, last.model, last.uv_bin)
+    else {
+        return Err(
+            "No previous boot to restart from — use Hard restart to run the full setup."
+                .to_string(),
+        );
+    };
+
+    // Kill the existing child, then take down anything still bound to the port.
+    backend.lock().await.stop_jarvis().await;
+    free_jarvis_port_if_busy().await;
+
+    {
+        let mut s = status.lock().await;
+        s.server_ready = false;
+        s.phase = "server".into();
+        s.detail = "Restarting API server...".into();
+        s.error = None;
+    }
+
+    let b = backend.inner().clone();
+    let s = status.inner().clone();
+    // Spawn into the runtime so the call returns immediately — the Settings
+    // card polls get_jarvis_status to surface progress.
+    tauri::async_runtime::spawn(async move {
+        if spawn_jarvis_server(b, s.clone(), root, model, uv_bin)
+            .await
+            .is_ok()
+        {
+            let mut st = s.lock().await;
+            st.phase = "ready".into();
+            st.detail = "All systems ready.".into();
+            st.error = None;
+        }
+    });
+    Ok(())
+}
+
+/// Hard restart: full boot sequence (Ollama check, model pull, uv sync,
+/// server spawn). Use after a `git pull` that changed `pyproject.toml`, or
+/// when something feels stuck and you want to start over.
+#[tauri::command]
+async fn hard_restart_backend(
+    backend: tauri::State<'_, SharedBackend>,
+    status: tauri::State<'_, SharedStatus>,
+) -> Result<(), String> {
+    backend.lock().await.stop_all().await;
+    free_jarvis_port_if_busy().await;
+    {
+        let mut s = status.lock().await;
+        // Reset everything; boot_backend will repopulate as phases complete.
+        *s = SetupStatus::default();
+    }
+    let b = backend.inner().clone();
+    let s = status.inner().clone();
+    tauri::async_runtime::spawn(boot_backend(b, s));
+    Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// ngrok tunnel — "silent" public HTTPS tunnel for inbound webhooks (SendBlue).
+//
+// Inbound webhook channels need a public HTTPS URL that reaches the local
+// server. Rather than make the user open a terminal and run `ngrok http 8000`,
+// we launch ngrok as a hidden, lifecycle-managed child — exactly like the
+// Ollama / Python-server processes — and read the public URL from ngrok's
+// local inspector API (http://127.0.0.1:4040/api/tunnels).
+//
+// On-demand only: started when the user wires up SendBlue, never at boot. An
+// always-on public tunnel to localhost is a security footgun, so we don't open
+// one unless the user is actively setting up an inbound channel. The child is
+// tracked in BackendManager and killed on app exit (stop_all).
+// ---------------------------------------------------------------------------
+
+const NGROK_API: &str = "http://127.0.0.1:4040/api/tunnels";
+
+#[derive(serde::Serialize, Clone)]
+struct NgrokTunnel {
+    public_url: String,
+    /// True when we reused a tunnel already up (didn't spawn a new agent).
+    already_running: bool,
+}
+
+/// Read ngrok's local inspector API and return the public HTTPS URL of the
+/// tunnel forwarding to `port` (falling back to the first https tunnel if no
+/// upstream addr matches). `None` when ngrok isn't running or has no https
+/// tunnel yet.
+async fn ngrok_public_url(port: u16) -> Option<String> {
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(2))
+        .build()
+        .ok()?;
+    let body = client
+        .get(NGROK_API)
+        .send()
+        .await
+        .ok()?
+        .json::<serde_json::Value>()
+        .await
+        .ok()?;
+    let tunnels = body.get("tunnels")?.as_array()?;
+    let port_needle = port.to_string();
+    let mut https: Vec<String> = Vec::new();
+    for t in tunnels {
+        if t.get("proto").and_then(|p| p.as_str()) != Some("https") {
+            continue;
+        }
+        let Some(url) = t.get("public_url").and_then(|u| u.as_str()) else {
+            continue;
+        };
+        let addr = t
+            .get("config")
+            .and_then(|c| c.get("addr"))
+            .and_then(|a| a.as_str())
+            .unwrap_or("");
+        if addr.contains(&port_needle) {
+            return Some(url.to_string()); // exact upstream match wins
+        }
+        https.push(url.to_string());
+    }
+    https.into_iter().next()
+}
+
+/// Start (or detect) a hidden ngrok tunnel to the API server's port and return
+/// its public HTTPS URL. Idempotent: an existing tunnel (ours from earlier, or
+/// one the user started manually) is reused rather than spawning a duplicate.
+///
+/// Error strings double as machine-readable codes the frontend switches on:
+/// `NGROK_NOT_INSTALLED` and `NGROK_NO_AUTHTOKEN`.
+#[tauri::command]
+async fn ensure_ngrok_tunnel(
+    backend: tauri::State<'_, SharedBackend>,
+) -> Result<NgrokTunnel, String> {
+    let port = JARVIS_PORT;
+
+    // 1. Reuse an existing tunnel — never spawn a duplicate ngrok agent.
+    if let Some(url) = ngrok_public_url(port).await {
+        return Ok(NgrokTunnel {
+            public_url: url,
+            already_running: true,
+        });
+    }
+
+    // 2. Locate the ngrok binary.
+    let ngrok_bin = resolve_bin("ngrok");
+    if !std::path::Path::new(&ngrok_bin).exists() && ngrok_bin == "ngrok" {
+        return Err("NGROK_NOT_INSTALLED".to_string());
+    }
+
+    // 3. Launch hidden (no console window), kill-on-drop so a failed attempt
+    //    never leaks a process.
+    let mut cmd = tokio::process::Command::new(&ngrok_bin);
+    cmd.args(["http", &port.to_string()])
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::piped())
+        .kill_on_drop(true);
+    hide_console(&mut cmd);
+    let mut child = cmd
+        .spawn()
+        .map_err(|e| format!("Could not start ngrok: {e}"))?;
+
+    // 4. Poll the inspector API until a tunnel opens, ngrok dies, or we time out.
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(20);
+    loop {
+        // ngrok already exited → almost always a missing/invalid authtoken.
+        if matches!(child.try_wait(), Ok(Some(_))) {
+            let mut stderr_msg = String::new();
+            if let Some(mut err) = child.stderr.take() {
+                use tokio::io::AsyncReadExt;
+                let mut buf = vec![0u8; 4096];
+                if let Ok(n) = err.read(&mut buf).await {
+                    stderr_msg = String::from_utf8_lossy(&buf[..n]).to_string();
+                }
+            }
+            let low = stderr_msg.to_lowercase();
+            if low.contains("authtoken") || low.contains("err_ngrok_4018") {
+                return Err("NGROK_NO_AUTHTOKEN".to_string());
+            }
+            return Err(format!(
+                "ngrok exited before opening a tunnel: {}",
+                stderr_msg.trim()
+            ));
+        }
+
+        if let Some(url) = ngrok_public_url(port).await {
+            backend.lock().await.ngrok = Some(ChildHandle { child });
+            return Ok(NgrokTunnel {
+                public_url: url,
+                already_running: false,
+            });
+        }
+
+        if tokio::time::Instant::now() >= deadline {
+            let _ = child.kill().await;
+            return Err("Timed out waiting for ngrok to open a tunnel. Make sure \
+                 ngrok is configured with an authtoken."
+                .to_string());
+        }
+        tokio::time::sleep(Duration::from_millis(500)).await;
+    }
+}
+
+/// Tear down the ngrok tunnel we started (no-op if we didn't start one).
+#[tauri::command]
+async fn stop_ngrok_tunnel(backend: tauri::State<'_, SharedBackend>) -> Result<(), String> {
+    backend.lock().await.stop_ngrok().await;
+    Ok(())
+}
+
+/// One-time ngrok setup: persist the user's free authtoken via
+/// `ngrok config add-authtoken <token>` so `ngrok http` can open tunnels.
+/// The token is a secret — never logged; the frontend sends it from a masked
+/// field and ngrok's own error text doesn't echo it back.
+#[tauri::command]
+async fn configure_ngrok_authtoken(token: String) -> Result<(), String> {
+    let token = token.trim().to_string();
+    if token.is_empty() {
+        return Err("Authtoken is empty.".to_string());
+    }
+    let ngrok_bin = resolve_bin("ngrok");
+    if !std::path::Path::new(&ngrok_bin).exists() && ngrok_bin == "ngrok" {
+        return Err("NGROK_NOT_INSTALLED".to_string());
+    }
+    let mut cmd = tokio::process::Command::new(&ngrok_bin);
+    cmd.args(["config", "add-authtoken", &token])
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::piped());
+    hide_console(&mut cmd);
+    let out = cmd
+        .output()
+        .await
+        .map_err(|e| format!("Could not run ngrok: {e}"))?;
+    if !out.status.success() {
+        return Err(format!(
+            "ngrok rejected the authtoken: {}",
+            String::from_utf8_lossy(&out.stderr).trim()
+        ));
+    }
+    Ok(())
+}
+
+/// Auto-install ngrok via an available user package manager so the user never
+/// has to leave the app. Prefers scoop (no admin, and its shims dir is exactly
+/// what `resolve_bin` probes, so the result is found with no PATH refresh),
+/// falls back to winget (built into Windows 10 1709+/11). User-initiated from
+/// the SendBlue wizard. Returns the manager used ("scoop" | "winget" |
+/// "already-installed"); errors `NO_PACKAGE_MANAGER` when neither is available.
+#[tauri::command]
+async fn install_ngrok() -> Result<String, String> {
+    // Already present? (resolve_bin probes scoop/winget shim dirs + PATH.)
+    let existing = resolve_bin("ngrok");
+    if std::path::Path::new(&existing).exists() && existing != "ngrok" {
+        return Ok("already-installed".to_string());
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        let install_timeout = Duration::from_secs(240);
+
+        // 1. scoop — the user's preferred manager; no admin, and resolve_bin
+        //    finds the result at ~/scoop/shims/ngrok.exe immediately.
+        let scoop_cmd = format!("{}\\scoop\\shims\\scoop.cmd", home_dir());
+        if std::path::Path::new(&scoop_cmd).exists() {
+            // .cmd shims aren't directly CreateProcess-able — go through cmd.
+            let mut cmd = tokio::process::Command::new("cmd");
+            cmd.args(["/C", &scoop_cmd, "install", "ngrok"])
+                .stdout(std::process::Stdio::piped())
+                .stderr(std::process::Stdio::piped());
+            hide_console(&mut cmd);
+            if let Ok(Ok(out)) = tokio::time::timeout(install_timeout, cmd.output()).await {
+                if out.status.success() || resolve_bin("ngrok") != "ngrok" {
+                    return Ok("scoop".to_string());
+                }
+            }
+            // scoop failed (e.g. main bucket missing) — fall through to winget.
+        }
+
+        // 2. winget — built into modern Windows; no bootstrap. ngrok lands in
+        //    %LOCALAPPDATA%\Microsoft\WinGet\Links (probed by resolve_bin).
+        {
+            let mut cmd = tokio::process::Command::new("winget");
+            cmd.args([
+                "install",
+                "--id",
+                "ngrok.ngrok",
+                "-e",
+                "--accept-package-agreements",
+                "--accept-source-agreements",
+                "--disable-interactivity",
+            ])
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped());
+            hide_console(&mut cmd);
+            if let Ok(Ok(out)) = tokio::time::timeout(install_timeout, cmd.output()).await {
+                if out.status.success() || resolve_bin("ngrok") != "ngrok" {
+                    return Ok("winget".to_string());
+                }
+            }
+        }
+    }
+
+    Err("NO_PACKAGE_MANAGER".to_string())
+}
+
+// ---------------------------------------------------------------------------
+// OS location — native Windows Location Services for the weather connector.
+// No third-party IP lookup; coordinates come straight from the OS.
+// ---------------------------------------------------------------------------
+
+/// Latitude/longitude returned to the weather connector's "use my location"
+/// button.
+#[derive(serde::Serialize, Clone)]
+struct LatLon {
+    lat: f64,
+    lon: f64,
+}
+
+/// Read the current position from Windows Location Services via WinRT
+/// (`Windows.Devices.Geolocation`). Runs on a dedicated COM-initialized (MTA)
+/// thread: WinRT needs an apartment and `IAsyncOperation::get()` blocks. We
+/// skip `RequestAccessAsync` (which must run on the UI thread) and let
+/// `GetGeopositionAsync` surface a permission error directly if location is off
+/// for desktop apps.
+#[cfg(target_os = "windows")]
+fn os_location_blocking() -> Result<(f64, f64), String> {
+    use windows::Devices::Geolocation::Geolocator;
+    use windows::Win32::System::Com::{CoInitializeEx, COINIT_MULTITHREADED};
+
+    unsafe {
+        // S_FALSE (already initialized on this thread) is fine; ignore it.
+        let _ = CoInitializeEx(None, COINIT_MULTITHREADED);
+    }
+
+    let to_msg = |e: windows::core::Error| -> String {
+        format!(
+            "Couldn't read your location ({}). Make sure Windows location is on \
+             (Settings -> Privacy & security -> Location) and allowed for desktop apps.",
+            e.message()
+        )
+    };
+
+    let locator = Geolocator::new().map_err(to_msg)?;
+    let pos = locator
+        .GetGeopositionAsync()
+        .map_err(to_msg)?
+        .get()
+        .map_err(to_msg)?;
+    let basic = pos
+        .Coordinate()
+        .map_err(to_msg)?
+        .Point()
+        .map_err(to_msg)?
+        .Position()
+        .map_err(to_msg)?;
+    Ok((basic.Latitude, basic.Longitude))
+}
+
+/// Current coordinates from the OS location service (Windows only).
+#[tauri::command]
+async fn get_os_location() -> Result<LatLon, String> {
+    #[cfg(target_os = "windows")]
+    {
+        let (lat, lon) = tokio::task::spawn_blocking(os_location_blocking)
+            .await
+            .map_err(|e| e.to_string())??;
+        return Ok(LatLon { lat, lon });
+    }
+
+    #[allow(unreachable_code)]
+    Err("OS location is only available on Windows.".to_string())
+}
+
+/// Backup location (opt-in, user-initiated): approximate coordinates from a
+/// single reputable HTTPS IP-geolocation provider. Hardened — HTTPS-only
+/// client, explicit short timeout, named User-Agent, TLS validated by reqwest,
+/// coordinates range-checked, and nothing persisted (the coords are returned
+/// to the form only). This reaches a third party (which sees the request's
+/// public IP), so the UI calls it only on an explicit click and labels the
+/// result approximate. Native reqwest, so not subject to the webview CSP.
+#[tauri::command]
+async fn get_ip_location() -> Result<LatLon, String> {
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(6))
+        .user_agent("OpenJarvis")
+        .https_only(true)
+        .build()
+        .map_err(|e| e.to_string())?;
+
+    let resp = client
+        .get("https://ipapi.co/json/")
+        .send()
+        .await
+        .map_err(|e| format!("IP geolocation request failed: {e}"))?;
+    if !resp.status().is_success() {
+        return Err(format!(
+            "IP geolocation service returned {}.",
+            resp.status()
+        ));
+    }
+
+    let body = resp
+        .json::<serde_json::Value>()
+        .await
+        .map_err(|e| format!("IP geolocation returned invalid data: {e}"))?;
+    let lat = body.get("latitude").and_then(|v| v.as_f64());
+    let lon = body.get("longitude").and_then(|v| v.as_f64());
+    match (lat, lon) {
+        (Some(lat), Some(lon))
+            if lat.is_finite()
+                && lon.is_finite()
+                && (-90.0..=90.0).contains(&lat)
+                && (-180.0..=180.0).contains(&lon) =>
+        {
+            Ok(LatLon { lat, lon })
+        }
+        _ => Err("IP geolocation returned no usable coordinates.".to_string()),
+    }
 }
 
 #[tauri::command]
@@ -1075,11 +1795,20 @@ async fn fetch_models(api_url: String) -> Result<serde_json::Value, String> {
 
 #[tauri::command]
 async fn run_jarvis_command(args: Vec<String>) -> Result<String, String> {
-    let mut cmd_args = vec!["run".to_string(), "jarvis".to_string()];
+    // --no-sync for the same reason as spawn_jarvis_server: don't let an
+    // ad-hoc `uv run` re-prune the maturin-built `openjarvis_rust` extension
+    // (the boot prelude already provisioned the env via `uv sync --inexact`).
+    let mut cmd_args = vec![
+        "run".to_string(),
+        "--no-sync".to_string(),
+        "jarvis".to_string(),
+    ];
     cmd_args.extend(args);
     let uv_bin = resolve_bin("uv");
-    let output = tokio::process::Command::new(&uv_bin)
-        .args(&cmd_args)
+    let mut cmd = tokio::process::Command::new(&uv_bin);
+    cmd.args(&cmd_args);
+    hide_console(&mut cmd);
+    let output = cmd
         .output()
         .await
         .map_err(|e| format!("Failed to launch jarvis: {}", e))?;
@@ -1781,6 +2510,16 @@ pub fn run() {
             get_api_base,
             start_backend,
             stop_backend,
+            stop_jarvis,
+            restart_jarvis,
+            hard_restart_backend,
+            ensure_ngrok_tunnel,
+            stop_ngrok_tunnel,
+            configure_ngrok_authtoken,
+            install_ngrok,
+            get_os_location,
+            get_ip_location,
+            get_jarvis_status,
             check_health,
             fetch_energy,
             fetch_telemetry,
